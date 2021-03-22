@@ -16,7 +16,7 @@ class _ReunionouAppState extends State<Reunionou> {
       home: HomePage(),
       title: "Reunionou",
       theme: ThemeData(
-        primarySwatch: Colors.red,
+        primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
     );

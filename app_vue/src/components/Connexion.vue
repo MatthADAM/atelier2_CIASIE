@@ -25,6 +25,7 @@
         return {
             email:null,
             pwd:null,
+            test:"sha1$8cdb9019$1$31d4baf37ba314e7772ba625bd1567557e4e08b4",
         }
     },
     methods: {
@@ -35,7 +36,12 @@
             if (emailValid == false) {
                 alert("Rentrez un email valide");
             } else {
-                alert("TODO");
+                let passwordHash = require('password-hash');
+                if (passwordHash.verify(this.pwd, this.test)) {
+                    alert("Connexion OK");
+                } else {
+                    alert("Bad password or email");
+                }
             }
         },
     },

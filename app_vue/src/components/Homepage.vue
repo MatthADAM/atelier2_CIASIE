@@ -2,41 +2,68 @@
     <div class="mapbox">
         <img class="icon" src="../assets/meeting.png">
         <p>Bienvenue !</p>
-        <l-map
-            :center="center"
-            :zoom="zoom"
-            class="map"
-            ref="map"
-            style="width:900px;height:400px;">
-            <l-tile-layer :url="osmurl"></l-tile-layer>
-            <l-marker :lat-lng="coord" v-if="coord.length > 0"></l-marker>
-        </l-map>
-        <br/>
-        <p>{{coord}}</p>
-        <router-link to="/connexion" tag="button" class="btn btn-outline-primary"> Se connecter </router-link>
-        <router-link to="/inscription" tag="button" class="btn btn-outline-info"> S'inscrire </router-link>
+        <div v-if="loading">
+            <spinner></spinner>
+        </div>
+        <div v-else>
+            <l-map
+                :center="center"
+                :zoom="zoom"
+                class="map"
+                ref="map"
+                style="width:900px;height:400px;"
+                v-if="coord.length == markers.length">
+                <l-tile-layer :url="osmurl"></l-tile-layer>
+                <l-marker v-for="(item,index) in markers" :key="item.name" :lat-lng="coord[index]">
+                    <l-popup :content="item.name + ' - ' + item.adress"></l-popup>
+                </l-marker>
+            </l-map>
+            <l-map :center="center"
+                :zoom="zoom"
+                class="map"
+                ref="map"
+                style="width:900px;height:400px;"
+                v-else>
+                <l-tile-layer :url="osmurl"></l-tile-layer>
+                </l-map>
+            <br/>
+            <router-link to="/connexion">
+                <button class="btn btn-outline-primary" role="button">Connexion</button>
+            </router-link>
+            <router-link to="/inscription">
+                <button class="btn btn-outline-info" role="button">Inscription</button>
+            </router-link>
+        </div>
     </div>
 </template>
 
 <script>
 
-import { LMap, LTileLayer, LMarker } from 'vue2-leaflet';
+import { LMap, LTileLayer, LMarker, LIcon, LPopup} from 'vue2-leaflet';
 import 'leaflet/dist/leaflet.css';
 import axios from 'axios';
+import spinner from 'vue-spinner/src/SyncLoader';
 
     export default {
         methods: {
         },
         created () {
-            axios
-                .get("https://api-adresse.data.gouv.fr/search/?q=" + this.test.adress.replace(/ /g, "+") + "&postcode=" + this.test.postalCode)
-                .then(response => {
-                    this.lat = response.data.features[0].geometry.coordinates[1];
-                    this.lon = response.data.features[0].geometry.coordinates[0];
-                    this.coord = [this.lat,this.lon];
-                    console.log(this.coord);
-                    console.log(this.gne);
-                });
+            this.markers.forEach(element => {
+                if (element.public == true) {
+                    axios
+                    .get("https://api-adresse.data.gouv.fr/search/?q=" + element.adress.replace(/ /g, "+") + "&postcode=" + element.postCode)
+                    .then(response => {
+                        this.lat = response.data.features[0].geometry.coordinates[1];
+                        this.lon = response.data.features[0].geometry.coordinates[0];
+                        this.coord.push([this.lat,this.lon]);
+                        this.eventPublic.push(element);
+                        console.log(this.coord);
+                    });    
+                } else {
+                    console.log("non");
+                }
+            });
+            this.loading = false;
         },
         data () {
             return {
@@ -44,16 +71,17 @@ import axios from 'axios';
                 zoom: 12,
                 osmurl: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                 markers: [
-                    {id:1,name:"Test1", adress: "37 Rue du général frère", postalCode:"54500"},
+                    {id:1,name:"Test1", adress: "37 Rue du général frère", postCode:"54500",public:true,date:Date.now(),owner:{nom:"ADAM"}},
+                    {id:2,name:"Test2", adress: "2Ter Boulevard Charlemagne", postCode:"54000",public:true,date:Date.now(),owner:{nom:"ADAM"}},
                 ],
                 lat:0,
                 lon:0,
                 coord:[],
-                test : {id:1,name:"Test1", adress: "37 Rue du général frère", postalCode:"54500"},
-                gne: [48.660233, 6.170445],
+                eventPublic: [],
+                loading: true,
             }
         },
-        components: {LMap, LTileLayer, LMarker},   
+        components: {LMap, LTileLayer, LMarker, LIcon, LPopup, spinner},   
     }
 </script>
 
