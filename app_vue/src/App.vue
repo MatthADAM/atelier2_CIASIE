@@ -26,6 +26,7 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  background-color: gold;
 }
 
 h1, h2 {
@@ -50,5 +51,9 @@ a {
   width: 50%;
   height: auto;
   margin: 0 auto;
+}
+
+html {
+  background-color: gold
 }
 </style>
