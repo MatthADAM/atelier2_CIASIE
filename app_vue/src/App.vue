@@ -1,9 +1,5 @@
 <template>
   <div id="app">
-    <ul>
-      <li><router-link to="/">Home Page</router-link></li>
-    </ul>
-
     <router-view></router-view>
 
     <div class="foot">&copy; {{date}} - Matthieu ADAM, Romain BERNARD, Hervé GROSJEAN, Valentin GARDEL</div>
@@ -30,6 +26,7 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  background-color: gold;
 }
 
 h1, h2 {
@@ -54,5 +51,9 @@ a {
   width: 50%;
   height: auto;
   margin: 0 auto;
+}
+
+html {
+  background-color: gold
 }
 </style>
