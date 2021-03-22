@@ -11,6 +11,7 @@
             v-if="coord.length == markers.length">
             <l-tile-layer :url="osmurl"></l-tile-layer>
             <l-marker v-for="(item,index) in markers" :key="item.name" :lat-lng="coord[index]">
+                <l-popup :content="item.name + ' - ' + item.adress"></l-popup>
             </l-marker>
         </l-map>
         <l-map :center="center"
@@ -33,7 +34,7 @@
 
 <script>
 
-import { LMap, LTileLayer, LMarker, LIcon} from 'vue2-leaflet';
+import { LMap, LTileLayer, LMarker, LIcon, LPopup} from 'vue2-leaflet';
 import 'leaflet/dist/leaflet.css';
 import axios from 'axios';
 
@@ -73,7 +74,7 @@ import axios from 'axios';
                 eventPublic: [],
             }
         },
-        components: {LMap, LTileLayer, LMarker, LIcon},   
+        components: {LMap, LTileLayer, LMarker, LIcon, LPopup},   
     }
 </script>
 
