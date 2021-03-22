@@ -2,33 +2,38 @@
     <div class="mapbox">
         <img class="icon" src="../assets/meeting.png">
         <p>Bienvenue !</p>
-        <l-map
-            :center="center"
-            :zoom="zoom"
-            class="map"
-            ref="map"
-            style="width:900px;height:400px;"
-            v-if="coord.length == markers.length">
-            <l-tile-layer :url="osmurl"></l-tile-layer>
-            <l-marker v-for="(item,index) in markers" :key="item.name" :lat-lng="coord[index]">
-                <l-popup :content="item.name + ' - ' + item.adress"></l-popup>
-            </l-marker>
-        </l-map>
-        <l-map :center="center"
-            :zoom="zoom"
-            class="map"
-            ref="map"
-            style="width:900px;height:400px;"
-            v-else>
-            <l-tile-layer :url="osmurl"></l-tile-layer>
+        <div v-if="loading">
+            <spinner></spinner>
+        </div>
+        <div v-else>
+            <l-map
+                :center="center"
+                :zoom="zoom"
+                class="map"
+                ref="map"
+                style="width:900px;height:400px;"
+                v-if="coord.length == markers.length">
+                <l-tile-layer :url="osmurl"></l-tile-layer>
+                <l-marker v-for="(item,index) in markers" :key="item.name" :lat-lng="coord[index]">
+                    <l-popup :content="item.name + ' - ' + item.adress"></l-popup>
+                </l-marker>
             </l-map>
-        <br/>
-        <router-link to="/connexion">
-            <button class="btn btn-outline-primary" role="button">Connexion</button>
-        </router-link>
-        <router-link to="/inscription">
-            <button class="btn btn-outline-info" role="button">Inscription</button>
-        </router-link>
+            <l-map :center="center"
+                :zoom="zoom"
+                class="map"
+                ref="map"
+                style="width:900px;height:400px;"
+                v-else>
+                <l-tile-layer :url="osmurl"></l-tile-layer>
+                </l-map>
+            <br/>
+            <router-link to="/connexion">
+                <button class="btn btn-outline-primary" role="button">Connexion</button>
+            </router-link>
+            <router-link to="/inscription">
+                <button class="btn btn-outline-info" role="button">Inscription</button>
+            </router-link>
+        </div>
     </div>
 </template>
 
@@ -37,6 +42,7 @@
 import { LMap, LTileLayer, LMarker, LIcon, LPopup} from 'vue2-leaflet';
 import 'leaflet/dist/leaflet.css';
 import axios from 'axios';
+import spinner from 'vue-spinner/src/SyncLoader';
 
     export default {
         methods: {
@@ -57,7 +63,7 @@ import axios from 'axios';
                     console.log("non");
                 }
             });
-            
+            this.loading = false;
         },
         data () {
             return {
@@ -72,9 +78,10 @@ import axios from 'axios';
                 lon:0,
                 coord:[],
                 eventPublic: [],
+                loading: true,
             }
         },
-        components: {LMap, LTileLayer, LMarker, LIcon, LPopup},   
+        components: {LMap, LTileLayer, LMarker, LIcon, LPopup, spinner},   
     }
 </script>
 
