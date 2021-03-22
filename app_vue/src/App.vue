@@ -1,9 +1,5 @@
 <template>
   <div id="app">
-    <ul>
-      <li><router-link to="/">Home Page</router-link></li>
-    </ul>
-
     <router-view></router-view>
 
     <div class="foot">&copy; {{date}} - Matthieu ADAM, Romain BERNARD, Hervé GROSJEAN, Valentin GARDEL</div>

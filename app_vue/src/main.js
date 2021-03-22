@@ -9,6 +9,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 
+import HomePage from './components/Homepage.vue'
 import Connexion from './components/Connexion.vue'
 import Inscription from './components/Inscription.vue'
 import NotFound from './components/Notfound.vue'
@@ -19,7 +20,8 @@ const router = new VueRouter({
   mode: 'history',
   
   routes : [
-    {path: '/', component :Connexion},
+    {path: '/', component :HomePage},
+    {path: '/connexion', component :Connexion},
     {path: '/inscription', component :Inscription},
     {path: '*', component :NotFound},//Path * TJRS a la fin /!\
   ],
