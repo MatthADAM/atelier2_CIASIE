@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : lun. 22 mars 2021 à 14:32
+-- Généré le : lun. 22 mars 2021 à 14:47
 -- Version du serveur :  10.4.14-MariaDB
 -- Version de PHP : 7.4.10
 
@@ -44,6 +44,7 @@ CREATE TABLE `comment` (
 CREATE TABLE `event` (
   `id` int(11) NOT NULL,
   `owner` varchar(64) DEFAULT NULL,
+  `name` varchar(128) DEFAULT NULL,
   `adress` varchar(128) DEFAULT NULL,
   `postCode` int(11) DEFAULT NULL,
   `public` tinyint(1) DEFAULT NULL,
