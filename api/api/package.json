@@ -1,0 +1,24 @@
+{
+    "name": "Reunionou",
+    "version": "1.0.0",
+    "description": "API de Reunionou",
+    "main": "app.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "nodemon --legacy-watch app.js",
+        "dev": "nodemon --legacy-watch app.js"
+    },
+    "author": "Alexandre Leroux <alex@sherpa.one> (https://sherpa.one)",
+    "license": "UNLICENSED",
+    "dependencies": {
+        "atob": "latest",
+        "btoa": "latest",
+        "express": "^4.17.1",
+        "jsonwebtoken": "8.5.1",
+        "mysql": "^2.18.1",
+        "xmlhttprequest": "^1.8.0"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.6"
+    }
+}

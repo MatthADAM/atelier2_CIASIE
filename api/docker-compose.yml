@@ -1,0 +1,44 @@
+version: "3"
+
+networks:
+  docker_nodejs_bootstrap:
+    driver: bridge
+services:
+  api:
+    container_name: atelier2-reunionou
+    image: node
+    ports:
+      - "19280:3000"
+    env_file:
+      - ./api/.env.dev
+    volumes:
+      - ./api:/app
+    working_dir: /app
+    command: bash -c 'npm i && npm start' #for npm modules installation inside container without hot reloading in dev environment
+    #command: bash -c 'npm i && npm run dev' #for npm modules installation inside container and hot reloading in dev environment (works only if nodemon is already installed in container)
+    #command: npm start #for production environment
+    #restart: unless-stopped #to activate in production environment
+    networks:
+      - docker_nodejs_bootstrap
+    links:
+      - mysql.atelier2
+  mysql.atelier2:
+    image: mariadb:latest
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8 --collation-server=utf8_general_ci
+    env_file:
+      - ./mysql/.env.dev
+    ports:
+      - "3307:3306"
+    networks:
+      - docker_nodejs_bootstrap
+    volumes:
+      - ./mysql:/docker-entrypoint-initdb.d
+  adminer.atelier2:
+    image: adminer
+    restart: always
+    ports:
+      - 8082:8080
+    networks:
+      - docker_nodejs_bootstrap
+    links:
+      - mysql.atelier2

@@ -11,7 +11,10 @@
                 <div class="form-group">
                     <label for="emailConfirm">Email address</label>
                     <input type="email" class="form-control" id="emailConfirm" aria-describedby="emailHelp" placeholder="Confirm email" v-model="emailConfirm" required>
-                    <small id="emailHelp" class="form-text text-muted">This email is personnal don't share it</small>
+                </div>
+                <div class="form-group">
+                    <label for="nameDisplay">Name display</label>
+                    <input type="text" class="form-control" id="nameDisplay" placeholder="Name display" v-model="nameDisplay" required>
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
@@ -31,6 +34,7 @@
             email:null,
             emailConfirm:null,
             pwd:null,
+            nameDisplay:null,
         }
     },
     methods: {
