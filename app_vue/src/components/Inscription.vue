@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import axios from 'axios';
     export default {
     data () {
         return {
@@ -50,7 +51,22 @@
             } else if (this.email != this.emailConfirm) {
                 alert("Email different");
             } else {
-                alert("TODO");
+                /* axios({
+                    method: 'post',
+                    url: '/test',
+                    data: {
+                        firstName: this.nameDisplay,
+                        email: this.email
+                    }
+                }); */
+                axios.post('/test',{
+                        firstName: this.nameDisplay,
+                        email: this.email
+                    });
+                    console.log(axios.post('/test',{
+                        firstName: this.nameDisplay,
+                        email: this.email
+                    }));
             }
         },
     },
