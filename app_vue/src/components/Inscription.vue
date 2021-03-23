@@ -63,15 +63,6 @@ import {urlApi} from '../variables/variables.js';
             } else {
                 let passwordHash = require('password-hash');
                 this.pwd = passwordHash.generate(this.pwd);
-                /* axios({
-                    method: 'post',
-                    url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/inscription",
-                    data: {
-                        login: this.email,
-                        displayName: this.nameDisplay,
-                        pwd: this.pwd,
-                    }
-                }); */
                 axios.post('http://docketu.iutnc.univ-lorraine.fr:11501/api/inscription', {
                     login: this.email,
                     displayName: this.nameDisplay,
