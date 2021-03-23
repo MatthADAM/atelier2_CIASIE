@@ -2,20 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:reunionou/Models/Event.dart';
 import 'package:reunionou/Widgets/Event/EventPreview.dart';
 
-class EventMaster extends StatefulWidget {
+class PublicEventMaster extends StatefulWidget {
   @override
-  _EventMasterState createState() => _EventMasterState();
+  _PublicEventMasterState createState() => _PublicEventMasterState();
 }
 
-class _EventMasterState extends State<EventMaster> {
+class _PublicEventMasterState extends State<PublicEventMaster> {
   final List<Event> events = Event.getSize(0, 10);
+  int page = 0;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: ListView.builder(
-        itemCount: 2,
+        itemCount: this.events.length,
         itemBuilder: (context, index) {
+          /*if (index.isOdd) return Divider();
+          final i = index ~/ 2;
+          if (i >= this.events.length) {
+            this.events.addAll(Event.getSize(++page, 10));
+          }
+          return EventPreview(this.events[i]);*/
           return EventPreview(this.events[index]);
         },
       ),
