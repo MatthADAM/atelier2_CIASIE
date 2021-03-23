@@ -8,10 +8,12 @@ const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 
 const index_routes = require("./routes/index_routes");
-
+const api_routes = require("./routes/api_routes");
 const DBClient = require('./utils/DBClient');
 
 app.use("/", index_routes);
+app.use("/api", api_routes);
+
 app.use(async(req,res,next)=>{
   return res.status(400).json({
     "type": "error",
