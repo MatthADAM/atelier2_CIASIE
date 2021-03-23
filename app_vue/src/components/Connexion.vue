@@ -21,6 +21,7 @@
 
 <script>
 import {urlApi} from '../variables/variables.js';
+import axios from 'axios';
     export default {
     data () {
         return {
