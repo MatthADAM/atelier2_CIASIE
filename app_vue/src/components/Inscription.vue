@@ -61,22 +61,23 @@ import {urlApi} from '../variables/variables.js';
             } else if (this.pwd != this.pwdConfirm) {
                 alert("Mots de passes différents");
             } else {
-                axios({
+                /* axios({
                     method: 'post',
-                    url: '/test',
+                    url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/inscription",
                     data: {
                         login: this.email,
                         displayName: this.nameDisplay,
                         pwd: this.pwd,
                     }
-                });
-                /* axios
-                .post(
-                '/test',
-                {
-                    firstName: this.nameDisplay,
-                    email: this.email
                 }); */
+                axios.post('http://docketu.iutnc.univ-lorraine.fr:11501/api/inscription', {
+                    login: this.email,
+                    displayName: this.nameDisplay,
+                    pwd: this.pwd,
+                })
+                .then(function (response) {
+                    console.log(response);
+                });
             }
         },
     },
