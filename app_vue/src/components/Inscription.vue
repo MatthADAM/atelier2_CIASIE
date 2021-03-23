@@ -9,7 +9,7 @@
                     <small id="emailHelp" class="form-text text-muted">This email is personnal don't share it</small>
                 </div>
                 <div class="form-group">
-                    <label for="emailConfirm">Email address</label>
+                    <label for="emailConfirm">Email confirm</label>
                     <input type="email" class="form-control" id="emailConfirm" aria-describedby="emailHelp" placeholder="Confirm email" v-model="emailConfirm" required>
                 </div>
                 <div class="form-group">
@@ -19,6 +19,10 @@
                 <div class="form-group">
                     <label for="password">Password</label>
                     <input type="password" class="form-control" id="password" placeholder="Password" v-model="pwd" required>
+                </div>
+                <div class="form-group">
+                    <label for="passwordConfirm">Password confirm</label>
+                    <input type="password" class="form-control" id="passwordConfirm" placeholder="Password confirm" v-model="pwdConfirm" required>
                 </div>
                 <button type="submit" class="btn btn-primary" v-on:click="inscription">Inscription</button>
                 <router-link to="/connexion">Connexion</router-link>
@@ -35,6 +39,7 @@ import axios from 'axios';
             email:null,
             emailConfirm:null,
             pwd:null,
+            pwdConfirm:null,
             nameDisplay:null,
         }
     },
@@ -50,23 +55,27 @@ import axios from 'axios';
                 alert("Rentrez un email valide");
             } else if (this.email != this.emailConfirm) {
                 alert("Email different");
+            } else if (this.pwd == null || this.pwdConfirm == null) {
+                alert("Renseignez les deux champs mot de passe");
+            } else if (this.pwd != this.pwdConfirm) {
+                alert("Mots de passes différents");
             } else {
-                /* axios({
+                axios({
                     method: 'post',
                     url: '/test',
                     data: {
-                        firstName: this.nameDisplay,
-                        email: this.email
+                        login: this.email,
+                        displayName: this.nameDisplay,
+                        pwd: this.pwd,
                     }
+                });
+                /* axios
+                .post(
+                '/test',
+                {
+                    firstName: this.nameDisplay,
+                    email: this.email
                 }); */
-                axios.post('/test',{
-                        firstName: this.nameDisplay,
-                        email: this.email
-                    });
-                    console.log(axios.post('/test',{
-                        firstName: this.nameDisplay,
-                        email: this.email
-                    }));
             }
         },
     },
