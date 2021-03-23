@@ -49,6 +49,7 @@ router.get('/event', async (req, res, next) => {
             event.push({
                 "id": item.id,
                 "owner": item.owner,
+                "name": item.name,
                 "adress": item.adress,
                 "postCode": item.postCode,
                 "public": item.public,
@@ -72,6 +73,7 @@ router.get('/event/:id', async (req, res, next) => {
             event.push({
                 "id": item.id,
                 "owner": item.owner,
+                "name": item.name,
                 "adress": item.adress,
                 "postCode": item.postCode,
                 "public": item.public,
@@ -96,6 +98,7 @@ router.get('/event/owner/:owner', async (req, res, next) => {
             event.push({
                 "id": item.id,
                 "owner": item.owner,
+                "name": item.name,
                 "adress": item.adress,
                 "postCode": item.postCode,
                 "public": item.public,
@@ -330,6 +333,34 @@ router.post("/inscription", jsonParser, async (req, res) => {
             })
         })
         return res.json(user);
+    } catch (error) {
+        console.error(error);
+        throw new Error(error);
+    }
+})
+
+router.post("/addEvent", jsonParser, async (req, res) => {
+    let owner = req.body.owner
+    let name = req.body.name
+    let adress = req.body.adress
+    let postCode = req.body.postCode
+    let public = req.body.public
+    let date = req.body.date;
+    let token = req.body.token
+    let sql = `INSERT INTO event (owner,name,adress,postCode,public,date,token) VALUES ('${owner}','${name}', '${adress}','${postCode}', '${public}', '${date}','${token}')`;
+    try {
+        await DBClient.query(sql);
+        let event=[]
+            event.push({
+                "owner": owner,
+                "name": name,
+                "adress": adress,
+                "postCode": postCode,
+                "public": public,
+                "date" : date,
+                "token": token,
+            })
+        return res.json(event);
     } catch (error) {
         console.error(error);
         throw new Error(error);
