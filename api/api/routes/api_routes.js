@@ -312,13 +312,24 @@ router.get('/comment/event/:event', async (req, res, next) => {
     res.json(comment);
 });
 
-router.post("/inscription", jsonParser, async(req, res)=> {
+router.post("/inscription", jsonParser, async (req, res) => {
     let login = req.body.login
     let name = req.body.displayName
     let pwd = req.body.pwd
     let sql = `INSERT INTO user (login,password,displayName) VALUES ('${login}','${pwd}', '${name}')`;
     try {
         await DBClient.query(sql);
+        let query = `SELECT * FROM user WHERE login='${login}'`;
+        let user = [];
+        let found = await DBClient.all(query);
+        found.forEach(function (item) {
+            user.push({
+                "login": item.login,
+                "password": item.password,
+                "Name": item.displayName
+            })
+        })
+        return res.json(user);
     } catch (error) {
         console.error(error);
         throw new Error(error);
