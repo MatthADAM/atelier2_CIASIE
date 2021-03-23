@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import {urlApi} from '../variables/variables.js';
     export default {
     data () {
         return {

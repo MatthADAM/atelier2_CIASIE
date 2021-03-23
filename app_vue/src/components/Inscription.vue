@@ -33,6 +33,7 @@
 
 <script>
 import axios from 'axios';
+import {urlApi} from '../variables/variables.js';
     export default {
     data () {
         return {

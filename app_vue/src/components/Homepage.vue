@@ -43,6 +43,7 @@ import { LMap, LTileLayer, LMarker, LIcon, LPopup} from 'vue2-leaflet';
 import 'leaflet/dist/leaflet.css';
 import axios from 'axios';
 import spinner from 'vue-spinner/src/SyncLoader';
+import {urlApi} from '../variables/variables.js';
 
     export default {
         methods: {
