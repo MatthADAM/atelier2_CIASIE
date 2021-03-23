@@ -37,7 +37,7 @@ import 'leaflet/dist/leaflet.css';
 import axios from 'axios';
 import spinner from 'vue-spinner/src/SyncLoader';
 import navigationBar from './Navbar.vue';
-import {urlApi, connected, person} from '../variables/variables.js';
+import {urlApi} from '../variables/variables.js';
 
     export default {
         methods: {
@@ -74,7 +74,7 @@ import {urlApi, connected, person} from '../variables/variables.js';
                 coord:[],
                 eventPublic: [],
                 loading: true,
-                name: person,
+                name: localStorage.getItem('name'),
             }
         },
         components: {LMap, LTileLayer, LMarker, LIcon, LPopup, spinner, navigationBar},   

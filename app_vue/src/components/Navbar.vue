@@ -15,6 +15,9 @@
                 <router-link to="/myevents">
                     <a class="nav-item nav-link" role="a">My Events</a>
                 </router-link>
+                <router-link to="/">
+                    <button type="submit" class="btn btn-outline-danger" v-on:click="logout">Logout</button>
+                </router-link>
             </div>
         </div>
     </nav>
@@ -22,6 +25,11 @@
 
 <script>
 export default {
+  methods: {
+      logout() {
+          localStorage.setItem("connected", false);
+      }
+  },
 
 }
 </script>
