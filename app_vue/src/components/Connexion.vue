@@ -26,7 +26,7 @@ import {urlApi} from '../variables/variables.js';
         return {
             email:null,
             pwd:null,
-            test:"sha1$8cdb9019$1$31d4baf37ba314e7772ba625bd1567557e4e08b4",
+            user:{login:"matthieu-adam@neuf.fr",displayName:"Matthieu ADAM",pwd:"sha1$8cdb9019$1$31d4baf37ba314e7772ba625bd1567557e4e08b4"},
         }
     },
     methods: {
@@ -38,11 +38,10 @@ import {urlApi} from '../variables/variables.js';
                 alert("Rentrez un email valide");
             } else {
                 let passwordHash = require('password-hash');
-                if (passwordHash.verify(this.pwd, this.test)) {
-                    alert("Connexion OK");
-                    localStorage.setItem('connected',true);
-                    localStorage.setItem('name', this.email);
+                if (passwordHash.verify(this.pwd, this.user.pwd)) {
+                    this.$session.start()
                     this.$router.push('/events');
+                    this.$session.set("name",this.user.displayName);
                 } else {
                     alert("Bad password or email");
                 }

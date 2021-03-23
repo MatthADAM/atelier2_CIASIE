@@ -27,7 +27,7 @@
 export default {
   methods: {
       logout() {
-          localStorage.setItem("connected", false);
+        this.$session.destroy();
       }
   },
 

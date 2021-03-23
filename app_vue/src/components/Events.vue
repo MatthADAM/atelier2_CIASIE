@@ -1,7 +1,7 @@
 <template>
     <div class="mapbox">
         <navigationBar></navigationBar>
-        <p>Bienvenue {{this.name}} !</p>
+        <p>Bienvenue {{this.$session.get("name")}} !</p>
         <div v-if="loading">
             <spinner></spinner>
         </div>
@@ -40,6 +40,11 @@ import navigationBar from './Navbar.vue';
 import {urlApi} from '../variables/variables.js';
 
     export default {
+        beforeCreate: function () {
+            if (!this.$session.exists()) {
+            this.$router.push('/')
+            }
+        },
         methods: {
         },
         created () {
