@@ -9,4 +9,22 @@ class Invitation extends ActionRecord {
     this.user = user;
     this.status = status;
   }
+
+  @override
+  String toString() {
+    return this.user.displayName + this.getStatusString();
+  }
+
+  String getStatusString() {
+    switch (this.status) {
+      case 0:
+        return " has been invited!";
+      case 1:
+        return " will be here!";
+      case 2:
+        return " wont be here.";
+      default:
+        return " isn't sure.";
+    }
+  }
 }

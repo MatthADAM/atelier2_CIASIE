@@ -24,10 +24,22 @@ class Event extends ActionRecord {
 
   static List<Event> getSize(int page, int size) {
     return [
-      Event(1, "this is an adress", "Toto", 54000, true, DateTime.now(),
-          "My First Event"),
+      Event(1, "this is an adress", "Toto", 54000, true,
+          DateTime.parse("2021-25-06 12:30:00"), "My First Event"),
       Event(1, "this is a second adress", "Tata", 55500, true, DateTime.now(),
           "My Second Event"),
     ];
+  }
+
+  String formatDateTime() {
+    return this.date.hour.toString() +
+        ":" +
+        this.date.minute.toString() +
+        "\t" +
+        this.date.day.toString() +
+        "/" +
+        this.date.month.toString() +
+        "/" +
+        this.date.year.toString();
   }
 }
