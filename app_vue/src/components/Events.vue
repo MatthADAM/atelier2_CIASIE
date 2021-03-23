@@ -1,7 +1,7 @@
 <template>
     <div class="mapbox">
-        <img class="icon" src="../assets/meeting.png">
-        <p>Bienvenue !</p>
+        <navigationBar></navigationBar>
+        <p>Bienvenue {{this.name}} !</p>
         <div v-if="loading">
             <spinner></spinner>
         </div>
@@ -25,14 +25,7 @@
                 style="width:900px;height:400px;"
                 v-else>
                 <l-tile-layer :url="osmurl"></l-tile-layer>
-                </l-map>
-            <br/>
-            <router-link to="/connexion">
-                <button class="btn btn-outline-primary" role="button">Connexion</button>
-            </router-link>
-            <router-link to="/inscription">
-                <button class="btn btn-outline-info" role="button">Inscription</button>
-            </router-link>
+            </l-map>
         </div>
     </div>
 </template>
@@ -43,6 +36,7 @@ import { LMap, LTileLayer, LMarker, LIcon, LPopup} from 'vue2-leaflet';
 import 'leaflet/dist/leaflet.css';
 import axios from 'axios';
 import spinner from 'vue-spinner/src/SyncLoader';
+import navigationBar from './Navbar.vue';
 import {urlApi} from '../variables/variables.js';
 
     export default {
@@ -80,9 +74,10 @@ import {urlApi} from '../variables/variables.js';
                 coord:[],
                 eventPublic: [],
                 loading: true,
+                name: localStorage.getItem('name'),
             }
         },
-        components: {LMap, LTileLayer, LMarker, LIcon, LPopup, spinner},   
+        components: {LMap, LTileLayer, LMarker, LIcon, LPopup, spinner, navigationBar},   
     }
 </script>
 

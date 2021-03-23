@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import {urlApi} from '../variables/variables.js';
     export default {
     data () {
         return {
@@ -39,6 +40,9 @@
                 let passwordHash = require('password-hash');
                 if (passwordHash.verify(this.pwd, this.test)) {
                     alert("Connexion OK");
+                    localStorage.setItem('connected',true);
+                    localStorage.setItem('name', this.email);
+                    this.$router.push('/events');
                 } else {
                     alert("Bad password or email");
                 }

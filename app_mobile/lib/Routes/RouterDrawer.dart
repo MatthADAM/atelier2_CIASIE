@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:reunionou/Routes/MyRouter.dart';
+import 'package:reunionou/Routes/CustomRouter.dart';
 
 class RouterDrawer extends StatelessWidget {
   void verifCurrentRoute(BuildContext context, String route) {
@@ -30,7 +30,7 @@ class RouterDrawer extends StatelessWidget {
               child: ListTile(
                 tileColor: Colors.blue[100],
                 title: Text('Public events'),
-                onTap: () => verifCurrentRoute(context, MyRouter.homeRoute),
+                onTap: () => verifCurrentRoute(context, CustomRouter.homeRoute),
               ),
             ),
             Container(
@@ -39,7 +39,7 @@ class RouterDrawer extends StatelessWidget {
                 tileColor: Colors.blue[100],
                 title: Text('Planned events'),
                 onTap: () =>
-                    verifCurrentRoute(context, MyRouter.plannedEventRoute),
+                    verifCurrentRoute(context, CustomRouter.plannedEventRoute),
               ),
             ),
             Container(
@@ -47,7 +47,8 @@ class RouterDrawer extends StatelessWidget {
               child: ListTile(
                 tileColor: Colors.blue[100],
                 title: Text('My events'),
-                onTap: () => verifCurrentRoute(context, MyRouter.myEventsRoute),
+                onTap: () =>
+                    verifCurrentRoute(context, CustomRouter.myEventsRoute),
               ),
             ),
             Container(
@@ -55,7 +56,8 @@ class RouterDrawer extends StatelessWidget {
               child: ListTile(
                 tileColor: Colors.blue[100],
                 title: Text('Profil'),
-                onTap: () => verifCurrentRoute(context, MyRouter.profilRoute),
+                onTap: () =>
+                    verifCurrentRoute(context, CustomRouter.profilRoute),
               ),
             ),
             Container(

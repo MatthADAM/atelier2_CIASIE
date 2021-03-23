@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reunionou/Routes/RouterDrawer.dart';
-import 'package:reunionou/Widgets/Event/EventMaster.dart';
+import 'package:reunionou/Widgets/Event/PublicEventMaster.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -14,7 +14,7 @@ class HomePage extends StatelessWidget {
       body: Column(
         children: [
           Flexible(
-            child: EventMaster(),
+            child: PublicEventMaster(),
           ),
         ],
       ),
