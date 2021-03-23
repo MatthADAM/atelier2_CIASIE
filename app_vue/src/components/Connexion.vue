@@ -3,6 +3,7 @@
         <p>Welcome</p>
         <div class="form-connect shadow p-3 mb-5 bg-white rounded">
             <form>
+            </form>
                 <div class="form-group">
                     <label for="email">Email address</label>
                     <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email" v-model="email" required>
@@ -14,7 +15,6 @@
                 </div>
                 <button type="submit" class="btn btn-primary" v-on:click="connexion">Connexion</button>
                 <router-link to="/inscription">Inscription</router-link>
-            </form>
         </div>
     </div>
 </template>
@@ -22,35 +22,53 @@
 <script>
 import {urlApi} from '../variables/variables.js';
 import axios from 'axios';
-    export default {
+import $ from 'jquery'
+export default {
     data () {
         return {
             email:null,
             pwd:null,
             user:{login:"matthieu-adam@neuf.fr",displayName:"Matthieu ADAM",pwd:"sha1$8cdb9019$1$31d4baf37ba314e7772ba625bd1567557e4e08b4"},
+            res:"",
         }
     },
     methods: {
         connexion () { 
             const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             let emailValid = re.test(String(this.email).toLowerCase());
+            var pass = this.pwd
+            var sess = this.$session;
+            var rout = this.$router;
+            var res;
+            var name;
 
             if (emailValid == false) {
                 alert("Rentrez un email valide");
             } else {
-                let passwordHash = require('password-hash');
-                if (passwordHash.verify(this.pwd, this.user.pwd)) {
-                    this.$session.start()
-                    this.$router.push('/events');
-                    this.$session.set("name",this.user.displayName);
+                $.ajax({
+                    url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/user/" + this.email,
+                    success: function (result) {
+                        res = result[0].password;
+                        name = result[0].Name;
+                        console.log(typeof this.res);
+                        let passwordHash = require('password-hash');
+                if (passwordHash.verify(pass, res)) {
+                    sess.start()
+                    sess.set("name",name);
+                    rout.push('/events');
                 } else {
-                    alert("Bad password or email");
+                    alert(/* "Bad password or email" + "    " + */ this.res);
+                    console.log(passwordHash.verify(this.pwd,this.res));
+                    console.log(pass + " AAAAAAAAAAAAAAAAAAAAAAAAH " + this.res);
                 }
+                    },
+                    async: false
+                });
+                
             }
         },
-    },
-        
-    }
+    },    
+}
 </script>
 
 <style>
