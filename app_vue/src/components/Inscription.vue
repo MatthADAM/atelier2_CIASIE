@@ -2,8 +2,8 @@
     <div>
         <p>Inscription</p>
         <div class="form-connect shadow p-3 mb-5 bg-white rounded">
-            <form>
-                <div class="form-group">
+            <form>     
+            <div class="form-group">
                     <label for="email">Email address</label>
                     <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email" v-model="email" required>
                     <small id="emailHelp" class="form-text text-muted">This email is personnal don't share it</small>
@@ -24,7 +24,7 @@
                     <label for="passwordConfirm">Password confirm</label>
                     <input type="password" class="form-control" id="passwordConfirm" placeholder="Password confirm" v-model="pwdConfirm" required>
                 </div>
-                <button type="submit" class="btn btn-primary" v-on:click="inscription">Inscription</button>
+                <button class="btn btn-primary" v-on:click="inscription">Inscription</button>
                 <router-link to="/connexion">Connexion</router-link>
             </form>
         </div>
@@ -61,6 +61,8 @@ import {urlApi} from '../variables/variables.js';
             } else if (this.pwd != this.pwdConfirm) {
                 alert("Mots de passes différents");
             } else {
+                let passwordHash = require('password-hash');
+                this.pwd = passwordHash.generate(this.pwd);
                 /* axios({
                     method: 'post',
                     url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/inscription",
