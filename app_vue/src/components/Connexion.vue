@@ -41,6 +41,7 @@ export default {
             var rout = this.$router;
             var res;
             var name;
+            var email = this.email;
 
             if (emailValid == false) {
                 alert("Rentrez un email valide");
@@ -55,6 +56,7 @@ export default {
                 if (passwordHash.verify(pass, res)) {
                     sess.start()
                     sess.set("name",name);
+                    sess.set("log",email);
                     rout.push('/map');
                 } else {
                     alert("Bad password or email");
