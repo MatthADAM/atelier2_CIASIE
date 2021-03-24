@@ -1,5 +1,5 @@
 <template>
-    <div class="mapbox">
+    <div class="mapHome">
         <img class="icon" src="../assets/meeting.png">
         <p>Bienvenue !</p>
         <div v-if="loading">
@@ -100,7 +100,7 @@ import $ from 'jquery'
     height:10rem;
     width:auto;
 }
-.mapbox {
+.mapHome {
     margin: auto;
     width: fit-content;
     height: fit-content;
