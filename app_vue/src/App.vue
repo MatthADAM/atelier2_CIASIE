@@ -32,6 +32,10 @@ export default {
   margin-top: 60px;
 }
 
+.corps {
+  margin-bottom: 10px;
+}
+
 h1, h2 {
   font-weight: normal;
 }

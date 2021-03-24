@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="corps">
         <navbar></navbar>
         <h3>Liste d'événements</h3>
         <table class="table table-striped">
@@ -69,10 +69,15 @@ import $ from 'jquery'
                 currentPage:1,
             }
         },
+        beforeCreate: function () {
+            if (!this.$session.exists()) {
+            this.$router.push('/')
+            }
+        },
         created () {
             var tab = [];
             $.ajax({
-                url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/event?public=1",
+                url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/event?public=1&owner=" + this.$session.get("log"),
                 success: function (result) {
                     tab = result;
                 },

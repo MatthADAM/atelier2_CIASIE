@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="corps">
         <navbar></navbar>
         <p>Bienvenue {{this.$session.get("name")}} !</p>
         <div class="mapbox">

@@ -102,6 +102,7 @@ import $ from 'jquery'
 }
 .mapHome {
     margin: auto;
+    margin-bottom: 10px;
     width: fit-content;
     height: fit-content;
 }
