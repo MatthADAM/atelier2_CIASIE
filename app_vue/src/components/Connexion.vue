@@ -20,9 +20,7 @@
 </template>
 
 <script>
-import {urlApi} from '../variables/variables.js';
-import axios from 'axios';
-import $ from 'jquery'
+import $ from 'jquery';
 export default {
     data () {
         return {

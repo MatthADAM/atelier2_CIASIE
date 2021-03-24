@@ -50,7 +50,6 @@ import $ from 'jquery'
         },
         created () {
             var eventPublic;
-            var eventPersos;
             var lt;
             var lng;
             var coo = [];
@@ -85,7 +84,6 @@ import $ from 'jquery'
                 osmurl: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                 markers: [],
                 coord:[],
-                eventPublic: [],
                 loading: true,
             }
         },

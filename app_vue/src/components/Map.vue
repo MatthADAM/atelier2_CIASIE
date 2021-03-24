@@ -56,7 +56,6 @@ import $ from 'jquery'
                 osmurl: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                 markers: [],
                 coord:[],
-                eventPublic: [],
                 loading: true,
             }
         },
