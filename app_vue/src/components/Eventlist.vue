@@ -22,6 +22,8 @@
             </tr>
             </tbody>
         </table>
+        <button @click="prevPage" class="btn btn-primary">Previous page</button> 
+        <button @click="nextPage" class="btn btn-primary">Next page</button>
     </div>
 </template>
 
@@ -30,6 +32,12 @@ import Navbar from './Navbar.vue'
 import $ from 'jquery'
     export default {
         methods: {
+            nextPage() {
+                if((this.currentPage*this.pageSize) < this.res.length) this.currentPage++;
+            },
+            prevPage() {
+                if(this.currentPage > 1) this.currentPage--;
+            }
         },
         computed: {
             filterOwner() {
@@ -46,14 +54,19 @@ import $ from 'jquery'
                 part2.forEach(element => {
                     this.res.push(element);
                 });
-                console.log(this.res);
-                return this.res;
+                return this.res.filter((row, index) => {
+		            let start = (this.currentPage-1)*this.pageSize;
+		            let end = this.currentPage*this.pageSize;
+		            if(index >= start && index < end) return true;
+	            });
             }
         },
         data () {
             return {
                 res: [],
                 order: -1,
+                pageSize:10,
+                currentPage:1,
             }
         },
         created () {
