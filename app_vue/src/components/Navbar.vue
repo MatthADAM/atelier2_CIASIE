@@ -6,7 +6,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-                <router-link to="/events">
+                <router-link to="/map">
                     <a class="nav-item nav-link" role="a">Map</a>
                 </router-link>
                 <router-link to="/list">
@@ -14,6 +14,9 @@
                 </router-link>
                 <router-link to="/myevents">
                     <a class="nav-item nav-link" role="a">My Events</a>
+                </router-link>
+                <router-link to="/profile">
+                    <a class="nav-item nav-link" role="a">Profile</a>
                 </router-link>
                 <router-link to="/">
                     <button type="submit" class="btn btn-outline-danger" v-on:click="logout">Logout</button>

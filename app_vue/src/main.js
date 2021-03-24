@@ -14,7 +14,10 @@ Vue.use(IconsPlugin)
 import HomePage from './components/Homepage.vue'
 import Connexion from './components/Connexion.vue'
 import Inscription from './components/Inscription.vue'
-import Events from './components/Events.vue'
+import Map from './components/Map.vue'
+import EventList from './components/Eventlist.vue'
+import MyEvents from './components/Myevents.vue'
+import Profile from './components/Profile.vue'
 import NotFound from './components/Notfound.vue'
 
 Vue.use(VueRouter);
@@ -26,7 +29,10 @@ const router = new VueRouter({
     {path: '/', component :HomePage},
     {path: '/connexion', component :Connexion},
     {path: '/inscription', component :Inscription},
-    {path: '/events', component :Events},
+    {path: '/map', component :Map},
+    {path: '/list', component :EventList},
+    {path: '/myevents', component :MyEvents},
+    {path: '/profile', component :Profile},
     {path: '*', component :NotFound},//Path * TJRS a la fin /!\
   ],
 });
