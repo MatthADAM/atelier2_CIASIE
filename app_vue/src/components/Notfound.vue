@@ -2,7 +2,6 @@
     <div>
         <h1>Page non trouvée</h1>
         <p>La page demandée n'existe pas</p>
-        <router-link to="/">Retour à l'accueil</router-link>
 
         <div class="error404">
             <p>Erreur - 404</p>

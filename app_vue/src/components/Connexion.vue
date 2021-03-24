@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="form">
         <p>Welcome</p>
         <div class="form-connect shadow p-3 mb-5 bg-white rounded">
             <form>
@@ -55,7 +55,7 @@ export default {
                 if (passwordHash.verify(pass, res)) {
                     sess.start()
                     sess.set("name",name);
-                    rout.push('/events');
+                    rout.push('/map');
                 } else {
                     alert("Bad password or email");
                 }

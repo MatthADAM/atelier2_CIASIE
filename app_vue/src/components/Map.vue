@@ -1,31 +1,33 @@
 <template>
-    <div class="mapbox">
-        <navigationBar></navigationBar>
+    <div>
+        <navbar></navbar>
         <p>Bienvenue {{this.$session.get("name")}} !</p>
-        <div v-if="loading">
-            <spinner></spinner>
-        </div>
-        <div v-else>
-            <l-map
-                :center="center"
-                :zoom="zoom"
-                class="map"
-                ref="map"
-                style="width:900px;height:400px;"
-                v-if="coord.length == markers.length">
-                <l-tile-layer :url="osmurl"></l-tile-layer>
-                <l-marker v-for="(item,index) in markers" :key="item.name" :lat-lng="coord[index]">
-                    <l-popup :content="item.name + ' - ' + item.adress"></l-popup>
-                </l-marker>
-            </l-map>
-            <l-map :center="center"
-                :zoom="zoom"
-                class="map"
-                ref="map"
-                style="width:900px;height:400px;"
-                v-else>
-                <l-tile-layer :url="osmurl"></l-tile-layer>
-            </l-map>
+        <div class="mapbox">
+            <div v-if="loading">
+                <spinner></spinner>
+            </div>
+            <div v-else>
+                <l-map
+                    :center="center"
+                    :zoom="zoom"
+                    class="map"
+                    ref="map"
+                    style="width:900px;height:400px;"
+                    v-if="coord.length == markers.length">
+                    <l-tile-layer :url="osmurl"></l-tile-layer>
+                    <l-marker v-for="(item,index) in markers" :key="item.name" :lat-lng="coord[index]">
+                        <l-popup :content="item.name + ' - ' + item.adress"></l-popup>
+                    </l-marker>
+                </l-map>
+                <l-map :center="center"
+                    :zoom="zoom"
+                    class="map"
+                    ref="map"
+                    style="width:900px;height:400px;"
+                    v-else>
+                    <l-tile-layer :url="osmurl"></l-tile-layer>
+                </l-map>
+            </div>
         </div>
     </div>
 </template>
@@ -36,7 +38,7 @@ import { LMap, LTileLayer, LMarker, LIcon, LPopup} from 'vue2-leaflet';
 import 'leaflet/dist/leaflet.css';
 import axios from 'axios';
 import spinner from 'vue-spinner/src/SyncLoader';
-import navigationBar from './Navbar.vue';
+import Navbar from './Navbar.vue';
 import {urlApi} from '../variables/variables.js';
 
     export default {
@@ -82,7 +84,7 @@ import {urlApi} from '../variables/variables.js';
                 name: localStorage.getItem('name'),
             }
         },
-        components: {LMap, LTileLayer, LMarker, LIcon, LPopup, spinner, navigationBar},   
+        components: {LMap, LTileLayer, LMarker, LIcon, LPopup, spinner, Navbar},   
     }
 </script>
 
@@ -97,7 +99,7 @@ import {urlApi} from '../variables/variables.js';
 }
 .mapbox {
     margin: auto;
-    width: fit-content;
-    height: fit-content;
+    width: 900px;
+    height: 400px;
 }
 </style>
