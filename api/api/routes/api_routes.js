@@ -121,6 +121,11 @@ router.get('/invitation', async (req, res, next) => {
     let invitation = [];
     try {
         let query = `SELECT * FROM invitation`;
+        if(req.query.event && req.query.user){
+            let event= req.query.event;
+            let user = req.query.user
+            query+=` WHERE event='${event}' and user='${user}'`
+        }
         let found = await DBClient.all(query);
         found.forEach(function (item) {
             invitation.push({
