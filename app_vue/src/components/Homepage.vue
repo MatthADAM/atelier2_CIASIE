@@ -64,6 +64,7 @@ import {urlApi} from '../variables/variables.js';
                     console.log("non");
                 }
             });
+            // setTimeout(() => { this.loading = false; }, 4000);
             this.loading = false;
         },
         data () {

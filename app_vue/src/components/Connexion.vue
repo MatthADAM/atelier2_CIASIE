@@ -57,9 +57,7 @@ export default {
                     sess.set("name",name);
                     rout.push('/events');
                 } else {
-                    alert(/* "Bad password or email" + "    " + */ this.res);
-                    console.log(passwordHash.verify(this.pwd,this.res));
-                    console.log(pass + " AAAAAAAAAAAAAAAAAAAAAAAAH " + this.res);
+                    alert("Bad password or email");
                 }
                     },
                     async: false
