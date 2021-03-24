@@ -45,7 +45,7 @@ router.get('/event', async (req, res, next) => {
     try {
         let query = `SELECT * FROM event`;
         if(req.query.public){
-            query+=` WHERE public='${req.query.public}'`
+            query+=` WHERE public='1'`
         }
         let found = await DBClient.all(query);
         found.forEach(function (item) {
