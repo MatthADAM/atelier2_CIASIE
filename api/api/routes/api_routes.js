@@ -44,8 +44,8 @@ router.get('/event', async (req, res, next) => {
     let event = [];
     try {
         let query = `SELECT * FROM event`;
-        if(req.query.public){
-            query+=` WHERE public='1'`
+        if (req.query.public) {
+            query += ` WHERE public='1'`
         }
         let found = await DBClient.all(query);
         found.forEach(function (item) {
@@ -121,10 +121,10 @@ router.get('/invitation', async (req, res, next) => {
     let invitation = [];
     try {
         let query = `SELECT * FROM invitation`;
-        if(req.query.event && req.query.user){
-            let event= req.query.event;
+        if (req.query.event && req.query.user) {
+            let event = req.query.event;
             let user = req.query.user
-            query+=` WHERE event='${event}' and user='${user}'`
+            query += ` WHERE event='${event}' and user='${user}'`
         }
         let found = await DBClient.all(query);
         found.forEach(function (item) {
@@ -360,17 +360,37 @@ router.post("/addEvent", jsonParser, async (req, res) => {
     let sql = `INSERT INTO event (owner,name,adress,postCode,public,date,token) VALUES ('${owner}','${name}', '${adress}','${postCode}', '${public}', '${date}','${token}')`;
     try {
         await DBClient.query(sql);
-        let event=[]
-            event.push({
-                "owner": owner,
-                "name": name,
-                "adress": adress,
-                "postCode": postCode,
-                "public": public,
-                "date" : date,
-                "token": token,
-            })
+        let event = []
+        event.push({
+            "owner": owner,
+            "name": name,
+            "adress": adress,
+            "postCode": postCode,
+            "public": public,
+            "date": date,
+            "token": token,
+        })
         return res.json(event);
+    } catch (error) {
+        console.error(error);
+        throw new Error(error);
+    }
+})
+
+router.post("/UpdateStatus", jsonParser, async (req, res) => {
+    let event = req.body.event
+    let user = req.body.user
+    let status = req.body.status
+    let sql = `UPDATE invitation SET status= '${status}' WHERE event = '${event}' and user ='${user}'`;
+    try {
+        await DBClient.query(sql);
+        let invitation = []
+        invitation.push({
+            "event": event,
+            "user": user,
+            "status": status
+        })
+        return res.json(invitation);
     } catch (error) {
         console.error(error);
         throw new Error(error);
