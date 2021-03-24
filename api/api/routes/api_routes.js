@@ -44,6 +44,9 @@ router.get('/event', async (req, res, next) => {
     let event = [];
     try {
         let query = `SELECT * FROM event`;
+        if(req.query.public){
+            query+=` WHERE public='${req.query.public}'`
+        }
         let found = await DBClient.all(query);
         found.forEach(function (item) {
             event.push({
@@ -112,6 +115,8 @@ router.get('/event/owner/:owner', async (req, res, next) => {
     }
     res.json(event);
 });
+
+
 router.get('/invitation', async (req, res, next) => {
     let invitation = [];
     try {
