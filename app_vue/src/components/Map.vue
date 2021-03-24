@@ -37,10 +37,8 @@
 
 import { LMap, LTileLayer, LMarker, LIcon, LPopup} from 'vue2-leaflet';
 import 'leaflet/dist/leaflet.css';
-import axios from 'axios';
 import spinner from 'vue-spinner/src/SyncLoader';
 import Navbar from './Navbar.vue';
-import {urlApi} from '../variables/variables.js';
 import $ from 'jquery'
 
     export default {
@@ -57,8 +55,6 @@ import $ from 'jquery'
                 zoom: 12,
                 osmurl: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                 markers: [],
-                lat:0,
-                lon:0,
                 coord:[],
                 eventPublic: [],
                 loading: true,
@@ -67,6 +63,10 @@ import $ from 'jquery'
         created () {
             var eventPublic;
             var eventPersos;
+            var lt;
+            var lng;
+            var coo = [];
+
             $.ajax({
                 url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/event?public=1",
                 success: function (result) {
@@ -86,15 +86,17 @@ import $ from 'jquery'
                 this.markers.push(element);
             });
             this.markers.forEach(element => {
-                    axios
-                    .get("https://api-adresse.data.gouv.fr/search/?q=" + element.adress.replace(/ /g, "+") + "&postcode=" + element.postCode)
-                    .then(response => {
-                        this.lat = response.data.features[0].geometry.coordinates[1];
-                        this.lon = response.data.features[0].geometry.coordinates[0];
-                        this.coord.push([this.lat,this.lon]);
-                        this.eventPublic.push(element);
+                    $.ajax({
+                        url: "https://api-adresse.data.gouv.fr/search/?q=" + element.adress.replace(/ /g, "+") + "&postcode=" + element.postCode,
+                        success: function (result) {
+                            lt = result.features[0].geometry.coordinates[1];
+                            lng = result.features[0].geometry.coordinates[0];
+                            coo.push([lt,lng]);
+                        },
+                        async: false
                     });
             });
+            this.coord = coo;
             this.loading = false;
         },
         components: {LMap, LTileLayer, LMarker, LIcon, LPopup, spinner, Navbar},   

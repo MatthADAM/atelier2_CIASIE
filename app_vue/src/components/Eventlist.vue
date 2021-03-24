@@ -26,6 +26,7 @@
 <script>
 import Navbar from './Navbar.vue'
 import axios from 'axios'
+import $ from 'jquery'
     export default {
         data () {
             return {
@@ -33,18 +34,24 @@ import axios from 'axios'
             }
         },
         created () {
-            axios
-            .get("http://docketu.iutnc.univ-lorraine.fr:11501/api/event?public=1")
-            .then(response => {
-                this.res = response.data;
+            var tab = [];
+            $.ajax({
+                url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/event?public=1",
+                success: function (result) {
+                    tab = result;
+                },
+                async: false
             });
-            axios
-            .get("http://docketu.iutnc.univ-lorraine.fr:11501/api/event/owner/" + this.$session.get("log"))
-            .then(response => {
-                response.data.forEach(element => {
-                    this.res.push(element);
-                });
+            $.ajax({
+                url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/event/owner/" + this.$session.get("log"),
+                success: function (result) {
+                    result.forEach(element => {
+                        tab.push(element);
+                    });
+                },
+                async: false
             });
+            this.res = tab;
         },
         components: { Navbar,},
     }

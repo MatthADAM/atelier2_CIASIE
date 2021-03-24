@@ -50,7 +50,6 @@ export default {
                     success: function (result) {
                         res = result[0].password;
                         name = result[0].Name;
-                        console.log(typeof this.res);
                         let passwordHash = require('password-hash');
                 if (passwordHash.verify(pass, res)) {
                     sess.start()
