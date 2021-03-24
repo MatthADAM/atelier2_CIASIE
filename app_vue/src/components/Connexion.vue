@@ -20,15 +20,12 @@
 </template>
 
 <script>
-import {urlApi} from '../variables/variables.js';
-import axios from 'axios';
-import $ from 'jquery'
+import $ from 'jquery';
 export default {
     data () {
         return {
             email:null,
             pwd:null,
-            user:{login:"matthieu-adam@neuf.fr",displayName:"Matthieu ADAM",pwd:"sha1$8cdb9019$1$31d4baf37ba314e7772ba625bd1567557e4e08b4"},
             res:"",
         }
     },
@@ -41,6 +38,7 @@ export default {
             var rout = this.$router;
             var res;
             var name;
+            var email = this.email;
 
             if (emailValid == false) {
                 alert("Rentrez un email valide");
@@ -50,11 +48,11 @@ export default {
                     success: function (result) {
                         res = result[0].password;
                         name = result[0].Name;
-                        console.log(typeof this.res);
                         let passwordHash = require('password-hash');
                 if (passwordHash.verify(pass, res)) {
                     sess.start()
                     sess.set("name",name);
+                    sess.set("log",email);
                     rout.push('/map');
                 } else {
                     alert("Bad password or email");
