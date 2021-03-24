@@ -17,6 +17,7 @@
                     <l-tile-layer :url="osmurl"></l-tile-layer>
                     <l-marker v-for="(item,index) in markers" :key="item.name" :lat-lng="coord[index]">
                         <l-popup :content="item.name + ' - ' + item.adress"></l-popup>
+                        <l-icon icon-url="https://upload.wikimedia.org/wikipedia/commons/thumb/a/aa/Google_Maps_icon_%282020%29.svg/714px-Google_Maps_icon_%282020%29.svg.png"/>
                     </l-marker>
                 </l-map>
                 <l-map :center="center"
@@ -55,10 +56,7 @@ import $ from 'jquery'
                 center: [48.688418, 6.1825940],
                 zoom: 12,
                 osmurl: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                markers: [/* 
-                    {id:1,name:"Test1", adress: "37 Rue du général frère", postCode:"54500",public:true,date:Date.now(),owner:{nom:"ADAM"}},
-                    {id:2,name:"Test2", adress: "2Ter Boulevard Charlemagne", postCode:"54000",public:true,date:Date.now(),owner:{nom:"ADAM"}}, */
-                ],
+                markers: [],
                 lat:0,
                 lon:0,
                 coord:[],
@@ -67,64 +65,27 @@ import $ from 'jquery'
             }
         },
         created () {
-            var tmp;
-            this.markers.push("PUTE");
+            var eventPublic;
+            var eventPersos;
             $.ajax({
                 url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/event?public=1",
                 success: function (result) {
-                    // console.log(result);
-                    tmp = result;
-                    console.log(this.markers);
-                    /* this.markers.forEach(element => {
-                        console.log("A");
-                        console.log(element);
-                        if (element.public == 1) {
-                            axios
-                            .get("https://api-adresse.data.gouv.fr/search/?q=" + element.adress.replace(/ /g, "+") + "&postcode=" + element.postCode)
-                            .then(response => {
-                                this.lat = response.data.features[0].geometry.coordinates[1];
-                                this.lon = response.data.features[0].geometry.coordinates[0];
-                                this.coord.push([this.lat,this.lon]);
-                                this.eventPublic.push(element);
-                            });    
-                        } else {
-                            console.log("non");
-                        }
-                    }); */
+                    eventPublic = result;
                 },
                 async: false
             });
-            this.markers = tmp;
-            // $.ajax({
-            //         url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/event/owner/" + this.$session.get("log"),
-            //         success: function (result) {
-            //             // console.log(result);
-            //             var temp = this.markers
-            //             result.forEach(element => {
-            //                 temp.push(element);
-            //             });
-            //             this.markers = temp;
-            //         },
-            //         async: false
-            //     });
-            /* axios
-            .get("http://docketu.iutnc.univ-lorraine.fr:11501/api/event?public=1")
-            .then(response => {
-                this.markers = response.data;
+            this.markers = eventPublic;
+            $.ajax({
+                url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/event/owner/" + this.$session.get("log"),
+                success: function (result) {
+                    eventPersos = result;
+                },
+                async: false
             });
-            axios
-            .get("http://docketu.iutnc.univ-lorraine.fr:11501/api/event/owner/" + this.$session.get("log"))
-            .then(response => {
-                response.data.forEach(element => {
-                    this.markers.push(element);
-                });
-            }); */
-            console.log("B");
-            console.log(this.markers);
+            eventPersos.forEach(element => {
+                this.markers.push(element);
+            });
             this.markers.forEach(element => {
-                console.log("A");
-                console.log(element);
-                if (element.public == 1) {
                     axios
                     .get("https://api-adresse.data.gouv.fr/search/?q=" + element.adress.replace(/ /g, "+") + "&postcode=" + element.postCode)
                     .then(response => {
@@ -132,10 +93,7 @@ import $ from 'jquery'
                         this.lon = response.data.features[0].geometry.coordinates[0];
                         this.coord.push([this.lat,this.lon]);
                         this.eventPublic.push(element);
-                    });    
-                } else {
-                    console.log("non");
-                }
+                    });
             });
             this.loading = false;
         },

@@ -28,7 +28,6 @@ export default {
         return {
             email:null,
             pwd:null,
-            user:{login:"matthieu-adam@neuf.fr",displayName:"Matthieu ADAM",pwd:"sha1$8cdb9019$1$31d4baf37ba314e7772ba625bd1567557e4e08b4"},
             res:"",
         }
     },
