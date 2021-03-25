@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:reunionou/Models/Event.dart';
 import 'package:reunionou/Widgets/Event/EventPreview.dart';
 
-class PublicEventMaster extends StatefulWidget {
+class StatusEventMaster extends StatefulWidget {
+  final int status;
+
+  const StatusEventMaster(this.status, {Key key}) : super(key: key);
   @override
-  _PublicEventMasterState createState() => _PublicEventMasterState();
+  _StatusEventMasterState createState() => _StatusEventMasterState();
 }
 
-class _PublicEventMasterState extends State<PublicEventMaster> {
+class _StatusEventMasterState extends State<StatusEventMaster> {
   List<Event> events = [];
   bool loading = true;
   int page = 0;
@@ -20,7 +23,7 @@ class _PublicEventMasterState extends State<PublicEventMaster> {
   @override
   void initState() {
     super.initState();
-    Event.getPublicEvents(0, 10).then((value) {
+    Event.getStatusEvents(0, 10, this.widget.status).then((value) {
       //print("value received!");
       //print(value);
       setState(() {
@@ -35,9 +38,10 @@ class _PublicEventMasterState extends State<PublicEventMaster> {
   @override
   Widget build(BuildContext context) {
     if (this.events != null) {
+      //if (this.events.isNotEmpty) {
       return RefreshIndicator(
         onRefresh: () {
-          return Event.getPublicEvents(0, 10).then((value) {
+          return Event.getStatusEvents(0, 10, this.widget.status).then((value) {
             setState(() {
               this.events = value;
             });
@@ -46,12 +50,6 @@ class _PublicEventMasterState extends State<PublicEventMaster> {
         child: ListView.builder(
           itemCount: this.events.length,
           itemBuilder: (context, index) {
-            /*if (index.isOdd) return Divider();
-          final i = index ~/ 2;
-          if (i >= this.events.length) {
-            this.events.addAll(Event.getSize(++page, 10));
-          }
-          return EventPreview(this.events[i]);*/
             return EventPreview(this.events[index]);
           },
         ),

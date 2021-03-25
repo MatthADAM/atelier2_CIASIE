@@ -55,6 +55,24 @@ class RouterDrawer extends StatelessWidget {
               margin: EdgeInsets.all(5),
               child: ListTile(
                 tileColor: Colors.blue[100],
+                title: Text('Invitations'),
+                onTap: () =>
+                    verifCurrentRoute(context, CustomRouter.invitationRoute),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.all(5),
+              child: ListTile(
+                tileColor: Colors.blue[100],
+                title: Text('Refused events'),
+                onTap: () =>
+                    verifCurrentRoute(context, CustomRouter.refusedRoute),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.all(5),
+              child: ListTile(
+                tileColor: Colors.blue[100],
                 title: Text('Profil'),
                 onTap: () =>
                     verifCurrentRoute(context, CustomRouter.profilRoute),

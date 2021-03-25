@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:reunionou/Routes/RouterDrawer.dart';
-import 'package:reunionou/Widgets/Event/StatusEventMaster.dart';
+import 'package:reunionou/Widgets/Event/CreateEventMaster.dart';
 
-class PlannedEventsPage extends StatelessWidget {
+class CreateEventPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Planned Events"),
+        title: Text("Create Event"),
       ),
-      drawer: RouterDrawer(),
       body: Column(
         children: [
           Flexible(
-            child: StatusEventMaster(1),
+            child: CreateEventMaster(),
           ),
         ],
       ),

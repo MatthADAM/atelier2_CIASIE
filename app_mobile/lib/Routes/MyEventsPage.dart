@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:reunionou/Routes/CustomRouter.dart';
 import 'package:reunionou/Routes/RouterDrawer.dart';
+import 'package:reunionou/Widgets/Event/UserEventMaster.dart';
 
 class MyEventsPage extends StatelessWidget {
   @override
@@ -13,9 +15,16 @@ class MyEventsPage extends StatelessWidget {
       body: Column(
         children: [
           Flexible(
-            child: Text("to implement"),
+            child: UserEventMaster(),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, CustomRouter.createEventPage);
+        },
+        child: Icon(Icons.add),
+        backgroundColor: Colors.blue,
       ),
       backgroundColor: Colors.grey[400],
     );
