@@ -63,7 +63,6 @@ import sha256 from 'sha256'
             } else if (this.pwd != this.pwdConfirm) {
                 alert("Mots de passes différents");
             } else {
-                let passwordHash = require('password-hash');
                 this.pwd = sha256(this.pwd);
                 axios.post('http://docketu.iutnc.univ-lorraine.fr:11501/api/inscription', {
                     login: this.email,

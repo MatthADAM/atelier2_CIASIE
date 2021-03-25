@@ -23,7 +23,7 @@
                     </div>
                     <div>
                         <label for="date">Date of event</label>
-                        <input type="date" class="form-control" id="date" v-model="date" required>
+                        <input type="datetime-local" class="form-control" id="date" v-model="date" required>
                     </div>
                     <button type="submit" class="btn btn-primary" v-on:click="createEvent">Créer</button>
                 </form>
@@ -63,8 +63,6 @@ import axios from 'axios'
                     token: "fzefzefzefezfzefez"
                 })
                 .then(function (response) {
-                    console.log(response);
-                    alert("Event " + this.name + " créé !");
                 });
             }
         },
