@@ -3,10 +3,11 @@
         <p>Inscription</p>
         <div class="form-connect shadow p-3 mb-5 bg-white rounded">
             <form>     
-            <div class="form-group">
-                    <label for="email">Email address</label>
-                    <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email" v-model="email" required>
-                    <small id="emailHelp" class="form-text text-muted">This email is personnal don't share it</small>
+            </form>
+                <div class="form-group">
+                        <label for="email">Email address</label>
+                        <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email" v-model="email" required>
+                        <small id="emailHelp" class="form-text text-muted">This email is personnal don't share it</small>
                 </div>
                 <div class="form-group">
                     <label for="emailConfirm">Email confirm</label>
@@ -26,7 +27,6 @@
                 </div>
                 <button class="btn btn-primary" v-on:click="inscription">Inscription</button>
                 <router-link to="/connexion">Connexion</router-link>
-            </form>
         </div>
     </div>
 </template>
@@ -34,6 +34,7 @@
 <script>
 import axios from 'axios';
 import {urlApi} from '../variables/variables.js';
+import sha256 from 'sha256'
     export default {
     data () {
         return {
@@ -46,6 +47,7 @@ import {urlApi} from '../variables/variables.js';
     },
     methods: {
         inscription () {
+            var rout = this.$router;
             const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             let emailValid = re.test(String(this.email).toLowerCase());
             let emailConfValid = re.test(String(this.emailConfirm).toLowerCase());
@@ -62,7 +64,7 @@ import {urlApi} from '../variables/variables.js';
                 alert("Mots de passes différents");
             } else {
                 let passwordHash = require('password-hash');
-                this.pwd = passwordHash.generate(this.pwd);
+                this.pwd = sha256(this.pwd);
                 axios.post('http://docketu.iutnc.univ-lorraine.fr:11501/api/inscription', {
                     login: this.email,
                     displayName: this.nameDisplay,
@@ -70,7 +72,7 @@ import {urlApi} from '../variables/variables.js';
                 })
                 .then(function (response) {
                     console.log(response);
-                    this.$router.push("/connexion");
+                    rout.push("/connexion");
                 });
             }
         },
