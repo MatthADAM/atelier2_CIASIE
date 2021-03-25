@@ -3,6 +3,7 @@ const router = express.Router();
 const DBClient = require('../utils/DBClient');
 var bodyParser = require('body-parser')
 var jsonParser = bodyParser.json()
+const Utilities = require("../utils/Utilities");
 router.get('/user', async (req, res, next) => {
     let user = [];
     try {
@@ -21,6 +22,8 @@ router.get('/user', async (req, res, next) => {
     }
     res.json(user);
 });
+
+
 router.get('/user/:login', async (req, res, next) => {
     let user = [];
     let login = req.params.login;
@@ -359,7 +362,7 @@ router.post("/addEvent", jsonParser, async (req, res) => {
     let postCode = req.body.postCode
     let public = req.body.public
     let date = req.body.date;
-    let token = req.body.token
+    let token = Utilities.token()
     let sql = `INSERT INTO event (owner,name,adress,postCode,public,date,token) VALUES ('${owner}','${name}', '${adress}','${postCode}', '${public}', '${date}','${token}')`;
     try {
         await DBClient.query(sql);
@@ -379,6 +382,26 @@ router.post("/addEvent", jsonParser, async (req, res) => {
         throw new Error(error);
     }
 })
+router.post("/addInvitation", jsonParser, async (req, res) => {
+    let event = req.body.event
+    let user = req.body.user
+    let status = 0;
+    let sql = `INSERT INTO invitation (event,user,status) VALUES ('${event}','${user}', '${status}')`;
+    try {
+        await DBClient.query(sql);
+        let invitation = []
+        invitation.push({
+            "event": event,
+            "user": user,
+            "status": status,
+        })
+        return res.json(invitation);
+    } catch (error) {
+        console.error(error);
+        throw new Error(error);
+    }
+})
+
 
 router.post("/UpdateStatus", jsonParser, async (req, res) => {
     let event = req.body.event
@@ -399,6 +422,81 @@ router.post("/UpdateStatus", jsonParser, async (req, res) => {
         throw new Error(error);
     }
 })
+router.post("/delete/user/:login", jsonParser, async (req, res) => {
+    let login = req.params.login;
+    let result = [];
+    try {
+        let query = `DELETE FROM user WHERE login='${login}'`;
+        await DBClient.all(query);
+        result.push({
+            "Status": "Succes",
+            "Message": `Suppression de ${login}`,
+        })
+    } catch (error) {
+        console.error(error);
+        throw new Error(error);
+    }
+    res.json(result);
+});
+router.post("/delete/event/:id", jsonParser, async (req, res) => {
+    let id = req.params.id;
+    let result = [];
+    try {
+        let query = `DELETE FROM event WHERE id='${id}'`;
+        await DBClient.all(query);
+        result.push({
+            "Status": "Succes",
+            "Message": `Suppression de l'event ${id}`,
+        })
+    } catch (error) {
+        console.error(error);
+        throw new Error(error);
+    }
+    res.json(result);
+});
+
+router.post("/delete/invitation/:event", jsonParser, async (req, res) => {
+    let result = [];
+    if (req.query.user) {
+        let user = req.query.user;
+        let event = req.params.event;
+        let verif;
+        try {
+            let test = `SELECT * FROM invitation WHERE event='${event}' and user='${user}'`;
+            let found = await DBClient.all(test);
+            verif = found;
+        }
+        catch (error) {
+            console.error(error);
+            throw new Error(error);
+        }
+        if (verif.length == 1) {
+            try {
+                let query = `DELETE FROM invitation WHERE event='${event}' and user='${user}'`;
+                await DBClient.all(query);
+                result.push({
+                    "Status": "Succes",
+                    "Message": `Suppression de l'invitation de ${user} a l'événement ${event}  `,
+                })
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        else {
+            result.push({
+                "Status": "Echec",
+                "Message": `Utilisateur inconnue`,
+            })
+        }
+    }
+    else {
+        result.push({
+            "Status": "Echec",
+            "Message": `Besoin d'un user en query`,
+        })
+    }
+    res.json(result);
+});
 
 
 module.exports = router;
