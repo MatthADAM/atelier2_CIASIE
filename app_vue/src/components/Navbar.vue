@@ -18,16 +18,29 @@
                 <router-link to="/profile">
                     <a class="nav-item nav-link" role="a">Profile</a>
                 </router-link>
-                <router-link to="/">
-                    <button type="submit" class="btn btn-outline-danger" v-on:click="logout">Logout</button>
+                <router-link to="/newevent">
+                    <a class="nav-item nav-link" role="a">New Event</a>
                 </router-link>
             </div>
         </div>
+        <router-link to="/">
+            <button type="submit" class="btn btn-outline-danger" v-on:click="logout">Logout</button>
+        </router-link>
     </nav>
 </template>
 
 <script>
 export default {
+  data () {
+    return {
+        name:"",
+        adress:"",
+        postCode:null,
+        publicEvent:0,
+        date:null,
+        token:"tokenTest",
+    }
+  },
   methods: {
       logout() {
         this.$session.destroy();
@@ -38,5 +51,7 @@ export default {
 </script>
 
 <style>
-
+body {
+    background: none;
+}
 </style>

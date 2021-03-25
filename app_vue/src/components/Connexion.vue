@@ -3,7 +3,6 @@
         <p>Welcome</p>
         <div class="form-connect shadow p-3 mb-5 bg-white rounded">
             <form>
-            </form>
                 <div class="form-group">
                     <label for="email">Email address</label>
                     <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email" v-model="email" required>
@@ -15,6 +14,7 @@
                 </div>
                 <button type="submit" class="btn btn-primary" v-on:click="connexion">Connexion</button>
                 <router-link to="/inscription">Inscription</router-link>
+            </form>
         </div>
     </div>
 </template>
