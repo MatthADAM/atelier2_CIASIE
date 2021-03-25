@@ -70,7 +70,6 @@ import sha256 from 'sha256'
                     pwd: this.pwd,
                 })
                 .then(function (response) {
-                    console.log(response);
                     rout.push("/connexion");
                 });
             }

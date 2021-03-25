@@ -57,7 +57,6 @@ import sha256 from 'sha256'
                         pwd: pwd,
                     })
                     .then(function (response) {
-                        console.log(response);
                         sess.set("log",log);
                         sess.set("name",name);
                         ancLogin = log

@@ -94,7 +94,6 @@ import $ from 'jquery'
             });
             this.res = tab;
             this.res.forEach(element => {
-                console.log(typeof element.date);
                 let annee = element.date.substr(0,4);
                 let mois = element.date.substr(5,2);
                 let jour = element.date.substr(8,2);

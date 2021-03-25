@@ -44,7 +44,6 @@ import axios from 'axios'
             deleteEvent(id) {
                 axios.post('http://docketu.iutnc.univ-lorraine.fr:11501/api/delete/event/' + id)
                 .then(function (response) {
-                    console.log(response);
                 });
                 this.res.forEach(element => {
                     if (element.id == id) {
@@ -89,7 +88,6 @@ import axios from 'axios'
             });
             this.res = tab;
             this.res.forEach(element => {
-                console.log(typeof element.date);
                 let annee = element.date.substr(0,4);
                 let mois = element.date.substr(5,2);
                 let jour = element.date.substr(8,2);
