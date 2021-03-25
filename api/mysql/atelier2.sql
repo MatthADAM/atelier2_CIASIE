@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
--- Hôte : 127.0.0.1
--- Généré le : lun. 22 mars 2021 à 14:47
--- Version du serveur :  10.4.14-MariaDB
--- Version de PHP : 7.4.10
+-- Hôte : mysql: 3306
+-- Généré le : jeu. 25 mars 2021 à 09:43
+-- Version du serveur :  10.5.9-MariaDB-1:10.5.9+maria~focal
+-- Version de PHP : 7.4.15
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -31,7 +31,7 @@ CREATE TABLE `comment` (
   `id` int(11) NOT NULL,
   `content` varchar(2056) DEFAULT NULL,
   `owner` varchar(64) DEFAULT NULL,
-  `date` date DEFAULT NULL,
+  `date` datetime DEFAULT NULL,
   `event` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -48,7 +48,7 @@ CREATE TABLE `event` (
   `adress` varchar(128) DEFAULT NULL,
   `postCode` int(11) DEFAULT NULL,
   `public` tinyint(1) DEFAULT NULL,
-  `date` date DEFAULT NULL,
+  `date` datetime DEFAULT NULL,
   `token` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
