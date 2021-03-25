@@ -1,6 +1,8 @@
 <template>
-    <div>
+    <div class="corps">
         <navbar></navbar>
+        <h3>Profile</h3>
+        
     </div>
 </template>
 
