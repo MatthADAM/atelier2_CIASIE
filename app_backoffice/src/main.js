@@ -18,10 +18,8 @@ import Connexion from './components/Connexion.vue'
 import Inscription from './components/Inscription.vue'
 import Map from './components/Map.vue'
 import EventList from './components/Eventlist.vue'
-import MyEvents from './components/Myevents.vue'
 import Profile from './components/Profile.vue'
 import NotFound from './components/Notfound.vue'
-import NewEvent from './components/NewEvent.vue'
 
 Vue.use(VueRouter);
 
@@ -34,9 +32,7 @@ const router = new VueRouter({
     {path: '/inscription', component :Inscription},
     {path: '/map', component :Map},
     {path: '/list', component :EventList},
-    {path: '/myevents', component :MyEvents},
     {path: '/profile', component :Profile},
-    {path: '/newevent', component :NewEvent},
     {path: '*', component :NotFound},//Path * TJRS a la fin /!\
   ],
 });

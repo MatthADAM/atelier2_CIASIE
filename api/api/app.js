@@ -10,7 +10,9 @@ const jsonParser = bodyParser.json();
 const index_routes = require("./routes/index_routes");
 const api_routes = require("./routes/api_routes");
 const DBClient = require('./utils/DBClient');
+const cors = require('cors');
 
+app.use(cors());
 app.use("/", index_routes);
 app.use("/api", api_routes);
 

@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
--- Hôte : 127.0.0.1
--- Généré le : lun. 22 mars 2021 à 14:47
--- Version du serveur :  10.4.14-MariaDB
--- Version de PHP : 7.4.10
+-- Hôte : mysql: 3306
+-- Généré le : jeu. 25 mars 2021 à 10:11
+-- Version du serveur :  10.5.9-MariaDB-1:10.5.9+maria~focal
+-- Version de PHP : 7.4.15
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -31,7 +31,7 @@ CREATE TABLE `comment` (
   `id` int(11) NOT NULL,
   `content` varchar(2056) DEFAULT NULL,
   `owner` varchar(64) DEFAULT NULL,
-  `date` date DEFAULT NULL,
+  `date` datetime DEFAULT NULL,
   `event` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -48,7 +48,7 @@ CREATE TABLE `event` (
   `adress` varchar(128) DEFAULT NULL,
   `postCode` int(11) DEFAULT NULL,
   `public` tinyint(1) DEFAULT NULL,
-  `date` date DEFAULT NULL,
+  `date` datetime DEFAULT NULL,
   `token` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -158,27 +158,27 @@ ALTER TABLE `media`
 -- Contraintes pour la table `comment`
 --
 ALTER TABLE `comment`
-  ADD CONSTRAINT `FK_event_1` FOREIGN KEY (`event`) REFERENCES `event` (`id`),
-  ADD CONSTRAINT `FK_owner_2` FOREIGN KEY (`owner`) REFERENCES `user` (`login`);
+  ADD CONSTRAINT `FK_event_1` FOREIGN KEY (`event`) REFERENCES `event` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_owner_2` FOREIGN KEY (`owner`) REFERENCES `user` (`login`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `event`
 --
 ALTER TABLE `event`
-  ADD CONSTRAINT `FK_owner_1` FOREIGN KEY (`owner`) REFERENCES `user` (`login`);
+  ADD CONSTRAINT `FK_owner_1` FOREIGN KEY (`owner`) REFERENCES `user` (`login`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `invitation`
 --
 ALTER TABLE `invitation`
-  ADD CONSTRAINT `FK_event_2` FOREIGN KEY (`event`) REFERENCES `event` (`id`),
-  ADD CONSTRAINT `FK_owner_3` FOREIGN KEY (`user`) REFERENCES `user` (`login`);
+  ADD CONSTRAINT `FK_event_2` FOREIGN KEY (`event`) REFERENCES `event` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_owner_3` FOREIGN KEY (`user`) REFERENCES `user` (`login`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `media`
 --
 ALTER TABLE `media`
-  ADD CONSTRAINT `FK_owner_4` FOREIGN KEY (`owner`) REFERENCES `user` (`login`);
+  ADD CONSTRAINT `FK_owner_4` FOREIGN KEY (`owner`) REFERENCES `user` (`login`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

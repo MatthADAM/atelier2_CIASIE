@@ -12,17 +12,14 @@
                 <router-link to="/list">
                     <a class="nav-item nav-link" role="a">Event list</a>
                 </router-link>
-                <router-link to="/myevents">
-                    <a class="nav-item nav-link" role="a">My Events</a>
-                </router-link>
                 <router-link to="/profile">
                     <a class="nav-item nav-link" role="a">Profile</a>
-                </router-link>
-                <router-link to="/newevent">
-                    <a class="nav-item nav-link" role="a">New Event</a>
-                </router-link>
+                </router-link>                
             </div>
         </div>
+        <router-link to="/inscription">
+            <button class="btn btn-outline-info" role="button">Create account</button>
+        </router-link>
         <router-link to="/">
             <button type="submit" class="btn btn-outline-danger" v-on:click="logout">Logout</button>
         </router-link>
