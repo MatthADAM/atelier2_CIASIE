@@ -3,6 +3,7 @@
         <navbar></navbar>
         <div class="form">
             <p>Inscription</p>
+            <p>Attention ! Ce compte aura les permissions d'administrations.</p>
             <div class="form-connect shadow p-3 mb-5 bg-white rounded">
                 <form>     
                 <div class="form-group">
@@ -26,7 +27,7 @@
                         <label for="passwordConfirm">Password confirm</label>
                         <input type="password" class="form-control" id="passwordConfirm" placeholder="Password confirm" v-model="pwdConfirm" required>
                     </div>
-                    <button class="btn btn-primary" v-on:click="inscription">Inscription</button>
+                    <button class="btn btn-primary" v-on:click="inscription">Créer compte</button>
                 </form>
             </div>
         </div>

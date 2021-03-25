@@ -13,7 +13,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr scope="row" v-for="item in filterOwner" :key="item.name">
+            <tr scope="row" v-for="item in filterPage" :key="item.name">
                 <td>{{item.owner}}</td>
                 <td>{{item.name}}</td>
                 <td>{{item.adress}}</td>
@@ -40,20 +40,7 @@ import $ from 'jquery'
             }
         },
         computed: {
-            filterOwner() {
-                var part1;
-                var part2;
-                if (this.order == 1) {
-                    part1 = this.res.filter(log => log.owner == this.$session.get("log"));
-                    part2 = this.res.filter(log => log.owner != this.$session.get("log"));
-                } else {
-                    part1 = this.res.filter(log => log.owner != this.$session.get("log"));
-                    part2 = this.res.filter(log => log.owner == this.$session.get("log"));
-                }
-                this.res = part1;
-                part2.forEach(element => {
-                    this.res.push(element);
-                });
+            filterPage() {
                 return this.res.filter((row, index) => {
 		            let start = (this.currentPage-1)*this.pageSize;
 		            let end = this.currentPage*this.pageSize;
