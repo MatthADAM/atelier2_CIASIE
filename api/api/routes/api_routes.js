@@ -354,6 +354,27 @@ router.post("/inscription", jsonParser, async (req, res) => {
         throw new Error(error);
     }
 })
+router.post("/updateUser", jsonParser, async (req, res) => {
+    let login = req.body.login
+    let AncienLogin = req.body.loginAnc
+    let name = req.body.displayName
+    let pwd = req.body.pwd
+    let sql = `UPDATE user SET login= '${login}',password='${pwd}', displayName='${name}' WHERE login = '${AncienLogin}'`;
+    try {
+        await DBClient.query(sql);
+        let user = [];
+            user.push({
+                "AncienLogin":AncienLogin,
+                "login": login,
+                "password": pwd,
+                "Name": name
+        })
+        res.json(user);
+    } catch (error) {
+        console.error(error);
+        throw new Error(error);
+    }
+})
 
 router.post("/addEvent", jsonParser, async (req, res) => {
     let owner = req.body.owner
