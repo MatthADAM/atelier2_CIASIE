@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : mysql: 3306
--- Généré le : jeu. 25 mars 2021 à 09:43
+-- Généré le : jeu. 25 mars 2021 à 10:11
 -- Version du serveur :  10.5.9-MariaDB-1:10.5.9+maria~focal
 -- Version de PHP : 7.4.15
 
@@ -158,27 +158,27 @@ ALTER TABLE `media`
 -- Contraintes pour la table `comment`
 --
 ALTER TABLE `comment`
-  ADD CONSTRAINT `FK_event_1` FOREIGN KEY (`event`) REFERENCES `event` (`id`),
-  ADD CONSTRAINT `FK_owner_2` FOREIGN KEY (`owner`) REFERENCES `user` (`login`);
+  ADD CONSTRAINT `FK_event_1` FOREIGN KEY (`event`) REFERENCES `event` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_owner_2` FOREIGN KEY (`owner`) REFERENCES `user` (`login`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `event`
 --
 ALTER TABLE `event`
-  ADD CONSTRAINT `FK_owner_1` FOREIGN KEY (`owner`) REFERENCES `user` (`login`);
+  ADD CONSTRAINT `FK_owner_1` FOREIGN KEY (`owner`) REFERENCES `user` (`login`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `invitation`
 --
 ALTER TABLE `invitation`
-  ADD CONSTRAINT `FK_event_2` FOREIGN KEY (`event`) REFERENCES `event` (`id`),
-  ADD CONSTRAINT `FK_owner_3` FOREIGN KEY (`user`) REFERENCES `user` (`login`);
+  ADD CONSTRAINT `FK_event_2` FOREIGN KEY (`event`) REFERENCES `event` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_owner_3` FOREIGN KEY (`user`) REFERENCES `user` (`login`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Contraintes pour la table `media`
 --
 ALTER TABLE `media`
-  ADD CONSTRAINT `FK_owner_4` FOREIGN KEY (`owner`) REFERENCES `user` (`login`);
+  ADD CONSTRAINT `FK_owner_4` FOREIGN KEY (`owner`) REFERENCES `user` (`login`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
