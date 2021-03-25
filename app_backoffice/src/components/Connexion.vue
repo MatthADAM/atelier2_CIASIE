@@ -13,7 +13,6 @@
                     <input type="password" class="form-control" id="password" placeholder="Password" v-model="pwd" required>
                 </div>
                 <button type="submit" class="btn btn-primary" v-on:click="connexion">Connexion</button>
-                <router-link to="/inscription">Inscription</router-link>
             </form>
         </div>
     </div>
