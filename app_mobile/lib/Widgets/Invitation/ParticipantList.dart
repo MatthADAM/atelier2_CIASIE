@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:reunionou/Models/Event.dart';
 import 'package:reunionou/Models/Invitation.dart';
-import 'package:reunionou/Widgets/Event/InvitationPreview.dart';
+import 'package:reunionou/Widgets/Invitation/InvitationPreview.dart';
 
 class ParticipantList extends StatefulWidget {
   final Event event;

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:reunionou/Models/Invitation.dart';
 
 class InvitationPreview extends StatelessWidget {
-  Invitation invitation;
+  final Invitation invitation;
 
   InvitationPreview(this.invitation);
 

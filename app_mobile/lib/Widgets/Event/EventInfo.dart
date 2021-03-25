@@ -23,7 +23,8 @@ class _EventInfoState extends State<EventInfo> {
   @override
   void initState() {
     super.initState();
-    Invitation.getUserEventInvitation(User.connectedUser, this.widget.event.id)
+    Invitation.getUserEventInvitation(
+            User.connectedUser.login, this.widget.event.id)
         .then((value) {
       //print("value received!");
       //print(value);

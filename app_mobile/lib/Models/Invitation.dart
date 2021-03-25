@@ -64,7 +64,7 @@ class Invitation extends ActionRecord {
   static Future<List<Invitation>> getStatusInvitation(
       int page, int size, int status) async {
     dynamic content = await ActionRecord.sendRequest(
-        "/api/invitation/user/" + User.connectedUser);
+        "/api/invitation/user/" + User.connectedUser.login);
     if (content != null && content is List) {
       List<Invitation> list = [];
       for (var i in Invitation.parseTab(content))

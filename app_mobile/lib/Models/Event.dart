@@ -1,8 +1,6 @@
 import 'package:reunionou/Models/ActionRecord.dart';
 import 'package:reunionou/Models/Invitation.dart';
 
-import 'User.dart';
-
 class Event extends ActionRecord {
   String adress, owner, name, token;
   int id, postCode;

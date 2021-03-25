@@ -21,7 +21,7 @@ class _UserEventMasterState extends State<UserEventMaster> {
   @override
   void initState() {
     super.initState();
-    Event.getUserEvents(User.connectedUser, 0, 10).then((value) {
+    Event.getUserEvents(User.connectedUser.login, 0, 10).then((value) {
       //print("value received!");
       //print(value);
       setState(() {
@@ -39,7 +39,8 @@ class _UserEventMasterState extends State<UserEventMaster> {
       if (this.events.isNotEmpty) {
         return RefreshIndicator(
           onRefresh: () {
-            return Event.getUserEvents(User.connectedUser, 0, 10).then((value) {
+            return Event.getUserEvents(User.connectedUser.login, 0, 10)
+                .then((value) {
               setState(() {
                 this.events = value;
               });

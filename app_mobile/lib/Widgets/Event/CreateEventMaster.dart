@@ -34,7 +34,7 @@ class _CreateEventMasterState extends State<CreateEventMaster> {
           action: SnackBarAction(
             label: "yes",
             onPressed: () {
-              Event.create(this.adress, User.connectedUser, this.postCode,
+              Event.create(this.adress, User.connectedUser.login, this.postCode,
                   !this.private, this.selectedDate, this.name);
             },
           ),
@@ -145,7 +145,7 @@ class _CreateEventMasterState extends State<CreateEventMaster> {
                 margin: EdgeInsets.only(right: 10),
                 child: Icon(Icons.calendar_today_outlined),
               ),
-              FlatButton(
+              TextButton(
                 onPressed: () {
                   DatePicker.showDateTimePicker(context,
                       showTitleActions: true,

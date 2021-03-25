@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reunionou/Models/User.dart';
 import 'package:reunionou/Routes/CustomRouter.dart';
 
 class RouterDrawer extends StatelessWidget {
@@ -14,7 +15,7 @@ class RouterDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: Container(
-        color: Colors.grey[400],
+        //color: Colors.grey[400],
         child: ListView(
           // Important: Remove any padding from the ListView.
           padding: EdgeInsets.zero,
@@ -26,6 +27,7 @@ class RouterDrawer extends StatelessWidget {
               ),
             ),
             Container(
+              //color: Colors.blue[100],
               margin: EdgeInsets.all(5),
               child: ListTile(
                 tileColor: Colors.blue[100],
@@ -83,7 +85,11 @@ class RouterDrawer extends StatelessWidget {
               child: ListTile(
                 tileColor: Colors.blue[100],
                 title: Text('Log out'),
-                onTap: () {},
+                onTap: () {
+                  User.connectedUser = null;
+                  Navigator.pushReplacementNamed(
+                      context, CustomRouter.connectionRoute);
+                },
               ),
             ),
           ],

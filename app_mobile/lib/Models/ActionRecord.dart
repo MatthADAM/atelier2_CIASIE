@@ -26,7 +26,7 @@ abstract class ActionRecord {
           request = await client.getUrl(Uri.parse(API_URL + uri));
           request.persistentConnection = true;
           request.headers.persistentConnection = true;
-          request.headers.contentType = ContentType.JSON;
+          request.headers.contentType = ContentType.json;
           break;
       }
 
