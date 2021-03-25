@@ -2,7 +2,7 @@
     <div>
         <navbar></navbar>
         <div class="form">
-            <p>Welcome</p>
+            <h3>Nouvel event</h3>
             <div class="form-connect shadow p-3 mb-5 bg-white rounded">
                 <form>
                     <div class="form-group">
