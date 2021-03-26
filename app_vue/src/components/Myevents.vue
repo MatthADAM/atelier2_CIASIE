@@ -65,9 +65,17 @@ import axios from 'axios'
                 this.currentEvent = id;
             },
             inviterPersonne() {
-                console.log(this.invite + " invité à l'event n°" + this.currentEvent);
-                this.$refs['modal-1'].hide();
-                this.invite = "";
+                var invite = this.invite;
+                var rf = this.$refs['modal-1'];
+                axios.post('http://docketu.iutnc.univ-lorraine.fr:11501/api/addInvitation', {
+                    event: this.currentEvent,
+                    user: this.invite,
+                })
+                .then(function (response) {
+                    rf.hide();
+                    invite = "";
+                });
+                this.invite = invite;
             },
         },
         computed: {
