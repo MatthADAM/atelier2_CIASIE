@@ -20,6 +20,7 @@
 
 <script>
 import $ from 'jquery';
+import sha256 from 'sha256'
 export default {
     data () {
         return {
@@ -47,8 +48,7 @@ export default {
                     success: function (result) {
                         res = result[0].password;
                         name = result[0].Name;
-                        let passwordHash = require('password-hash');
-                if (passwordHash.verify(pass, res)) {
+                if (sha256(pass) == res) {
                     sess.start()
                     sess.set("name",name);
                     sess.set("log",email);

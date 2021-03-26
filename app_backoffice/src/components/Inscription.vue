@@ -37,13 +37,8 @@
 <script>
 import axios from 'axios';
 import {urlApi} from '../variables/variables.js';
-import Navbar from './Navbar.vue'
+import sha256 from 'sha256'
     export default {
-    beforeCreate: function () {
-        if (!this.$session.exists()) {
-        this.$router.push('/')
-        }
-    },
     data () {
         return {
             email:null,
@@ -55,6 +50,7 @@ import Navbar from './Navbar.vue'
     },
     methods: {
         inscription () {
+            var rout = this.$router;
             const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             let emailValid = re.test(String(this.email).toLowerCase());
             let emailConfValid = re.test(String(this.emailConfirm).toLowerCase());
@@ -70,21 +66,18 @@ import Navbar from './Navbar.vue'
             } else if (this.pwd != this.pwdConfirm) {
                 alert("Mots de passes différents");
             } else {
-                let passwordHash = require('password-hash');
-                this.pwd = passwordHash.generate(this.pwd);
+                this.pwd = sha256(this.pwd);
                 axios.post('http://docketu.iutnc.univ-lorraine.fr:11501/api/inscription', {
                     login: this.email,
                     displayName: this.nameDisplay,
                     pwd: this.pwd,
                 })
                 .then(function (response) {
-                    console.log(response);
-                    this.$router.push("/connexion");
+                    rout.push("/connexion");
                 });
             }
         },
     },
-    components: { Navbar,},
         
     }
 </script>
