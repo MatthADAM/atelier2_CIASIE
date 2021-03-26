@@ -10,6 +10,7 @@
                 <th scope="col">Adresse</th>
                 <th scope="col">Code Postal</th>
                 <th scope="col">Date/Heure</th>
+                <th scope="col">Inviter</th>
                 <th scope="col"></th>
             </tr>
             </thead>
@@ -20,12 +21,20 @@
                 <td>{{item.adress}}</td>
                 <td>{{item.postCode}}</td>
                 <td>{{item.date}}</td>
+                <td><b-icon-card-text class="clickable" v-b-modal.modal-1 @click="currEvent(item.id)"></b-icon-card-text></td>
                 <td><b-icon-trash class="clickable" @click="deleteEvent(item.id)"></b-icon-trash></td>
             </tr>
             </tbody>
         </table>
         <button @click="prevPage" class="btn btn-primary">Previous page</button> 
         <button @click="nextPage" class="btn btn-primary">Next page</button>
+        <b-modal ref="modal-1" id="modal-1" title="Inviter une personne" hide-footer>
+            <div style="margin-bottom:15px">
+                <label for="login">Login de la personne</label>
+                <input type="text" class="form-control" id="login" placeholder="Qui voulez-vous inviter ?" v-model="invite">
+            </div>
+            <button class="btn btn-primary" @click="inviterPersonne">Inviter</button>
+        </b-modal>
     </div>
 </template>
 
@@ -52,6 +61,14 @@ import axios from 'axios'
                     }
                 });
             },
+            currEvent(id) {
+                this.currentEvent = id;
+            },
+            inviterPersonne() {
+                console.log(this.invite + " invité à l'event n°" + this.currentEvent);
+                this.$refs['modal-1'].hide();
+                this.invite = "";
+            },
         },
         computed: {
             filterOwner() {
@@ -68,6 +85,8 @@ import axios from 'axios'
                 order: -1,
                 pageSize:10,
                 currentPage:1,
+                invite:"",
+                currentEvent:null,
             }
         },
         beforeCreate: function () {
