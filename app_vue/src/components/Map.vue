@@ -65,6 +65,7 @@ import $ from 'jquery'
             var lt;
             var lng;
             var coo = [];
+            var invitTab = [];
 
             $.ajax({
                 url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/event?public=1",
@@ -80,6 +81,24 @@ import $ from 'jquery'
                     eventPersos = result;
                 },
                 async: false
+            });
+            $.ajax({
+                url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/invitation/user/" + this.$session.get("log"),
+                success: function (result) {
+                    result.forEach(element => {
+                        invitTab.push(element.event);
+                    });
+                },
+                async: false
+            });
+            invitTab.forEach(element => {
+                $.ajax({
+                    url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/event/" + element,
+                    success: function (result) {
+                        eventPersos.push(result[0]);
+                    },
+                    async: false
+                });
             });
             eventPersos.forEach(element => {
                 this.markers.push(element);
