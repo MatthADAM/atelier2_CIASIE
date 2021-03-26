@@ -12,6 +12,9 @@
                 <router-link to="/list">
                     <a class="nav-item nav-link" role="a">Event list</a>
                 </router-link>
+                <router-link to="/ulist">
+                    <a class="nav-item nav-link" role="a">User list</a>
+                </router-link>
                 <router-link to="/profile">
                     <a class="nav-item nav-link" role="a">Profile</a>
                 </router-link>                
