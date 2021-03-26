@@ -19,6 +19,7 @@
                 <td>{{item.adress}}</td>
                 <td>{{item.postCode}}</td>
                 <td>{{item.date}}</td>
+                <td><b-icon-trash class="clickable" @click="deleteEvent(item.id)"></b-icon-trash></td>
             </tr>
             </tbody>
         </table>
@@ -37,7 +38,19 @@ import $ from 'jquery'
             },
             prevPage() {
                 if(this.currentPage > 1) this.currentPage--;
-            }
+            },
+            deleteEvent(id) {
+                axios.post('http://docketu.iutnc.univ-lorraine.fr:11501/api/delete/event/' + id)
+                .then(function (response) {
+                    console.log(response);
+                });
+                this.res.forEach(element => {
+                    if (element.id == id) {
+                        let i = this.res.indexOf(element);
+                        this.res.splice(i,1);
+                    }
+                });
+            },
         },
         computed: {
             filterPage() {
