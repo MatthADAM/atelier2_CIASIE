@@ -2,30 +2,30 @@
     <div>
         <navbar></navbar>
         <div class="form">
-            <p>Inscription</p>
+            <p>Créer un compte</p>
             <p>Attention ! Ce compte aura les permissions d'administrations.</p>
             <div class="form-connect shadow p-3 mb-5 bg-white rounded">
                 <form>     
                 <div class="form-group">
-                        <label for="email">Email address</label>
-                        <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email" v-model="email" required>
-                        <small id="emailHelp" class="form-text text-muted">This email is personnal don't share it</small>
+                        <label for="email">Adresse mail</label>
+                        <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Adresse mail" v-model="email" required>
                     </div>
                     <div class="form-group">
-                        <label for="emailConfirm">Email confirm</label>
-                        <input type="email" class="form-control" id="emailConfirm" aria-describedby="emailHelp" placeholder="Confirm email" v-model="emailConfirm" required>
+                        <label for="emailConfirm">Confirmation de l'adresse mail</label>
+                        <input type="email" class="form-control" id="emailConfirm" aria-describedby="emailHelp" placeholder="Confirmer adresse mail" v-model="emailConfirm" required>
                     </div>
                     <div class="form-group">
-                        <label for="nameDisplay">Name display</label>
-                        <input type="text" class="form-control" id="nameDisplay" placeholder="Name display" v-model="nameDisplay" required>
+                        <label for="nameDisplay">Nom</label>
+                        <input type="text" class="form-control" id="nameDisplay" placeholder="Nom" v-model="nameDisplay" required>
                     </div>
                     <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" class="form-control" id="password" placeholder="Password" v-model="pwd" required>
+                        <label for="password">Mot de passe</label>
+                        <input type="password" class="form-control" id="password" placeholder="Mot de passe" v-model="pwd" required>
+                        <small id="emailHelp" class="form-text text-muted">Ce mot de passe est personnel, ne le partagez pas</small>
                     </div>
                     <div class="form-group">
-                        <label for="passwordConfirm">Password confirm</label>
-                        <input type="password" class="form-control" id="passwordConfirm" placeholder="Password confirm" v-model="pwdConfirm" required>
+                        <label for="passwordConfirm">Confirmation du mot de passe</label>
+                        <input type="password" class="form-control" id="passwordConfirm" placeholder="Confirmer mot de passe" v-model="pwdConfirm" required>
                     </div>
                     <button class="btn btn-primary" v-on:click="inscription">Créer compte</button>
                 </form>
@@ -36,6 +36,7 @@
 
 <script>
 import axios from 'axios';
+import Navbar from './Navbar.vue'
 import {urlApi} from '../variables/variables.js';
 import sha256 from 'sha256'
     export default {
@@ -78,6 +79,7 @@ import sha256 from 'sha256'
             }
         },
     },
+    components: { Navbar,},
         
     }
 </script>

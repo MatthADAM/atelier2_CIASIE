@@ -23,8 +23,8 @@
             </tr>
             </tbody>
         </table>
-        <button @click="prevPage" class="btn btn-primary">Previous page</button> 
-        <button @click="nextPage" class="btn btn-primary">Next page</button>
+        <button @click="prevPage" class="btn btn-primary">Page précédente</button> 
+        <button @click="nextPage" class="btn btn-primary">Page suivante</button>
     </div>
 </template>
 

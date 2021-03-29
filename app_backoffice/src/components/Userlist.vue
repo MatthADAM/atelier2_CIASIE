@@ -5,7 +5,7 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th scope="col">Login</th>
+                <th scope="col">Adresse mail</th>
                 <th scope="col">Nom</th>
             </tr>
             </thead>
@@ -17,8 +17,8 @@
             </tr>
             </tbody>
         </table>
-        <button @click="prevPage" class="btn btn-primary">Previous page</button> 
-        <button @click="nextPage" class="btn btn-primary">Next page</button>
+        <button @click="prevPage" class="btn btn-primary">Page précédente</button> 
+        <button @click="nextPage" class="btn btn-primary">Page suivante</button>
     </div>
 </template>
 

@@ -5,22 +5,22 @@
             <h3>Profile</h3>
             <div class="form-connect shadow p-3 mb-5 bg-white rounded">
                 <div class="form-group">
-                    <label for="login">Login</label>
-                    <input type="text" class="form-control" id="login" placeholder="Enter login" v-model="login">
+                    <label for="login">Adresse mail</label>
+                    <input type="text" class="form-control" id="login" placeholder="Adresse mail" v-model="login">
                 </div>
                 <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" class="form-control" id="name" placeholder="Enter name" v-model="name">
+                    <label for="name">Nom</label>
+                    <input type="text" class="form-control" id="name" placeholder="Nom" v-model="name">
                 </div>
                 <div class="form-group">
-                    <label for="password">Password</label>
+                    <label for="password">Mot de passe</label>
                     <input type="password" class="form-control" id="password" placeholder="Password" v-model="pwd">
                 </div>
                 <div class="form-group">
-                    <label for="passwordConfirm">Password confirm</label>
-                    <input type="password" class="form-control" id="passwordConfirm" placeholder="Password confirm" v-model="pwdConfirm">
+                    <label for="passwordConfirm">Confirmer votre mot de passe</label>
+                    <input type="password" class="form-control" id="passwordConfirm" placeholder="Confirmer mot de passe" v-model="pwdConfirm">
                 </div>
-                <button class="btn btn-primary" v-on:click="updateUser">Update</button>
+                <button class="btn btn-primary" v-on:click="updateUser">Mettre à jour</button>
             </div>
         </div>
     </div>
