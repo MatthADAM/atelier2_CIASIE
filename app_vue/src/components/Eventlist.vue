@@ -20,8 +20,10 @@
                 <td>{{item.adress}}</td>
                 <td>{{item.postCode}}</td>
                 <td>{{item.date}}</td>
-                <!-- <td v-if="invitAcceptee[index] == false"><button type="button" class="btn btn-success">Accepter</button></td>
-                <td v-else><button type="button" class="btn btn-outline-success">Acceptée</button></td> -->
+                <div v-if="ifInvite(item)">
+                    <td v-if="item.accept == 0"><button type="button" @click="acceptEvent(item)" class="btn btn-success">Accepter</button></td>
+                    <td v-else><button type="button" @click="refuseEvent(item)" class="btn btn-outline-success">Acceptée</button></td>
+                </div>
             </tr>
             </tbody>
         </table>
@@ -33,6 +35,7 @@
 <script>
 import Navbar from './Navbar.vue'
 import $ from 'jquery'
+import axios from 'axios'
     export default {
         methods: {
             nextPage() {
@@ -40,6 +43,33 @@ import $ from 'jquery'
             },
             prevPage() {
                 if(this.currentPage > 1) this.currentPage--;
+            },
+            ifInvite(event) {
+                if (event.invite) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            acceptEvent(event) {
+                axios.post("http://docketu.iutnc.univ-lorraine.fr:11501/api/updatestatus", {
+                    event: event.id,
+                    user: this.$session.get("log"),
+                    status: 1,
+                })
+                .then(function (response) {
+                    document.location.reload();
+                });
+            },
+            refuseEvent(event) {
+                axios.post("http://docketu.iutnc.univ-lorraine.fr:11501/api/updatestatus", {
+                    event: event.id,
+                    user: this.$session.get("log"),
+                    status: 0,
+                })
+                .then(function (response) {
+                    document.location.reload();
+                });
             },
         },
         computed: {
@@ -78,15 +108,17 @@ import $ from 'jquery'
                 url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/invitation/user/" + this.$session.get("log"),
                 success: function (result) {
                     result.forEach(element => {
-                        invitTab.push(element.event);
+                        invitTab.push(element);
                     });
                 },
                 async: false
             });
             invitTab.forEach(element => {
                 $.ajax({
-                    url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/event/" + element,
+                    url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/event/" + element.event,
                     success: function (result) {
+                        Object.defineProperty(result[0],"invite", {value: true});
+                        Object.defineProperty(result[0],"accept", {value: element.status});
                         tab.push(result[0]);
                     },
                     async: false
