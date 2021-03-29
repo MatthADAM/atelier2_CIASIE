@@ -30,7 +30,7 @@
                     <p style="margin:0">Publique</p>
                 </td>
                 <td>
-                    <b-icon-journal-bookmark-fill class="clickable"></b-icon-journal-bookmark-fill>
+                    <b-icon-journal-bookmark-fill class="clickable" v-b-modal.modalCommentaires></b-icon-journal-bookmark-fill>
                 </td>
             </tr>
             </tbody>
@@ -41,6 +41,12 @@
             <li>
                 <ul v-for="(item,index) in participants" :key="index"><b-icon-people></b-icon-people> - {{item}}</ul>
             </li>
+        </b-modal>
+        <b-modal ref="modalCommentaires" id="modalCommentaires" title="Espace commentaires" size="lg" hide-footer scrollable>
+            <div>
+                <p>Commentaires</p>
+            </div>
+            <input type="text" class="form-control" placeholder="Tapez votre commentaire">
         </b-modal>
     </div>
 </template>
