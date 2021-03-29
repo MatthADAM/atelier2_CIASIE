@@ -11,6 +11,7 @@
                 <th scope="col">Code Postal</th>
                 <th scope="col">Date/Heure</th>
                 <th scope="col">Status</th>
+                <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
@@ -20,10 +21,16 @@
                 <td>{{item.adress}}</td>
                 <td>{{item.postCode}}</td>
                 <td>{{item.date}}</td>
-                <div v-if="ifInvite(item)">
-                    <td v-if="item.accept == 0"><button type="button" @click="acceptEvent(item)" class="btn btn-success">Accepter</button></td>
-                    <td v-else><button type="button" @click="refuseEvent(item)" class="btn btn-outline-success">Acceptée</button></td>
-                </div>
+                <td v-if="ifInvite(item)">
+                    <button v-if="item.accept == 0" type="button" @click="acceptEvent(item)" class="btn btn-success">Accepter</button>
+                    <button v-else type="button" @click="refuseEvent(item)" class="btn btn-outline-success">Acceptée</button>
+                </td>
+                <td v-else>
+                    <p style="margin:0">Publique</p>
+                </td>
+                <td>
+                    <b-icon-info-circle-fill></b-icon-info-circle-fill>
+                </td>
             </tr>
             </tbody>
         </table>
