@@ -8,6 +8,7 @@ import 'package:reunionou/Routes/InvitationPage.dart';
 import 'package:reunionou/Routes/MyEventsPage.dart';
 import 'package:reunionou/Routes/PlannedEventsPage.dart';
 import 'package:reunionou/Routes/ProfilPage.dart';
+import 'package:reunionou/Routes/ProfilUpdatePage.dart';
 import 'package:reunionou/Routes/RefusedEventPage.dart';
 
 class CustomRouter {
@@ -20,6 +21,7 @@ class CustomRouter {
   static const String createEventPage = "/event/create";
   static const String refusedRoute = "/event/refused";
   static const String connectionRoute = "/connection";
+  static const String updateUserRoute = "/profil/settings";
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     if (User.connectedUser != null && settings.name != connectionRoute) {
@@ -33,6 +35,9 @@ class CustomRouter {
         case profilRoute:
           return MaterialPageRoute(
               builder: (_) => ProfilPage(), settings: settings);
+        case updateUserRoute:
+          return MaterialPageRoute(
+              builder: (_) => ProfilUpdatePage(), settings: settings);
         case myEventsRoute:
           return MaterialPageRoute(
               builder: (_) => MyEventsPage(), settings: settings);

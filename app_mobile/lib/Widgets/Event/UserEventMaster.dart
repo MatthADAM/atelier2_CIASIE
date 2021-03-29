@@ -36,32 +36,28 @@ class _UserEventMasterState extends State<UserEventMaster> {
   @override
   Widget build(BuildContext context) {
     if (this.events != null) {
-      if (this.events.isNotEmpty) {
-        return RefreshIndicator(
-          onRefresh: () {
-            return Event.getUserEvents(User.connectedUser.login, 0, 10)
-                .then((value) {
-              setState(() {
-                this.events = value;
-              });
+      return RefreshIndicator(
+        onRefresh: () {
+          return Event.getUserEvents(User.connectedUser.login, 0, 10)
+              .then((value) {
+            setState(() {
+              this.events = value;
             });
-          },
-          child: ListView.builder(
-            itemCount: this.events.length,
-            itemBuilder: (context, index) {
-              /*if (index.isOdd) return Divider();
+          });
+        },
+        child: ListView.builder(
+          itemCount: this.events.length,
+          itemBuilder: (context, index) {
+            /*if (index.isOdd) return Divider();
           final i = index ~/ 2;
           if (i >= this.events.length) {
             this.events.addAll(Event.getSize(++page, 10));
           }
           return EventPreview(this.events[i]);*/
-              return EventPreview(this.events[index]);
-            },
-          ),
-        );
-      } else {
-        return Center(child: Text("No events."));
-      }
+            return EventPreview(this.events[index]);
+          },
+        ),
+      );
     } else {
       return Center(child: Text("Event loading failed!"));
     }

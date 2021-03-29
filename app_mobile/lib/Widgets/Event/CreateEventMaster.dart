@@ -140,32 +140,38 @@ class _CreateEventMasterState extends State<CreateEventMaster> {
                 ),
               ),
             ]),
-            Row(children: [
-              Container(
-                margin: EdgeInsets.only(right: 10),
-                child: Icon(Icons.calendar_today_outlined),
-              ),
-              TextButton(
-                onPressed: () {
-                  DatePicker.showDateTimePicker(context,
+            Row(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(right: 10),
+                  child: Icon(Icons.calendar_today_outlined),
+                ),
+                TextButton(
+                  onPressed: () {
+                    DatePicker.showDateTimePicker(
+                      context,
                       showTitleActions: true,
                       minTime: DateTime.now(),
                       maxTime: DateTime(2050, 12, 31, 23, 59),
-                      onChanged: (date) {}, onConfirm: (date) {
-                    setState(() {
-                      this.selectedDate = date;
-                    });
-                    print('confirm $date');
-                  }, locale: LocaleType.fr);
-                },
-                child: Text(
-                  this.selectedDate != null
-                      ? this.selectedDate.toString()
-                      : "Choose a date",
-                  style: TextStyle(color: Colors.black54),
+                      onChanged: (date) {},
+                      onConfirm: (date) {
+                        setState(() {
+                          this.selectedDate = date;
+                        });
+                        print('confirm $date');
+                      },
+                      locale: LocaleType.fr,
+                    );
+                  },
+                  child: Text(
+                    this.selectedDate != null
+                        ? this.selectedDate.toString()
+                        : "Choose a date",
+                    style: TextStyle(color: Colors.black54),
+                  ),
                 ),
-              ),
-            ]),
+              ],
+            ),
             Padding(
               child: ElevatedButton(
                 onPressed: validateForm,

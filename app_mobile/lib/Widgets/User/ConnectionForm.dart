@@ -11,6 +11,18 @@ class _ConnectionFormState extends State<ConnectionForm> {
   final _formKey = GlobalKey<FormState>();
   String login = "", password = "";
 
+  void showMessage(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        action: SnackBarAction(
+          label: "ok",
+          onPressed: () {},
+        ),
+      ),
+    );
+  }
+
   void validateForm() {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
@@ -19,6 +31,7 @@ class _ConnectionFormState extends State<ConnectionForm> {
         if (value) {
           Navigator.pushReplacementNamed(context, CustomRouter.homeRoute);
         } else {
+          showMessage("Wrong login or password!");
           print("wrong password");
         }
       });

@@ -14,6 +14,7 @@ class ParticipantList extends StatefulWidget {
 
 class _ParticipantListState extends State<ParticipantList> {
   List<Invitation> participants = [];
+  bool loading = true, error = false;
 
   @override
   void initState() {
@@ -23,10 +24,15 @@ class _ParticipantListState extends State<ParticipantList> {
       //print(value);
       setState(() {
         this.participants = value;
+        this.loading = false;
         //(value == null) ? Invitation.mock() : value;
       });
     }).catchError((error) {
       print(error);
+      setState(() {
+        this.loading = false;
+        this.error = true;
+      });
     });
   }
 
@@ -51,8 +57,15 @@ class _ParticipantListState extends State<ParticipantList> {
       } else {
         return Center(child: Text("No invitations logs."));
       }
-    } else {
-      return Center(child: Text("Invitations Logs loading..."));
-    }
+    } else if (!error) {
+      return Column(children: [
+        CircularProgressIndicator(
+          value: null,
+          strokeWidth: 7.0,
+        ),
+        Text("Loading invitation ...")
+      ]);
+    } else
+      return Center(child: Text("Could not load invitation."));
   }
 }

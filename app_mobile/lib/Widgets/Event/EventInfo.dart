@@ -88,9 +88,8 @@ class _EventInfoState extends State<EventInfo> {
                 ),
                 onPressed: () {
                   setState(() {
-                    this.invitation.status = 1;
+                    this.invitation.setStatus(1);
                   });
-                  this.invitation.setStatus(1);
                 },
                 child: Text("I will attempt"),
               ),
@@ -109,11 +108,10 @@ class _EventInfoState extends State<EventInfo> {
                   ),
                   onPressed: () {
                     setState(() {
-                      this.invitation.status = 2;
+                      this.invitation.setStatus(2);
                     });
-                    this.invitation.setStatus(2);
                   },
-                  child: Text("I wont attempt")),
+                  child: Text("I won't attempt")),
               margin: EdgeInsets.all(10),
             ),
           ),

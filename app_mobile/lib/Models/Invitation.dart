@@ -1,8 +1,9 @@
 import 'package:reunionou/Models/ActionRecord.dart';
+import 'package:reunionou/Models/Event.dart';
 import 'package:reunionou/Models/User.dart';
 
 class Invitation extends ActionRecord {
-  String user;
+  User user;
   int status;
   int event;
 
@@ -10,7 +11,7 @@ class Invitation extends ActionRecord {
 
   @override
   String toString() {
-    return this.user + this.getStatusString();
+    return this.user.displayName + this.getStatusString();
   }
 
   String getStatusString() {
@@ -20,7 +21,7 @@ class Invitation extends ActionRecord {
       case 1:
         return " will be here!";
       case 2:
-        return " wont be here.";
+        return " will not come.";
       default:
         return " isn't sure.";
     }
@@ -35,7 +36,8 @@ class Invitation extends ActionRecord {
       //print("berfore for");
       for (var y = 0; y < content.length; y++) {
         var i = content[y];
-        invitations.add(Invitation(i["user"], i["status"], i["event"]));
+        invitations.add(
+            Invitation(User(i["user"], i["user"]), i["status"], i["event"]));
         //print("et un event parse");
       }
     } else
@@ -45,15 +47,15 @@ class Invitation extends ActionRecord {
 
   static List<Invitation> mock() {
     return [
-      Invitation("e", 1, 1),
+      Invitation(User("a", "a"), 1, 1),
     ];
   }
 
-  static List<Invitation> parseTab(dynamic content) {
+  static Future<List<Invitation>> parseTab(dynamic content) async {
     List<Invitation> list = [];
     for (var i in content) {
       list.add(Invitation(
-        i["user"],
+        await User.getByLogin(i["user"]),
         i["status"],
         i["event"],
       ));
@@ -67,8 +69,9 @@ class Invitation extends ActionRecord {
         "/api/invitation/user/" + User.connectedUser.login);
     if (content != null && content is List) {
       List<Invitation> list = [];
-      for (var i in Invitation.parseTab(content))
-        if (i.status == status) list.add(i);
+      List<Invitation> invitations = await Invitation.parseTab(content);
+      for (Invitation invitation in invitations)
+        if (invitation.status == status) list.add(invitation);
       return list;
     } else
       return [];
@@ -85,8 +88,8 @@ class Invitation extends ActionRecord {
         content is List &&
         content.isNotEmpty) {
       //print("berfore for");
-      invitation = Invitation(
-          content[0]["user"], content[0]["status"], content[0]["event"]);
+      invitation = Invitation(User(content[0]["user"], content[0]["user"]),
+          content[0]["status"], content[0]["event"]);
       //print("et un event parse");
     } else
       invitation = null;
@@ -94,17 +97,27 @@ class Invitation extends ActionRecord {
   }
 
   void setStatus(int newStatus) {
-    this.status = newStatus;
-    String uri = "/api/updatestatus";
-    ActionRecord.sendRequest(uri, method: "POST", object: this);
+    if (this.status != newStatus) {
+      this.status = newStatus;
+      String uri = "/api/updatestatus";
+      ActionRecord.sendRequest(uri, method: "POST", object: this);
+    }
   }
 
   @override
   Map<String, dynamic> toJson() {
     return {
-      "user": this.user,
+      "user": this.user.login,
       "status": this.status.toString(),
       "event": this.event.toString()
     };
+  }
+
+  static Future<dynamic> send(String invitationLogin, Event event) async {
+    Invitation invitation =
+        Invitation(User(invitationLogin, invitationLogin), 0, event.id);
+    dynamic content = await ActionRecord.sendRequest("/api/addInvitation",
+        method: "POST", object: invitation);
+    return content;
   }
 }

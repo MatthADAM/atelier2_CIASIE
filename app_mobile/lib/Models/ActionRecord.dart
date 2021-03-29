@@ -39,8 +39,8 @@ abstract class ActionRecord {
       }
     } catch (error) {
       print(error);
+      return null;
     }
-    //print(object);
     return res;
   }
 
