@@ -11,7 +11,7 @@
                 <th scope="col">Code Postal</th>
                 <th scope="col">Date/Heure</th>
                 <th scope="col">Status</th>
-                <th scope="col"></th>
+                <th scope="col">Commentaires</th>
             </tr>
             </thead>
             <tbody>
@@ -24,18 +24,24 @@
                 <td v-if="ifInvite(item)">
                     <button v-if="item.accept == 0" type="button" @click="acceptEvent(item)" class="btn btn-success">Accepter</button>
                     <button v-else type="button" @click="refuseEvent(item)" class="btn btn-outline-success">Acceptée</button>
+                    <b-icon-people style="margin-left:10px" class="clickable" v-b-modal.modalParticipants @click="voirParticipants(item.id)"></b-icon-people>
                 </td>
                 <td v-else>
                     <p style="margin:0">Publique</p>
                 </td>
                 <td>
-                    <b-icon-info-circle-fill></b-icon-info-circle-fill>
+                    <b-icon-journal-bookmark-fill class="clickable"></b-icon-journal-bookmark-fill>
                 </td>
             </tr>
             </tbody>
         </table>
         <button @click="prevPage" class="btn btn-primary">Previous page</button> 
         <button @click="nextPage" class="btn btn-primary">Next page</button>
+        <b-modal ref="modalParticipants" id="modalParticipants" title="Liste des participants" hide-footer scrollable>
+            <li>
+                <ul v-for="(item,index) in participants" :key="index"><b-icon-people></b-icon-people> - {{item}}</ul>
+            </li>
+        </b-modal>
     </div>
 </template>
 
@@ -78,6 +84,29 @@ import axios from 'axios'
                     document.location.reload();
                 });
             },
+            voirParticipants(event) {
+                var part = [];
+                $.ajax({
+                    url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/invitation/" + event,
+                    success: function (result) {
+                        result.forEach(element => {
+                            if (element.status == 1) {   
+                                $.ajax({
+                                    url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/user/" + element.user,
+                                    success: function (result) {
+                                        result.forEach(usr => {
+                                            part.push(usr.Name);
+                                        });
+                                    },
+                                    async: false
+                                });
+                            }
+                        });
+                    },
+                    async: false
+                });
+                this.participants = part;
+            },
         },
         computed: {
             filterOwner() {
@@ -94,6 +123,7 @@ import axios from 'axios'
                 order: -1,
                 pageSize:10,
                 currentPage:1,
+                participants: [],
             }
         },
         beforeCreate: function () {

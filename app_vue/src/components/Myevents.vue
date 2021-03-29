@@ -11,7 +11,7 @@
                 <th scope="col">Code Postal</th>
                 <th scope="col">Date/Heure</th>
                 <th scope="col">Inviter</th>
-                <th scope="col"></th>
+                <th scope="col">Infos</th>
             </tr>
             </thead>
             <tbody>
@@ -22,7 +22,11 @@
                 <td>{{item.postCode}}</td>
                 <td>{{item.date}}</td>
                 <td><b-icon-card-text class="clickable" v-b-modal.modal-1 @click="currEvent(item.id)"></b-icon-card-text></td>
-                <td><b-icon-trash class="clickable" @click="deleteEvent(item.id)"></b-icon-trash></td>
+                <td>
+                    <b-icon-trash style="margin-right:4px" class="clickable" @click="deleteEvent(item.id)"></b-icon-trash>
+                    <b-icon-people style="margin-left:4px,margin-right:4px" class="clickable" v-b-modal.modalParticipants @click="voirParticipants(item.id)"></b-icon-people>
+                    <b-icon-journal-bookmark-fill style="margin-left:4px" class="clickable"></b-icon-journal-bookmark-fill>
+                </td>
             </tr>
             </tbody>
         </table>
@@ -34,6 +38,11 @@
                 <input type="text" class="form-control" id="login" placeholder="Qui voulez-vous inviter ?" v-model="invite">
             </div>
             <button class="btn btn-primary" @click="inviterPersonne">Inviter</button>
+        </b-modal>
+        <b-modal ref="modalParticipants" id="modalParticipants" title="Liste des participants" hide-footer scrollable>
+            <li>
+                <ul v-for="(item,index) in participants" :key="index"><b-icon-people></b-icon-people> - {{item}}</ul>
+            </li>
         </b-modal>
     </div>
 </template>
@@ -77,6 +86,29 @@ import axios from 'axios'
                 });
                 this.invite = invite;
             },
+            voirParticipants(event) {
+                var part = [];
+                $.ajax({
+                    url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/invitation/" + event,
+                    success: function (result) {
+                        result.forEach(element => {
+                            if (element.status == 1) {   
+                                $.ajax({
+                                    url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/user/" + element.user,
+                                    success: function (result) {
+                                        result.forEach(usr => {
+                                            part.push(usr.Name);
+                                        });
+                                    },
+                                    async: false
+                                });
+                            }
+                        });
+                    },
+                    async: false
+                });
+                this.participants = part;
+            },
         },
         computed: {
             filterOwner() {
@@ -95,6 +127,7 @@ import axios from 'axios'
                 currentPage:1,
                 invite:"",
                 currentEvent:null,
+                participants: [],
             }
         },
         beforeCreate: function () {
