@@ -363,11 +363,11 @@ router.post("/updateUser", jsonParser, async (req, res) => {
     try {
         await DBClient.query(sql);
         let user = [];
-            user.push({
-                "AncienLogin":AncienLogin,
-                "login": login,
-                "password": pwd,
-                "Name": name
+        user.push({
+            "AncienLogin": AncienLogin,
+            "login": login,
+            "password": pwd,
+            "Name": name
         })
         res.json(user);
     } catch (error) {
@@ -407,22 +407,57 @@ router.post("/addInvitation", jsonParser, async (req, res) => {
     let event = req.body.event
     let user = req.body.user
     let status = 0;
-    let sql = `INSERT INTO invitation (event,user,status) VALUES ('${event}','${user}', '${status}')`;
+    let sqlTest = `SELECT COUNT(login) AS loginCount FROM user where login ="${user}" `;
     try {
-        await DBClient.query(sql);
+        let verif = await DBClient.query(sqlTest);
         let invitation = []
-        invitation.push({
-            "event": event,
-            "user": user,
-            "status": status,
-        })
+        if (verif[0].loginCount == 1) {
+            let sql = `INSERT INTO invitation (event,user,status) VALUES ('${event}','${user}', '${status}')`;
+            try {
+                await DBClient.query(sql);
+                invitation.push({
+                    "event": event,
+                    "user": user,
+                    "status": status,
+                })
+            } catch (error) {
+                console.error(error);
+                throw new Error(error);
+            }
+        }else{
+            invitation.push({
+                "Status": "Echec",
+                "Message": `${user} inconnu`,
+            })
+        }
         return res.json(invitation);
     } catch (error) {
         console.error(error);
         throw new Error(error);
     }
 })
-
+router.post("/addComment", jsonParser, async (req, res) => {
+    let content = req.body.content
+    let owner = req.body.owner
+    let date=new Date()
+    let mydate = `${date.getFullYear()}-${(date.getMonth()+1)}-${date.getDate()} ${(date.getHours()+2)}:${date.getMinutes()}:00`;
+    let event = req.body.event
+    let sql = `INSERT INTO comment (content,owner,date,event) VALUES ('${content}','${owner}', '${mydate}','${event}')`;
+    try {
+        await DBClient.query(sql);
+        let comment = []
+        comment.push({
+            "content": content,
+            "owner": owner,
+            "date": mydate,
+            "event": event,
+        })
+        return res.json(comment);
+    } catch (error) {
+        console.error(error);
+        throw new Error(error);
+    }
+})
 
 router.post("/UpdateStatus", jsonParser, async (req, res) => {
     let event = req.body.event
