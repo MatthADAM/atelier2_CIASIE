@@ -9,7 +9,8 @@
                 <th scope="col">Nom</th>
                 <th scope="col">Adresse</th>
                 <th scope="col">Code Postal</th>
-                <th scope="col">Date</th>
+                <th scope="col">Date/Heure</th>
+                <th scope="col">Inviter</th>
                 <th scope="col"></th>
             </tr>
             </thead>
@@ -20,12 +21,20 @@
                 <td>{{item.adress}}</td>
                 <td>{{item.postCode}}</td>
                 <td>{{item.date}}</td>
+                <td><b-icon-card-text class="clickable" v-b-modal.modal-1 @click="currEvent(item.id)"></b-icon-card-text></td>
                 <td><b-icon-trash class="clickable" @click="deleteEvent(item.id)"></b-icon-trash></td>
             </tr>
             </tbody>
         </table>
         <button @click="prevPage" class="btn btn-primary">Previous page</button> 
         <button @click="nextPage" class="btn btn-primary">Next page</button>
+        <b-modal ref="modal-1" id="modal-1" title="Inviter une personne" hide-footer>
+            <div style="margin-bottom:15px">
+                <label for="login">Login de la personne</label>
+                <input type="text" class="form-control" id="login" placeholder="Qui voulez-vous inviter ?" v-model="invite">
+            </div>
+            <button class="btn btn-primary" @click="inviterPersonne">Inviter</button>
+        </b-modal>
     </div>
 </template>
 
@@ -44,7 +53,6 @@ import axios from 'axios'
             deleteEvent(id) {
                 axios.post('http://docketu.iutnc.univ-lorraine.fr:11501/api/delete/event/' + id)
                 .then(function (response) {
-                    console.log(response);
                 });
                 this.res.forEach(element => {
                     if (element.id == id) {
@@ -53,25 +61,21 @@ import axios from 'axios'
                     }
                 });
             },
-            sqlToJsDate(sqlDate){
-                //sqlDate in SQL DATETIME format ("yyyy-mm-dd hh:mm:ss.ms")
-                var sqlDateArr1 = sqlDate.split("-");
-                //format of sqlDateArr1[] = ['yyyy','mm','dd hh:mm:ms']
-                var sYear = sqlDateArr1[0];
-                var sMonth = (Number(sqlDateArr1[1]) - 1).toString();
-                var sqlDateArr2 = sqlDateArr1[2].split(" ");
-                //format of sqlDateArr2[] = ['dd', 'hh:mm:ss.ms']
-                var sDay = sqlDateArr2[0];
-                var sqlDateArr3 = sqlDateArr2[1].split(":");
-                //format of sqlDateArr3[] = ['hh','mm','ss.ms']
-                var sHour = sqlDateArr3[0];
-                var sMinute = sqlDateArr3[1];
-                var sqlDateArr4 = sqlDateArr3[2].split(".");
-                //format of sqlDateArr4[] = ['ss','ms']
-                var sSecond = sqlDateArr4[0];
-                var sMillisecond = sqlDateArr4[1];
-                
-                return new Date(sYear,sMonth,sDay,sHour,sMinute,sSecond,sMillisecond);
+            currEvent(id) {
+                this.currentEvent = id;
+            },
+            inviterPersonne() {
+                var invite = this.invite;
+                var rf = this.$refs['modal-1'];
+                axios.post('http://docketu.iutnc.univ-lorraine.fr:11501/api/addInvitation', {
+                    event: this.currentEvent,
+                    user: this.invite,
+                })
+                .then(function (response) {
+                    rf.hide();
+                    invite = "";
+                });
+                this.invite = invite;
             },
         },
         computed: {
@@ -89,6 +93,8 @@ import axios from 'axios'
                 order: -1,
                 pageSize:10,
                 currentPage:1,
+                invite:"",
+                currentEvent:null,
             }
         },
         beforeCreate: function () {
@@ -108,6 +114,14 @@ import axios from 'axios'
                 async: false
             });
             this.res = tab;
+            this.res.forEach(element => {
+                let annee = element.date.substr(0,4);
+                let mois = element.date.substr(5,2);
+                let jour = element.date.substr(8,2);
+                let heure = element.date.substr(11,2);
+                let minute = element.date.substr(14,2);
+                element.date = jour + "/" + mois + "/" + annee + " : " + heure + "H" + minute;
+            });
         },
         components: { Navbar,},
     }

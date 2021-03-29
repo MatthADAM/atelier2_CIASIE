@@ -12,7 +12,7 @@
                     :zoom="zoom"
                     class="map"
                     ref="map"
-                    style="width:900px;height:400px;"
+                    style="width:900px;height:600px;"
                     v-if="coord.length == markers.length">
                     <l-tile-layer :url="osmurl"></l-tile-layer>
                     <l-marker v-for="(item,index) in markers" :key="item.name" :lat-lng="coord[index]">
@@ -24,7 +24,7 @@
                     :zoom="zoom"
                     class="map"
                     ref="map"
-                    style="width:900px;height:400px;"
+                    style="width:900px;height:600px;"
                     v-else>
                     <l-tile-layer :url="osmurl"></l-tile-layer>
                 </l-map>
@@ -114,6 +114,6 @@ import $ from 'jquery'
 .mapbox {
     margin: auto;
     width: 900px;
-    height: 400px;
+    height: 600px;
 }
 </style>

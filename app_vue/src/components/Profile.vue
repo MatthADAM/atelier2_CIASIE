@@ -4,25 +4,23 @@
         <div class="form">
             <h3>Profile</h3>
             <div class="form-connect shadow p-3 mb-5 bg-white rounded">
-                <form>
-                </form>
-                    <div class="form-group">
-                        <label for="login">Login</label>
-                        <input type="text" class="form-control" id="login" placeholder="Enter login" v-model="login">
-                    </div>
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" class="form-control" id="name" placeholder="Enter name" v-model="name">
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" class="form-control" id="password" placeholder="Password" v-model="pwd">
-                    </div>
-                    <div class="form-group">
-                        <label for="passwordConfirm">Password confirm</label>
-                        <input type="password" class="form-control" id="passwordConfirm" placeholder="Password confirm" v-model="pwdConfirm">
-                    </div>
-                    <button class="btn btn-primary" v-on:click="updateUser">Update</button>
+                <div class="form-group">
+                    <label for="login">Login</label>
+                    <input type="text" class="form-control" id="login" placeholder="Enter login" v-model="login">
+                </div>
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control" id="name" placeholder="Enter name" v-model="name">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" placeholder="Password" v-model="pwd">
+                </div>
+                <div class="form-group">
+                    <label for="passwordConfirm">Password confirm</label>
+                    <input type="password" class="form-control" id="passwordConfirm" placeholder="Password confirm" v-model="pwdConfirm">
+                </div>
+                <button class="btn btn-primary" v-on:click="updateUser">Update</button>
             </div>
         </div>
     </div>
@@ -39,41 +37,38 @@ import sha256 from 'sha256'
                 var sess = this.$session;
                 var log = this.login;
                 var name = this.name;
-                if (this.login == this.ancLogin && this.name == this.ancName && this.pwd == "" && this.pwdConfirm == "") {
+                var ancLogin = this.ancLogin;
+                var ancName = this.ancName;
+                var pwd = this.pwd;
+                var pwdConfirm = this.pwdConfirm;
+                var pwdApi = this.pwdApi;
+                if (log == ancLogin && name == ancName && pwd == "" && pwdConfirm == "") {
                     alert("Rien n'a changé");
-                } else if (this.login != this.ancLogin || this.name != this.ancName || (this.pwd == this.pwdConfirm && this.pwd != "")) {
+                } else if (log != ancLogin || name != ancName || (pwd == pwdConfirm && pwd != "")) {
+                    if (pwd != "") {
+                        pwd = sha256(pwd);
+                    } else {
+                        pwd = pwdApi;
+                    }
                     axios.post("http://docketu.iutnc.univ-lorraine.fr:11501/api/updateUser", {
-                        loginAnc:this.ancLogin,
-                        login:this.login,
-                        displayName:this.name ,
-                        pwd: this.pwdApi,
+                        loginAnc:ancLogin,
+                        login:log,
+                        displayName:name ,
+                        pwd: pwd,
                     })
                     .then(function (response) {
-                        console.log(response);
-                        alert("Updated");
                         sess.set("log",log);
                         sess.set("name",name);
+                        ancLogin = log
+                        document.location.reload();
                     });
-                    /* $.ajax({
-                        type: "POST",
-                        url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/updateUser",
-                        dataType: "json",
-                        success: function (msg) {
-                            if (msg) {
-                                alert("Somebody was added in list !");
-                                location.reload(true);
-                            } else {
-                                alert("Cannot add to list !");
-                            }
-                        },
-
-                        data: {
-                            loginAnc:this.ancLogin,
-                            login:this.login,
-                            displayName:this.name ,
-                            pwd: passwordHash.generate(this.pwd),
-                        }
-                    }); */
+                    this.login = log;
+                    this.name = name;
+                    this.ancLogin = log;
+                    this.ancName = name;
+                    this.pwd = pwd;
+                    this.pwdConfirm = pwdConfirm;
+                    this.pwdApi = pwdConfirm;
                 }
             }
         },

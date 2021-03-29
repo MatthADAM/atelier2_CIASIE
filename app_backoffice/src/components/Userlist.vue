@@ -1,25 +1,19 @@
 <template>
     <div class="corps">
         <navbar></navbar>
-        <h3>Liste d'événements</h3>
+        <h3>Liste des utilisateurs</h3>
         <table class="table table-striped">
             <thead>
             <tr>
-                <th v-bind:class="order === 1 ? 'descending' : 'ascending'" class="clickable" v-on:click="order = order * - 1" scope="col">Créateur</th>
+                <th scope="col">Adresse mail</th>
                 <th scope="col">Nom</th>
-                <th scope="col">Adresse</th>
-                <th scope="col">Code Postal</th>
-                <th scope="col">Date</th>
             </tr>
             </thead>
             <tbody>
-            <tr scope="row" v-for="item in filterPage" :key="item.name">
-                <td>{{item.owner}}</td>
-                <td>{{item.name}}</td>
-                <td>{{item.adress}}</td>
-                <td>{{item.postCode}}</td>
-                <td>{{item.date}}</td>
-                <td><b-icon-trash class="clickable" @click="deleteEvent(item.id)"></b-icon-trash></td>
+            <tr scope="row" v-for="item in filterPage" :key="item.login">
+                <td>{{item.login}}</td>
+                <td>{{item.Name}}</td>
+                <td><b-icon-trash class="clickable" @click="deleteUser(item.login)"></b-icon-trash></td>
             </tr>
             </tbody>
         </table>
@@ -31,6 +25,7 @@
 <script>
 import Navbar from './Navbar.vue'
 import $ from 'jquery'
+import axios from 'axios'
     export default {
         methods: {
             nextPage() {
@@ -39,13 +34,13 @@ import $ from 'jquery'
             prevPage() {
                 if(this.currentPage > 1) this.currentPage--;
             },
-            deleteEvent(id) {
-                axios.post('http://docketu.iutnc.univ-lorraine.fr:11501/api/delete/event/' + id)
+            deleteUser(log) {
+                axios.post('http://docketu.iutnc.univ-lorraine.fr:11501/api/delete/user/' + log)
                 .then(function (response) {
                     console.log(response);
                 });
                 this.res.forEach(element => {
-                    if (element.id == id) {
+                    if (element.login == log) {
                         let i = this.res.indexOf(element);
                         this.res.splice(i,1);
                     }
@@ -77,7 +72,7 @@ import $ from 'jquery'
         created () {
             var tab = [];
             $.ajax({
-                url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/event",
+                url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/user",
                 success: function (result) {
                     tab = result;
                 },

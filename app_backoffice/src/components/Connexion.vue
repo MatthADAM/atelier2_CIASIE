@@ -1,16 +1,16 @@
 <template>
     <div class="form">
-        <p>Welcome</p>
+        <p>Bienvenue</p>
         <div class="form-connect shadow p-3 mb-5 bg-white rounded">
             <form>
                 <div class="form-group">
-                    <label for="email">Email address</label>
-                    <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email" v-model="email" required>
-                    <small id="emailHelp" class="form-text text-muted">This email is personnal don't share it</small>
+                    <label for="email">Adresse mail</label>
+                    <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Entrez votre adresse mail" v-model="email" required>
                 </div>
                 <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" class="form-control" id="password" placeholder="Password" v-model="pwd" required>
+                    <label for="password">Mot de passe</label>
+                    <input type="password" class="form-control" id="password" placeholder="Mot de passe" v-model="pwd" required>
+                    <small id="emailHelp" class="form-text text-muted">Ce mot de passe est personnel, ne le partagez pas</small>
                 </div>
                 <button type="submit" class="btn btn-primary" v-on:click="connexion">Connexion</button>
             </form>
@@ -20,6 +20,7 @@
 
 <script>
 import $ from 'jquery';
+import sha256 from 'sha256'
 export default {
     data () {
         return {
@@ -47,8 +48,7 @@ export default {
                     success: function (result) {
                         res = result[0].password;
                         name = result[0].Name;
-                        let passwordHash = require('password-hash');
-                if (passwordHash.verify(pass, res)) {
+                if (sha256(pass) == res) {
                     sess.start()
                     sess.set("name",name);
                     sess.set("log",email);

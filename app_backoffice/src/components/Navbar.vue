@@ -7,21 +7,24 @@
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
                 <router-link to="/map">
-                    <a class="nav-item nav-link" role="a">Map</a>
+                    <a class="nav-item nav-link" role="a">Carte</a>
                 </router-link>
                 <router-link to="/list">
-                    <a class="nav-item nav-link" role="a">Event list</a>
+                    <a class="nav-item nav-link" role="a">Liste des évenements</a>
+                </router-link>
+                <router-link to="/ulist">
+                    <a class="nav-item nav-link" role="a">Liste des utilisateurs</a>
                 </router-link>
                 <router-link to="/profile">
-                    <a class="nav-item nav-link" role="a">Profile</a>
+                    <a class="nav-item nav-link" role="a">Profil</a>
                 </router-link>                
             </div>
         </div>
         <router-link to="/inscription">
-            <button class="btn btn-outline-info" role="button">Create account</button>
+            <button class="btn btn-outline-info" role="button">Creer un compte</button>
         </router-link>
         <router-link to="/">
-            <button type="submit" class="btn btn-outline-danger" v-on:click="logout">Logout</button>
+            <button type="submit" class="btn btn-outline-danger" v-on:click="logout">Se déconnecter</button>
         </router-link>
     </nav>
 </template>
