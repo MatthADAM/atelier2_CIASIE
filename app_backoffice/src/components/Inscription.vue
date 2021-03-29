@@ -73,7 +73,7 @@ import sha256 from 'sha256'
                     pwd: this.pwd,
                 })
                 .then(function (response) {
-                    rout.push("/connexion");
+                    rout.push("/map");
                 });
             }
         },
