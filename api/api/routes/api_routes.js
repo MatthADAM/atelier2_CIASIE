@@ -43,6 +43,25 @@ router.get('/user/:login', async (req, res, next) => {
     }
     res.json(user);
 });
+router.get('/userAdmin/:login', async (req, res, next) => {
+    let user = [];
+    let login = req.params.login;
+    try {
+        let query = `SELECT * FROM userAdmin WHERE login='${login}'`;
+        let found = await DBClient.all(query);
+        found.forEach(function (item) {
+            user.push({
+                "login": item.login,
+                "password": item.password,
+                "Name": item.displayName
+            })
+        });
+    } catch (error) {
+        console.error(error);
+        throw new Error(error);
+    }
+    res.json(user);
+});
 router.get('/event', async (req, res, next) => {
     let event = [];
     try {
@@ -335,19 +354,71 @@ router.post("/inscription", jsonParser, async (req, res) => {
     let login = req.body.login
     let name = req.body.displayName
     let pwd = req.body.pwd
-    let sql = `INSERT INTO user (login,password,displayName) VALUES ('${login}','${pwd}', '${name}')`;
+    let user = [];
+    let sqlTest = `SELECT COUNT(login) AS loginCount FROM user where login ="${login}" `;
     try {
-        await DBClient.query(sql);
-        let query = `SELECT * FROM user WHERE login='${login}'`;
-        let user = [];
-        let found = await DBClient.all(query);
-        found.forEach(function (item) {
+        let verif = await DBClient.query(sqlTest);
+        if (verif[0].loginCount == 0) {
+            let sql = `INSERT INTO user (login,password,displayName) VALUES ('${login}','${pwd}', '${name}')`;
+            try {
+                await DBClient.query(sql);
+                let query = `SELECT * FROM user WHERE login='${login}'`;
+                let found = await DBClient.all(query);
+                found.forEach(function (item) {
+                    user.push({
+                        "login": item.login,
+                        "password": item.password,
+                        "Name": item.displayName
+                    })
+                })
+            } catch (error) {
+                console.error(error);
+                throw new Error(error);
+            }
+        } else {
             user.push({
-                "login": item.login,
-                "password": item.password,
-                "Name": item.displayName
+                "Status": "Echec",
+                "Message": `${login} déja existant`,
             })
-        })
+        }
+        return res.json(user);
+    } catch (error) {
+        console.error(error);
+        throw new Error(error);
+    }
+})
+
+router.post("/inscriptionAdmin", jsonParser, async (req, res) => {
+    let login = req.body.login
+    let name = req.body.displayName
+    let pwd = req.body.pwd
+    let user = [];
+    let sqlTest = `SELECT COUNT(login) AS loginCount FROM userAdmin where login ="${login}" `;
+    try {
+        let verif = await DBClient.query(sqlTest);
+        if (verif[0].loginCount == 0) {
+            let sql = `INSERT INTO userAdmin (login,password,displayName) VALUES ('${login}','${pwd}', '${name}')`;
+            try {
+                await DBClient.query(sql);
+                let query = `SELECT * FROM userAdmin WHERE login='${login}'`;
+                let found = await DBClient.all(query);
+                found.forEach(function (item) {
+                    user.push({
+                        "login": item.login,
+                        "password": item.password,
+                        "Name": item.displayName
+                    })
+                })
+            } catch (error) {
+                console.error(error);
+                throw new Error(error);
+            }
+        } else {
+            user.push({
+                "Status": "Echec",
+                "Message": `${login} déja existant`,
+            })
+        }
         return res.json(user);
     } catch (error) {
         console.error(error);
@@ -360,6 +431,27 @@ router.post("/updateUser", jsonParser, async (req, res) => {
     let name = req.body.displayName
     let pwd = req.body.pwd
     let sql = `UPDATE user SET login= '${login}',password='${pwd}', displayName='${name}' WHERE login = '${AncienLogin}'`;
+    try {
+        await DBClient.query(sql);
+        let user = [];
+        user.push({
+            "AncienLogin": AncienLogin,
+            "login": login,
+            "password": pwd,
+            "Name": name
+        })
+        res.json(user);
+    } catch (error) {
+        console.error(error);
+        throw new Error(error);
+    }
+})
+router.post("/updateUserAdmin", jsonParser, async (req, res) => {
+    let login = req.body.login
+    let AncienLogin = req.body.loginAnc
+    let name = req.body.displayName
+    let pwd = req.body.pwd
+    let sql = `UPDATE userAdmin SET login= '${login}',password='${pwd}', displayName='${name}' WHERE login = '${AncienLogin}'`;
     try {
         await DBClient.query(sql);
         let user = [];
@@ -424,7 +516,7 @@ router.post("/addInvitation", jsonParser, async (req, res) => {
                 console.error(error);
                 throw new Error(error);
             }
-        }else{
+        } else {
             invitation.push({
                 "Status": "Echec",
                 "Message": `${user} inconnu`,
@@ -439,8 +531,8 @@ router.post("/addInvitation", jsonParser, async (req, res) => {
 router.post("/addComment", jsonParser, async (req, res) => {
     let content = req.body.content
     let owner = req.body.owner
-    let date=new Date()
-    let mydate = `${date.getFullYear()}-${(date.getMonth()+1)}-${date.getDate()} ${(date.getHours()+2)}:${date.getMinutes()}:00`;
+    let date = new Date()
+    let mydate = `${date.getFullYear()}-${(date.getMonth() + 1)}-${date.getDate()} ${(date.getHours() + 2)}:${date.getMinutes()}:00`;
     let event = req.body.event
     let sql = `INSERT INTO comment (content,owner,date,event) VALUES ('${content}','${owner}', '${mydate}','${event}')`;
     try {
