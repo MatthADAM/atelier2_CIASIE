@@ -76,13 +76,23 @@ import axios from 'axios'
                 }
             },
             acceptEvent(event) {
+                var sess = this.$session;
                 axios.post("http://docketu.iutnc.univ-lorraine.fr:11501/api/updatestatus", {
                     event: event.id,
                     user: this.$session.get("log"),
                     status: 1,
                 })
                 .then(function (response) {
-                    document.location.reload();
+                    var comm = [];
+                    var own;
+                    axios.post('http://docketu.iutnc.univ-lorraine.fr:11501/api/addComment', {
+                        content:"[message systeme] | Invitation acceptée",
+                        owner:sess.get('log'),
+                        event:event.id,
+                    })
+                    .then(function (response) {
+                        document.location.reload();
+                    });
                 });
             },
             refuseEvent(event) {
