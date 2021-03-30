@@ -64,6 +64,7 @@ import sha256 from 'sha256'
                 alert("Mots de passes différents");
             } else {
                 this.pwd = sha256(this.pwd);
+                this.pwd = sha256(this.pwd);
                 axios.post('http://docketu.iutnc.univ-lorraine.fr:11501/api/inscription', {
                     login: this.email,
                     displayName: this.nameDisplay,
