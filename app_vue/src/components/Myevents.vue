@@ -44,10 +44,10 @@
                 <ul v-for="(item,index) in participants" :key="index"><b-icon-people></b-icon-people> - {{item}}</ul>
             </li>
         </b-modal>
-        <b-modal ref="modalCommentaires" id="modalCommentaires" title="Espace commentaires" size="lg" hide-footer scrollable>
-            <div>
+        <b-modal ref="modalCommentaires" id="modalCommentaires" title="Espace commentaires" size="lg" hide-footer>
+            <div style="overflow:scroll; height:400px">
                 <li>
-                    <ul v-for="(comm,index) in commentaires" :key="index" class="commentairesEvent">{{comm.name}} le {{comm.date}} : {{comm.content}}</ul>
+                    <ul v-for="(comm,index) in commentaires" :key="index">{{comm.name}} le {{comm.date}} : {{comm.content}}</ul>
                 </li>
             </div>
             <input type="text" class="form-control" v-model="comment" placeholder="Tapez votre commentaire" v-on:keyup.enter="ajouterCommentaire(idEventComm)">
@@ -240,13 +240,5 @@ import axios from 'axios'
 <style >
 .clickable:hover {
     cursor:pointer;
-}
-.ascending:after {
-    content: "\25B2";
-    padding-left: 15px;
-}
-.descending:after {
-    content: "\25BC";
-    padding-left: 15px;
 }
 </style>
