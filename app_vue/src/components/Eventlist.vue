@@ -30,23 +30,28 @@
                     <p style="margin:0">Publique</p>
                 </td>
                 <td>
-                    <b-icon-journal-bookmark-fill class="clickable" v-b-modal.modalCommentaires></b-icon-journal-bookmark-fill>
+                    <b-icon-journal-bookmark-fill class="clickable" v-b-modal.modalCommentaires @click="voirCommentaires(item.id)"></b-icon-journal-bookmark-fill>
                 </td>
             </tr>
             </tbody>
         </table>
         <button @click="prevPage" class="btn btn-primary">Previous page</button> 
         <button @click="nextPage" class="btn btn-primary">Next page</button>
+        
         <b-modal ref="modalParticipants" id="modalParticipants" title="Liste des participants" hide-footer scrollable>
             <li>
                 <ul v-for="(item,index) in participants" :key="index"><b-icon-people></b-icon-people> - {{item}}</ul>
             </li>
         </b-modal>
+        
         <b-modal ref="modalCommentaires" id="modalCommentaires" title="Espace commentaires" size="lg" hide-footer scrollable>
             <div>
-                <p>Commentaires</p>
+                <li>
+                    <ul v-for="(comm,index) in commentaires" :key="index" class="commentairesEvent">{{comm.name}} le {{comm.date}} : {{comm.content}}</ul>
+                </li>
             </div>
-            <input type="text" class="form-control" placeholder="Tapez votre commentaire">
+            <input type="text" class="form-control" v-model="comment" placeholder="Tapez votre commentaire" v-on:keyup.enter="ajouterCommentaire(idEventComm)">
+            <button @click="ajouterCommentaire(idEventComm)" class="btn btn-primary">Ajouter commentaire</button>
         </b-modal>
     </div>
 </template>
@@ -113,6 +118,71 @@ import axios from 'axios'
                 });
                 this.participants = part;
             },
+            voirCommentaires(event) {
+                var comm = [];
+                var own;
+                this.idEventComm = event;
+                $.ajax({
+                    url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/comment/event/" + event,
+                    success: function (result) {
+                        result.forEach(element => {
+                            $.ajax({
+                                url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/user/" + element.owner,
+                                success: function (result) {
+                                    own = result[0].Name;
+                                },
+                                async: false
+                            });
+                            Object.defineProperty(element,"name", {value: own});
+                            let annee = element.date.substr(0,4);
+                            let mois = element.date.substr(5,2);
+                            let jour = element.date.substr(8,2);
+                            let heure = element.date.substr(11,2);
+                            let minute = element.date.substr(14,2);
+                            element.date = jour + "/" + mois + "/" + annee + " - " + heure + "H" + minute;
+                            comm.push(element);
+                        });
+                    },
+                    async: false
+                });
+                this.commentaires = comm;
+            },
+            ajouterCommentaire(event) {
+                var comm = [];
+                var own;
+                axios.post('http://docketu.iutnc.univ-lorraine.fr:11501/api/addComment', {
+                    content:this.comment,
+                    owner:this.$session.get('log'),
+                    event:event,
+                })
+                .then(function (response) {
+                    $.ajax({
+                        url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/comment/event/" + event,
+                        success: function (result) {
+                            result.forEach(element => {
+                                $.ajax({
+                                    url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/user/" + element.owner,
+                                    success: function (result) {
+                                        own = result[0].Name;
+                                    },
+                                    async: false
+                                });
+                                Object.defineProperty(element,"name", {value: own});
+                                let annee = element.date.substr(0,4);
+                                let mois = element.date.substr(5,2);
+                                let jour = element.date.substr(8,2);
+                                let heure = element.date.substr(11,2);
+                                let minute = element.date.substr(14,2);
+                                element.date = jour + "/" + mois + "/" + annee + " - " + heure + "H" + minute;
+                                comm.push(element);
+                            });
+                        },
+                        async: false
+                    });
+                });
+                this.commentaires = comm;
+                this.comment="";
+            },
         },
         computed: {
             filterOwner() {
@@ -130,6 +200,9 @@ import axios from 'axios'
                 pageSize:10,
                 currentPage:1,
                 participants: [],
+                commentaires: [],
+                idEventComm:null,
+                comment:"",
             }
         },
         beforeCreate: function () {
@@ -174,7 +247,7 @@ import axios from 'axios'
                 let jour = element.date.substr(8,2);
                 let heure = element.date.substr(11,2);
                 let minute = element.date.substr(14,2);
-                element.date = jour + "/" + mois + "/" + annee + " : " + heure + "H" + minute;
+                element.date = jour + "/" + mois + "/" + annee + " - " + heure + "H" + minute;
             });
         },
         components: { Navbar,},
@@ -184,5 +257,11 @@ import axios from 'axios'
 <style >
 .clickable:hover {
     cursor:pointer;
+}
+.commentairesEvent {
+    border: 1px solid rgba(16, 46, 46, 1);
+    border-radius: 5px;
+    padding: 3px;
+    width: fit-content;
 }
 </style>
