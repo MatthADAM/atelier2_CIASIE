@@ -72,6 +72,9 @@ router.get("/event", async (req, res, next) => {
                 query += ` and owner <> "${req.query.owner}"`
             }
         }
+        if(req.query.token){
+            query += ` WHERE token="${req.query.token}"`
+        }
         let found = await DBClient.all(query);
         found.forEach(function (item) {
             event.push({
@@ -115,6 +118,7 @@ router.get("/event/:id", async (req, res, next) => {
     }
     res.json(event);
 });
+
 
 router.get("/event/owner/:owner", async (req, res, next) => {
     let event = [];
