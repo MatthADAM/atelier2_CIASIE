@@ -31,6 +31,10 @@
             <router-link to="/connexion">
                 <button class="btn btn-outline-primary" role="button">Connexion</button>
             </router-link>
+            <!-- <router-link to="/inscription">
+                <button class="btn btn-outline-info" role="button">Inscription</button>
+            </router-link> -->
+
         </div>
     </div>
 </template>

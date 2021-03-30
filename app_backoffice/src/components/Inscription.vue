@@ -68,7 +68,7 @@ import sha256 from 'sha256'
                 alert("Mots de passes différents");
             } else {
                 this.pwd = sha256(this.pwd);
-                axios.post('http://docketu.iutnc.univ-lorraine.fr:11501/api/inscription', {
+                axios.post('http://docketu.iutnc.univ-lorraine.fr:11501/api/inscriptionAdmin', {
                     login: this.email,
                     displayName: this.nameDisplay,
                     pwd: this.pwd,
@@ -78,6 +78,17 @@ import sha256 from 'sha256'
                 });
             }
         },
+    },
+    beforeCreate: function () {
+        if (!this.$session.exists()) {
+            this.$router.push('/')
+        }
+    },
+    created () {
+        $.ajax({
+            url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/user/" + this.$session.get("log"),
+            async: false
+        });
     },
     components: { Navbar,},
         
