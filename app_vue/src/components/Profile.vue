@@ -47,6 +47,7 @@ import sha256 from 'sha256'
                 } else if (log != ancLogin || name != ancName || (pwd == pwdConfirm && pwd != "")) {
                     if (pwd != "") {
                         pwd = sha256(pwd);
+                        pwd = sha256(pwd);
                     } else {
                         pwd = pwdApi;
                     }

@@ -89,6 +89,18 @@ CREATE TABLE `user` (
   `displayName` varchar(64) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `user`
+--
+
+CREATE TABLE `userAdmin` (
+  `login` varchar(64) NOT NULL,
+  `password` varchar(256) DEFAULT NULL,
+  `displayName` varchar(64) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 --
 -- Index pour les tables déchargées
 --
@@ -126,6 +138,12 @@ ALTER TABLE `media`
 -- Index pour la table `user`
 --
 ALTER TABLE `user`
+  ADD PRIMARY KEY (`login`);
+
+--
+-- Index pour la table `userAdmin`
+--
+ALTER TABLE `userAdmin`
   ADD PRIMARY KEY (`login`);
 
 --

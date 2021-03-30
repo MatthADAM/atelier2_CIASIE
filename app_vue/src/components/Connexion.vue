@@ -49,14 +49,16 @@ export default {
                     success: function (result) {
                         res = result[0].password;
                         name = result[0].Name;
-                if (sha256(pass) == res) {
-                    sess.start()
-                    sess.set("name",name);
-                    sess.set("log",email);
-                    rout.push('/map');
-                } else {
-                    alert("Bad password or email");
-                }
+                        pass = sha256(pass);
+                        pass = sha256(pass);
+                        if (pass == res) {
+                            sess.start()
+                            sess.set("name",name);
+                            sess.set("log",email);
+                            rout.push('/map');
+                        } else {
+                            alert("Bad password or email");
+                        }
                     },
                     async: false
                 });

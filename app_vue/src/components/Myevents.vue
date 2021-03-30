@@ -11,7 +11,7 @@
                 <th scope="col">Code Postal</th>
                 <th scope="col">Date/Heure</th>
                 <th scope="col">Inviter</th>
-                <th scope="col"></th>
+                <th scope="col">Infos</th>
             </tr>
             </thead>
             <tbody>
@@ -22,7 +22,11 @@
                 <td>{{item.postCode}}</td>
                 <td>{{item.date}}</td>
                 <td><b-icon-card-text class="clickable" v-b-modal.modal-1 @click="currEvent(item.id)"></b-icon-card-text></td>
-                <td><b-icon-trash class="clickable" @click="deleteEvent(item.id)"></b-icon-trash></td>
+                <td>
+                    <b-icon-trash style="margin-right:4px" class="clickable" @click="deleteEvent(item.id)"></b-icon-trash>
+                    <b-icon-people style="margin-left:4px,margin-right:4px" class="clickable" v-b-modal.modalParticipants @click="voirParticipants(item.id)"></b-icon-people>
+                    <b-icon-journal-bookmark-fill class="clickable" v-b-modal.modalCommentaires @click="voirCommentaires(item.id)"></b-icon-journal-bookmark-fill>
+                </td>
             </tr>
             </tbody>
         </table>
@@ -34,6 +38,20 @@
                 <input type="text" class="form-control" id="login" placeholder="Qui voulez-vous inviter ?" v-model="invite">
             </div>
             <button class="btn btn-primary" @click="inviterPersonne">Inviter</button>
+        </b-modal>
+        <b-modal ref="modalParticipants" id="modalParticipants" title="Liste des participants" hide-footer scrollable>
+            <li>
+                <ul v-for="(item,index) in participants" :key="index"><b-icon-people></b-icon-people> - {{item}}</ul>
+            </li>
+        </b-modal>
+        <b-modal ref="modalCommentaires" id="modalCommentaires" title="Espace commentaires" size="lg" hide-footer>
+            <div style="overflow:scroll; height:400px">
+                <li>
+                    <ul v-for="(comm,index) in commentaires" :key="index">{{comm.name}} le {{comm.date}} : {{comm.content}}</ul>
+                </li>
+            </div>
+            <input type="text" class="form-control" v-model="comment" placeholder="Tapez votre commentaire" v-on:keyup.enter="ajouterCommentaire(idEventComm)">
+            <button @click="ajouterCommentaire(idEventComm)" class="btn btn-primary">Ajouter commentaire</button>
         </b-modal>
     </div>
 </template>
@@ -77,6 +95,94 @@ import axios from 'axios'
                 });
                 this.invite = invite;
             },
+            voirParticipants(event) {
+                var part = [];
+                $.ajax({
+                    url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/invitation/" + event,
+                    success: function (result) {
+                        result.forEach(element => {
+                            if (element.status == 1) {   
+                                $.ajax({
+                                    url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/user/" + element.user,
+                                    success: function (result) {
+                                        result.forEach(usr => {
+                                            part.push(usr.Name);
+                                        });
+                                    },
+                                    async: false
+                                });
+                            }
+                        });
+                    },
+                    async: false
+                });
+                this.participants = part;
+            },
+            voirCommentaires(event) {
+                var comm = [];
+                var own;
+                this.idEventComm = event;
+                $.ajax({
+                    url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/comment/event/" + event,
+                    success: function (result) {
+                        result.forEach(element => {
+                            $.ajax({
+                                url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/user/" + element.owner,
+                                success: function (result) {
+                                    own = result[0].Name;
+                                },
+                                async: false
+                            });
+                            Object.defineProperty(element,"name", {value: own});
+                            let annee = element.date.substr(0,4);
+                            let mois = element.date.substr(5,2);
+                            let jour = element.date.substr(8,2);
+                            let heure = element.date.substr(11,2);
+                            let minute = element.date.substr(14,2);
+                            element.date = jour + "/" + mois + "/" + annee + " - " + heure + "H" + minute;
+                            comm.push(element);
+                        });
+                    },
+                    async: false
+                });
+                this.commentaires = comm;
+            },
+            ajouterCommentaire(event) {
+                var comm = [];
+                var own;
+                axios.post('http://docketu.iutnc.univ-lorraine.fr:11501/api/addComment', {
+                    content:this.comment,
+                    owner:this.$session.get('log'),
+                    event:event,
+                })
+                .then(function (response) {
+                    $.ajax({
+                        url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/comment/event/" + event,
+                        success: function (result) {
+                            result.forEach(element => {
+                                $.ajax({
+                                    url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/user/" + element.owner,
+                                    success: function (result) {
+                                        own = result[0].Name;
+                                    },
+                                    async: false
+                                });
+                                Object.defineProperty(element,"name", {value: own});
+                                let annee = element.date.substr(0,4);
+                                let mois = element.date.substr(5,2);
+                                let jour = element.date.substr(8,2);
+                                let heure = element.date.substr(11,2);
+                                let minute = element.date.substr(14,2);
+                                element.date = jour + "/" + mois + "/" + annee + " - " + heure + "H" + minute;
+                                comm.push(element);
+                            });
+                        },
+                        async: false
+                    });
+                });
+                this.commentaires = comm;
+                this.comment="";
+            },
         },
         computed: {
             filterOwner() {
@@ -95,6 +201,10 @@ import axios from 'axios'
                 currentPage:1,
                 invite:"",
                 currentEvent:null,
+                participants: [],
+                commentaires: [],
+                idEventComm:null,
+                comment:"",
             }
         },
         beforeCreate: function () {
@@ -120,7 +230,7 @@ import axios from 'axios'
                 let jour = element.date.substr(8,2);
                 let heure = element.date.substr(11,2);
                 let minute = element.date.substr(14,2);
-                element.date = jour + "/" + mois + "/" + annee + " : " + heure + "H" + minute;
+                element.date = jour + "/" + mois + "/" + annee + " - " + heure + "H" + minute;
             });
         },
         components: { Navbar,},
@@ -130,13 +240,5 @@ import axios from 'axios'
 <style >
 .clickable:hover {
     cursor:pointer;
-}
-.ascending:after {
-    content: "\25B2";
-    padding-left: 15px;
-}
-.descending:after {
-    content: "\25BC";
-    padding-left: 15px;
 }
 </style>
