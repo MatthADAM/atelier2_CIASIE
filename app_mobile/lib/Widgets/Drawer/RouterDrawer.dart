@@ -52,18 +52,6 @@ class RouterDrawer extends StatelessWidget {
               Navigator.pushReplacementNamed(
                   context, CustomRouter.connectionRoute);
             }, 'Log out'),
-            /*Container(
-              margin: EdgeInsets.all(5),
-              child: ListTile(
-                tileColor: Colors.blue[100],
-                title: Text('Log out'),
-                onTap: () {
-                  User.connectedUser = null;
-                  Navigator.pushReplacementNamed(
-                      context, CustomRouter.connectionRoute);
-                },
-              ),
-            ),*/
           ],
         ),
       ),

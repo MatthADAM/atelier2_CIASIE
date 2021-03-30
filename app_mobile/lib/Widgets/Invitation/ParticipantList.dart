@@ -20,12 +20,9 @@ class _ParticipantListState extends State<ParticipantList> {
   void initState() {
     super.initState();
     Invitation.getByEvent(0, 10, this.widget.event.id).then((value) {
-      //print("value received!");
-      //print(value);
       setState(() {
         this.participants = value;
         this.loading = false;
-        //(value == null) ? Invitation.mock() : value;
       });
     }).catchError((error) {
       print(error);
@@ -43,7 +40,7 @@ class _ParticipantListState extends State<ParticipantList> {
 
   @override
   Widget build(BuildContext context) {
-    if (this.participants != null) {
+    if (!this.loading && this.participants != null) {
       if (this.participants.isNotEmpty) {
         return Flexible(
           child: Container(
@@ -57,7 +54,7 @@ class _ParticipantListState extends State<ParticipantList> {
       } else {
         return Center(child: Text("No invitations logs."));
       }
-    } else if (!error) {
+    } else if (this.loading) {
       return Column(children: [
         CircularProgressIndicator(
           value: null,

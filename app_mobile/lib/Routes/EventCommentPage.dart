@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:reunionou/Models/Event.dart';
-import 'package:reunionou/Models/User.dart';
 import 'package:reunionou/Routes/CustomRouter.dart';
-import 'package:reunionou/Widgets/Event/EventDetail.dart';
-import 'package:reunionou/Widgets/Invitation/FloatingMyEventMenu.dart';
+import 'package:reunionou/Widgets/Event/EventCommentForm.dart';
+import 'package:reunionou/Widgets/Event/EventCommentMaster.dart';
 
-class EventPage extends StatelessWidget {
+class EventCommentPage extends StatelessWidget {
   final Event event;
 
-  EventPage(this.event);
+  const EventCommentPage(this.event, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +16,19 @@ class EventPage extends StatelessWidget {
         centerTitle: true,
         title: Text(this.event.name),
       ),
-      body: EventDetail(this.event),
+      body: EventCommentMaster(this.event),
       backgroundColor: Colors.grey[400],
-      floatingActionButton: (this.event.owner == User.connectedUser.login)
-          ? FloatingMyEventMenu(this.event)
-          : Container(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return EventCommentForm(this.event);
+              });
+        },
+        child: Icon(Icons.add),
+        backgroundColor: Colors.blue,
+      ),
       bottomNavigationBar: BottomNavigationBar(
           items: [
             BottomNavigationBarItem(
@@ -33,11 +40,11 @@ class EventPage extends StatelessWidget {
               label: "Comments",
             )
           ],
-          currentIndex: 0,
+          currentIndex: 1,
           selectedItemColor: Colors.blue[800],
           onTap: (index) {
-            if (index == 1)
-              Navigator.popAndPushNamed(context, CustomRouter.eventCommentRoute,
+            if (index == 0)
+              Navigator.popAndPushNamed(context, CustomRouter.eventRoute,
                   arguments: this.event);
           }),
     );

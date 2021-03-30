@@ -1,6 +1,8 @@
 import 'package:reunionou/Models/User.dart';
 import 'package:reunionou/Routes/ConnectionPage.dart';
 import 'package:reunionou/Routes/CreateEventPage.dart';
+import 'package:reunionou/Routes/EventCommentPage.dart';
+import 'package:reunionou/Routes/EventEditPage.dart';
 import 'package:reunionou/Routes/EventPage.dart';
 import 'package:reunionou/Routes/HomePage.dart';
 import 'package:flutter/material.dart';
@@ -17,11 +19,13 @@ class CustomRouter {
   static const String myEventsRoute = "/myevents";
   static const String profilRoute = "/profil";
   static const String eventRoute = "/event";
+  static const String eventCommentRoute = "/event/comment";
+  static const String eventEditRoute = "/event/edit";
   static const String invitationRoute = "/event/invited";
   static const String createEventPage = "/event/create";
   static const String refusedRoute = "/event/refused";
   static const String connectionRoute = "/connection";
-  static const String updateUserRoute = "/profil/settings";
+  static const String updateUserRoute = "/profil/edit";
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     if (User.connectedUser != null && settings.name != connectionRoute) {
@@ -44,6 +48,14 @@ class CustomRouter {
         case eventRoute:
           return MaterialPageRoute(
               builder: (_) => EventPage(settings.arguments),
+              settings: settings);
+        case eventCommentRoute:
+          return MaterialPageRoute(
+              builder: (_) => EventCommentPage(settings.arguments),
+              settings: settings);
+        case eventEditRoute:
+          return MaterialPageRoute(
+              builder: (_) => EventEditPage(settings.arguments),
               settings: settings);
         case invitationRoute:
           return MaterialPageRoute(

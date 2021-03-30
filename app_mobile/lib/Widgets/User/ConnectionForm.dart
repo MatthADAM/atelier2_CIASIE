@@ -41,6 +41,13 @@ class _ConnectionFormState extends State<ConnectionForm> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 400,
+      padding: EdgeInsets.all(25),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: Colors.blue[200],
+      ),
+      margin: EdgeInsets.all(20),
       child: Form(
         key: _formKey,
         child: ListView(
@@ -89,12 +96,11 @@ class _ConnectionFormState extends State<ConnectionForm> {
                 onPressed: validateForm,
                 child: Text("connect"),
               ),
-              padding: EdgeInsets.symmetric(horizontal: 40, vertical: 5),
+              padding: EdgeInsets.symmetric(horizontal: 40, vertical: 60),
             ),
           ],
         ),
       ),
-      padding: EdgeInsets.all(40),
     );
   }
 }
