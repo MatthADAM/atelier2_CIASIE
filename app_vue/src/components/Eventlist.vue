@@ -23,7 +23,9 @@
                 <td>{{item.date}}</td>
                 <td v-if="ifInvite(item)">
                     <button v-if="item.accept == 0" type="button" @click="acceptEvent(item)" class="btn btn-success">Accepter</button>
-                    <button v-else type="button" @click="refuseEvent(item)" class="btn btn-outline-success">Acceptée</button>
+                    <button v-else-if="item.accept == 1" type="button" @click="desaccepteEvent(item)" class="btn btn-outline-success">Acceptée</button>
+                    <button v-if="item.accept == 0" type="button" @click="refuseEvent(item)" class="btn btn-danger">Refuser</button>
+                    <button v-else-if="item.accept == 2" type="button" @click="desaccepteEvent(item)" class="btn btn-outline-danger">Refusée</button>
                     <b-icon-people style="margin-left:10px" class="clickable" v-b-modal.modalParticipants @click="voirParticipants(item.id)"></b-icon-people>
                 </td>
                 <td v-else>
@@ -83,8 +85,6 @@ import axios from 'axios'
                     status: 1,
                 })
                 .then(function (response) {
-                    var comm = [];
-                    var own;
                     axios.post('http://docketu.iutnc.univ-lorraine.fr:11501/api/addComment', {
                         content:"[message systeme] | Invitation acceptée",
                         owner:sess.get('log'),
@@ -95,7 +95,7 @@ import axios from 'axios'
                     });
                 });
             },
-            refuseEvent(event) {
+            desaccepteEvent(event) {
                 axios.post("http://docketu.iutnc.univ-lorraine.fr:11501/api/updatestatus", {
                     event: event.id,
                     user: this.$session.get("log"),
@@ -103,6 +103,24 @@ import axios from 'axios'
                 })
                 .then(function (response) {
                     document.location.reload();
+                });
+            },
+            refuseEvent(event) {
+                var sess = this.$session;
+                axios.post("http://docketu.iutnc.univ-lorraine.fr:11501/api/updatestatus", {
+                    event: event.id,
+                    user: this.$session.get("log"),
+                    status: 2,
+                })
+                .then(function (response) {
+                    axios.post('http://docketu.iutnc.univ-lorraine.fr:11501/api/addComment', {
+                        content:"[message systeme] | Invitation refusée",
+                        owner:sess.get('log'),
+                        event:event.id,
+                    })
+                    .then(function (response) {
+                        document.location.reload();
+                    });
                 });
             },
             voirParticipants(event) {
