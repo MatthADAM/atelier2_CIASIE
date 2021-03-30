@@ -41,8 +41,13 @@
         <button @click="nextPage" class="btn btn-primary">Next page</button>
         
         <b-modal ref="modalParticipants" id="modalParticipants" title="Liste des participants" hide-footer scrollable>
+            <p>Personnes qui participent :</p>
             <li>
                 <ul v-for="(item,index) in participants" :key="index"><b-icon-people></b-icon-people> - {{item}}</ul>
+            </li>
+            <p>Personnes qui ne participent pas :</p>
+            <li>
+                <ul v-for="(item,index) in nnParticipants" :key="index"><b-icon-people></b-icon-people> - {{item}}</ul>
             </li>
         </b-modal>
         
@@ -125,6 +130,7 @@ import axios from 'axios'
             },
             voirParticipants(event) {
                 var part = [];
+                var nnPart = [];
                 $.ajax({
                     url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/invitation/" + event,
                     success: function (result) {
@@ -139,12 +145,23 @@ import axios from 'axios'
                                     },
                                     async: false
                                 });
+                            } else if (element.status == 2) {
+                                $.ajax({
+                                    url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/user/" + element.user,
+                                    success: function (result) {
+                                        result.forEach(usr => {
+                                            nnPart.push(usr.Name);
+                                        });
+                                    },
+                                    async: false
+                                });
                             }
                         });
                     },
                     async: false
                 });
                 this.participants = part;
+                this.nnParticipants = nnPart;
             },
             voirCommentaires(event) {
                 var comm = [];
@@ -228,6 +245,7 @@ import axios from 'axios'
                 pageSize:10,
                 currentPage:1,
                 participants: [],
+                nnParticipants: [],
                 commentaires: [],
                 idEventComm:null,
                 comment:"",
