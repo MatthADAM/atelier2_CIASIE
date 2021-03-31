@@ -23,7 +23,9 @@
                 <td>{{item.date}}</td>
                 <td v-if="ifInvite(item)">
                     <button v-if="item.accept == 0" type="button" @click="acceptEvent(item)" class="btn btn-success">Accepter</button>
-                    <button v-else type="button" @click="refuseEvent(item)" class="btn btn-outline-success">Acceptée</button>
+                    <button v-else-if="item.accept == 1" type="button" @click="desaccepteEvent(item)" class="btn btn-outline-success">Acceptée</button>
+                    <button v-if="item.accept == 0" type="button" @click="refuseEvent(item)" class="btn btn-danger">Refuser</button>
+                    <button v-else-if="item.accept == 2" type="button" @click="desaccepteEvent(item)" class="btn btn-outline-danger">Refusée</button>
                     <b-icon-people style="margin-left:10px" class="clickable" v-b-modal.modalParticipants @click="voirParticipants(item.id)"></b-icon-people>
                 </td>
                 <td v-else>
@@ -39,8 +41,13 @@
         <button @click="nextPage" class="btn btn-primary">Next page</button>
         
         <b-modal ref="modalParticipants" id="modalParticipants" title="Liste des participants" hide-footer scrollable>
+            <p>Personnes qui participent :</p>
             <li>
                 <ul v-for="(item,index) in participants" :key="index"><b-icon-people></b-icon-people> - {{item}}</ul>
+            </li>
+            <p>Personnes qui ne participent pas :</p>
+            <li>
+                <ul v-for="(item,index) in nnParticipants" :key="index"><b-icon-people></b-icon-people> - {{item}}</ul>
             </li>
         </b-modal>
         
@@ -76,16 +83,24 @@ import axios from 'axios'
                 }
             },
             acceptEvent(event) {
+                var sess = this.$session;
                 axios.post("http://docketu.iutnc.univ-lorraine.fr:11501/api/updatestatus", {
                     event: event.id,
                     user: this.$session.get("log"),
                     status: 1,
                 })
                 .then(function (response) {
-                    document.location.reload();
+                    axios.post('http://docketu.iutnc.univ-lorraine.fr:11501/api/addComment', {
+                        content:"[message systeme] | Invitation acceptée",
+                        owner:sess.get('log'),
+                        event:event.id,
+                    })
+                    .then(function (response) {
+                        document.location.reload();
+                    });
                 });
             },
-            refuseEvent(event) {
+            desaccepteEvent(event) {
                 axios.post("http://docketu.iutnc.univ-lorraine.fr:11501/api/updatestatus", {
                     event: event.id,
                     user: this.$session.get("log"),
@@ -95,8 +110,27 @@ import axios from 'axios'
                     document.location.reload();
                 });
             },
+            refuseEvent(event) {
+                var sess = this.$session;
+                axios.post("http://docketu.iutnc.univ-lorraine.fr:11501/api/updatestatus", {
+                    event: event.id,
+                    user: this.$session.get("log"),
+                    status: 2,
+                })
+                .then(function (response) {
+                    axios.post('http://docketu.iutnc.univ-lorraine.fr:11501/api/addComment', {
+                        content:"[message systeme] | Invitation refusée",
+                        owner:sess.get('log'),
+                        event:event.id,
+                    })
+                    .then(function (response) {
+                        document.location.reload();
+                    });
+                });
+            },
             voirParticipants(event) {
                 var part = [];
+                var nnPart = [];
                 $.ajax({
                     url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/invitation/" + event,
                     success: function (result) {
@@ -111,12 +145,23 @@ import axios from 'axios'
                                     },
                                     async: false
                                 });
+                            } else if (element.status == 2) {
+                                $.ajax({
+                                    url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/user/" + element.user,
+                                    success: function (result) {
+                                        result.forEach(usr => {
+                                            nnPart.push(usr.Name);
+                                        });
+                                    },
+                                    async: false
+                                });
                             }
                         });
                     },
                     async: false
                 });
                 this.participants = part;
+                this.nnParticipants = nnPart;
             },
             voirCommentaires(event) {
                 var comm = [];
@@ -200,6 +245,7 @@ import axios from 'axios'
                 pageSize:10,
                 currentPage:1,
                 participants: [],
+                nnParticipants: [],
                 commentaires: [],
                 idEventComm:null,
                 comment:"",

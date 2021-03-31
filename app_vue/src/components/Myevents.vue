@@ -26,6 +26,7 @@
                     <b-icon-trash style="margin-right:4px" class="clickable" @click="deleteEvent(item.id)"></b-icon-trash>
                     <b-icon-people style="margin-left:4px,margin-right:4px" class="clickable" v-b-modal.modalParticipants @click="voirParticipants(item.id)"></b-icon-people>
                     <b-icon-journal-bookmark-fill class="clickable" v-b-modal.modalCommentaires @click="voirCommentaires(item.id)"></b-icon-journal-bookmark-fill>
+                    <b-icon-share-fill class="clickable" @click="copyUrl(item.token)"></b-icon-share-fill>
                 </td>
             </tr>
             </tbody>
@@ -40,8 +41,13 @@
             <button class="btn btn-primary" @click="inviterPersonne">Inviter</button>
         </b-modal>
         <b-modal ref="modalParticipants" id="modalParticipants" title="Liste des participants" hide-footer scrollable>
+            <p>Personnes qui participent :</p>
             <li>
                 <ul v-for="(item,index) in participants" :key="index"><b-icon-people></b-icon-people> - {{item}}</ul>
+            </li>
+            <p>Personnes qui ne participent pas :</p>
+            <li>
+                <ul v-for="(item,index) in nnParticipants" :key="index"><b-icon-people></b-icon-people> - {{item}}</ul>
             </li>
         </b-modal>
         <b-modal ref="modalCommentaires" id="modalCommentaires" title="Espace commentaires" size="lg" hide-footer>
@@ -97,6 +103,7 @@ import axios from 'axios'
             },
             voirParticipants(event) {
                 var part = [];
+                var nnPart = [];
                 $.ajax({
                     url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/invitation/" + event,
                     success: function (result) {
@@ -111,12 +118,23 @@ import axios from 'axios'
                                     },
                                     async: false
                                 });
+                            } else if (element.status == 2) {
+                                $.ajax({
+                                    url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/user/" + element.user,
+                                    success: function (result) {
+                                        result.forEach(usr => {
+                                            nnPart.push(usr.Name);
+                                        });
+                                    },
+                                    async: false
+                                });
                             }
                         });
                     },
                     async: false
                 });
                 this.participants = part;
+                this.nnParticipants = nnPart;
             },
             voirCommentaires(event) {
                 var comm = [];
@@ -183,6 +201,9 @@ import axios from 'axios'
                 this.commentaires = comm;
                 this.comment="";
             },
+            copyUrl(event) {
+                navigator.clipboard.writeText("http://localhost:8080/eventIvite/" + event);
+            },
         },
         computed: {
             filterOwner() {
@@ -202,6 +223,7 @@ import axios from 'axios'
                 invite:"",
                 currentEvent:null,
                 participants: [],
+                nnParticipants:[],
                 commentaires: [],
                 idEventComm:null,
                 comment:"",

@@ -30,7 +30,9 @@ class User extends ActionRecord {
   }
 
   static bool verify(String password, String hash) {
-    return User.hashPassword(password) == hash;
+    var passHash = User.hashPassword(password);
+    passHash = User.hashPassword(passHash);
+    return passHash == hash;
   }
 
   static String hashPassword(String password) {

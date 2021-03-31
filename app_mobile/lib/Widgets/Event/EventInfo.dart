@@ -5,8 +5,9 @@ import 'package:reunionou/Models/User.dart';
 
 class EventInfo extends StatefulWidget {
   final Event event;
+  final Function updateInvitationStatus;
 
-  EventInfo(this.event);
+  EventInfo(this.event, {this.updateInvitationStatus});
 
   @override
   _EventInfoState createState() => _EventInfoState();
@@ -87,9 +88,10 @@ class _EventInfoState extends State<EventInfo> {
                           : Colors.grey),
                 ),
                 onPressed: () {
-                  setState(() {
-                    this.invitation.setStatus(1);
-                  });
+                  this
+                      .invitation
+                      .setStatus(1)
+                      .then(this.widget.updateInvitationStatus);
                 },
                 child: Text("I will attempt"),
               ),
@@ -107,9 +109,10 @@ class _EventInfoState extends State<EventInfo> {
                             : Colors.grey),
                   ),
                   onPressed: () {
-                    setState(() {
-                      this.invitation.setStatus(2);
-                    });
+                    this
+                        .invitation
+                        .setStatus(2)
+                        .then(this.widget.updateInvitationStatus);
                   },
                   child: Text("I won't attempt")),
               margin: EdgeInsets.all(10),

@@ -5,8 +5,14 @@ class ConnectionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: ConnectionForm(),
+      backgroundColor: Colors.grey,
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(new FocusNode());
+        },
+        child: Center(
+          child: ConnectionForm(),
+        ),
       ),
     );
   }

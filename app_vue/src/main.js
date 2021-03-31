@@ -22,6 +22,7 @@ import MyEvents from './components/Myevents.vue'
 import Profile from './components/Profile.vue'
 import NotFound from './components/Notfound.vue'
 import NewEvent from './components/NewEvent.vue'
+import Invite from './components/Invite.vue'
 
 Vue.use(VueRouter);
 
@@ -37,6 +38,7 @@ const router = new VueRouter({
     {path: '/myevents', component :MyEvents},
     {path: '/profile', component :Profile},
     {path: '/newevent', component :NewEvent},
+    {path: '/eventIvite/:tokenInvite', component :Invite},
     {path: '*', component :NotFound},//Path * TJRS a la fin /!\
   ],
 });

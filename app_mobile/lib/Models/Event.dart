@@ -124,10 +124,27 @@ class Event extends ActionRecord {
     return events;
   }
 
-  static void create(String adress, String connectedUser, int postCode,
-      bool public, DateTime date, String name) {
+  static Future<dynamic> create(String adress, String connectedUser,
+      int postCode, bool public, DateTime date, String name) async {
     Event event =
         Event(-1, adress, connectedUser, postCode, public, date, name);
-    ActionRecord.sendRequest("/api/addEvent", method: "POST", object: event);
+    return await ActionRecord.sendRequest("/api/addEvent",
+        method: "POST", object: event);
   }
+
+  Future<bool> delete() async {
+    dynamic content = await ActionRecord.sendRequest(
+        "/api/delete/event/" + this.id.toString(),
+        method: "POST");
+    return content != null;
+  }
+/*
+  static Future<Event> update(String adress, int postCode, bool bool,
+      DateTime selectedDate, String name) async {
+    Event event =
+        Event(-1, adress, connectedUser, postCode, public, date, name);
+    return await ActionRecord.sendRequest("/api/addEvent",
+        method: "POST", object: this);
+  }
+  */
 }

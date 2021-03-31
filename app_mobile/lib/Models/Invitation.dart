@@ -96,12 +96,13 @@ class Invitation extends ActionRecord {
     return invitation;
   }
 
-  void setStatus(int newStatus) {
+  Future<dynamic> setStatus(int newStatus) async {
     if (this.status != newStatus) {
       this.status = newStatus;
       String uri = "/api/updatestatus";
-      ActionRecord.sendRequest(uri, method: "POST", object: this);
-    }
+      return await ActionRecord.sendRequest(uri, method: "POST", object: this);
+    } else
+      return null;
   }
 
   @override
