@@ -57,7 +57,7 @@ import axios from 'axios'
         methods: {
             createEvent() {
                 var rout = this.$router;
-                axios.post("http://docketu.iutnc.univ-lorraine.fr:11501/api/addEvent", {
+                axios.post("https://docketu.iutnc.univ-lorraine.fr:11501/api/addEvent", {
                     owner:this.$session.get("log"),
                     name :this.name,
                     adress:this.adress,

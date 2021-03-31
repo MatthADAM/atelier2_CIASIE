@@ -1,1 +1,1 @@
-export const urlApi = "http://docketu.iutnc.univ-lorraine.fr:11001/api";
+export const urlApi = "https://docketu.iutnc.univ-lorraine.fr:11001/api";

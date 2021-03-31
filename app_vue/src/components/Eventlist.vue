@@ -84,13 +84,13 @@ import axios from 'axios'
             },
             acceptEvent(event) {
                 var sess = this.$session;
-                axios.post("http://docketu.iutnc.univ-lorraine.fr:11501/api/updatestatus", {
+                axios.post("https://docketu.iutnc.univ-lorraine.fr:11501/api/updatestatus", {
                     event: event.id,
                     user: this.$session.get("log"),
                     status: 1,
                 })
                 .then(function (response) {
-                    axios.post('http://docketu.iutnc.univ-lorraine.fr:11501/api/addComment', {
+                    axios.post('https://docketu.iutnc.univ-lorraine.fr:11501/api/addComment', {
                         content:"[message systeme] | Invitation acceptée",
                         owner:sess.get('log'),
                         event:event.id,
@@ -101,7 +101,7 @@ import axios from 'axios'
                 });
             },
             desaccepteEvent(event) {
-                axios.post("http://docketu.iutnc.univ-lorraine.fr:11501/api/updatestatus", {
+                axios.post("https://docketu.iutnc.univ-lorraine.fr:11501/api/updatestatus", {
                     event: event.id,
                     user: this.$session.get("log"),
                     status: 0,
@@ -112,13 +112,13 @@ import axios from 'axios'
             },
             refuseEvent(event) {
                 var sess = this.$session;
-                axios.post("http://docketu.iutnc.univ-lorraine.fr:11501/api/updatestatus", {
+                axios.post("https://docketu.iutnc.univ-lorraine.fr:11501/api/updatestatus", {
                     event: event.id,
                     user: this.$session.get("log"),
                     status: 2,
                 })
                 .then(function (response) {
-                    axios.post('http://docketu.iutnc.univ-lorraine.fr:11501/api/addComment', {
+                    axios.post('https://docketu.iutnc.univ-lorraine.fr:11501/api/addComment', {
                         content:"[message systeme] | Invitation refusée",
                         owner:sess.get('log'),
                         event:event.id,
@@ -132,12 +132,12 @@ import axios from 'axios'
                 var part = [];
                 var nnPart = [];
                 $.ajax({
-                    url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/invitation/" + event,
+                    url: "https://docketu.iutnc.univ-lorraine.fr:11501/api/invitation/" + event,
                     success: function (result) {
                         result.forEach(element => {
                             if (element.status == 1) {   
                                 $.ajax({
-                                    url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/user/" + element.user,
+                                    url: "https://docketu.iutnc.univ-lorraine.fr:11501/api/user/" + element.user,
                                     success: function (result) {
                                         result.forEach(usr => {
                                             part.push(usr.Name);
@@ -147,7 +147,7 @@ import axios from 'axios'
                                 });
                             } else if (element.status == 2) {
                                 $.ajax({
-                                    url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/user/" + element.user,
+                                    url: "https://docketu.iutnc.univ-lorraine.fr:11501/api/user/" + element.user,
                                     success: function (result) {
                                         result.forEach(usr => {
                                             nnPart.push(usr.Name);
@@ -168,11 +168,11 @@ import axios from 'axios'
                 var own;
                 this.idEventComm = event;
                 $.ajax({
-                    url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/comment/event/" + event,
+                    url: "https://docketu.iutnc.univ-lorraine.fr:11501/api/comment/event/" + event,
                     success: function (result) {
                         result.forEach(element => {
                             $.ajax({
-                                url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/user/" + element.owner,
+                                url: "https://docketu.iutnc.univ-lorraine.fr:11501/api/user/" + element.owner,
                                 success: function (result) {
                                     own = result[0].Name;
                                 },
@@ -195,18 +195,18 @@ import axios from 'axios'
             ajouterCommentaire(event) {
                 var comm = [];
                 var own;
-                axios.post('http://docketu.iutnc.univ-lorraine.fr:11501/api/addComment', {
+                axios.post('https://docketu.iutnc.univ-lorraine.fr:11501/api/addComment', {
                     content:this.comment,
                     owner:this.$session.get('log'),
                     event:event,
                 })
                 .then(function (response) {
                     $.ajax({
-                        url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/comment/event/" + event,
+                        url: "https://docketu.iutnc.univ-lorraine.fr:11501/api/comment/event/" + event,
                         success: function (result) {
                             result.forEach(element => {
                                 $.ajax({
-                                    url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/user/" + element.owner,
+                                    url: "https://docketu.iutnc.univ-lorraine.fr:11501/api/user/" + element.owner,
                                     success: function (result) {
                                         own = result[0].Name;
                                     },
@@ -260,14 +260,14 @@ import axios from 'axios'
             var tab = [];
             var invitTab = [];
             $.ajax({
-                url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/event?public=1&owner=" + this.$session.get("log"),
+                url: "https://docketu.iutnc.univ-lorraine.fr:11501/api/event?public=1&owner=" + this.$session.get("log"),
                 success: function (result) {
                     tab = result;
                 },
                 async: false
             });
             $.ajax({
-                url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/invitation/user/" + this.$session.get("log"),
+                url: "https://docketu.iutnc.univ-lorraine.fr:11501/api/invitation/user/" + this.$session.get("log"),
                 success: function (result) {
                     result.forEach(element => {
                         invitTab.push(element);
@@ -277,7 +277,7 @@ import axios from 'axios'
             });
             invitTab.forEach(element => {
                 $.ajax({
-                    url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/event/" + element.event,
+                    url: "https://docketu.iutnc.univ-lorraine.fr:11501/api/event/" + element.event,
                     success: function (result) {
                         Object.defineProperty(result[0],"invite", {value: true});
                         Object.defineProperty(result[0],"accept", {value: element.status});

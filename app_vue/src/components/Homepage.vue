@@ -55,7 +55,7 @@ import $ from 'jquery'
             var coo = [];
 
             $.ajax({
-                url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/event?public=1",
+                url: "https://docketu.iutnc.univ-lorraine.fr:11501/api/event?public=1",
                 success: function (result) {
                     eventPublic = result;
                 },
