@@ -21,7 +21,7 @@ Ce projet à été réalisé lors de la deuxième session d'ateliers de la licen
 - (Fonctionnalité complémentaire) A la création d'un événement il est possible de préciser si celui-ci est publique ou privé -> Cette fonctionnalité à été faite sans avoir connaissance qu'elle était complémentaire il nous avait paru logique dde pouvoir préciser la propriété publique ou privé à la création
 
 ## Répartition
-API : Hervé Grosjean, Romain Bernard
-Application Flutter : Valentin Gardel
-Application VueJs (Client) : Matthieu Adam, Hervé Grosjean
-Application VueJs (Back) : Romain Bernard
+- API : Hervé Grosjean, Romain Bernard
+- Application Flutter : Valentin Gardel
+- Application VueJs (Client) : Matthieu Adam, Hervé Grosjean
+- Application VueJs (Back) : Romain Bernard
