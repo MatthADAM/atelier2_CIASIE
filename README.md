@@ -6,7 +6,7 @@ Présente dans l'onglet "[Wiki](https://github.com/MatthADAM/atelier2_CIASIE/wik
 
 Ce projet à été réalisé lors de la deuxième session d'ateliers de la licence professionelle CIASIE. Il nous à été demandé de créer une application fonctionnelle afin de pouvoir créer des événements et se réunir entres proches.
 
-Les fonctionnalités réalisées sont les suivantes :
+### Les fonctionnalités réalisées sont les suivantes :
 - inscription sur la plateforme
 - gestion de son profil
 - Créer un événement
