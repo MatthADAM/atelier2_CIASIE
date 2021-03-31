@@ -1,3 +1,7 @@
+## Instalation
+
+docker-compose up
+
 ## Liste des routes:
 
 http://docketu.iutnc.univ-lorraine.fr:11503/api/user =>GET => Renvoie la liste complète des utilisateurs.
