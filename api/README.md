@@ -1,202 +1,50 @@
-# Docker + Node.js Bootstrap
+## Liste des routes:
 
-## Configurer le projet
+http://docketu.iutnc.univ-lorraine.fr:11503/api/user =>GET => Renvoie la liste complète des utilisateurs.
 
-**adapter le fichier docker-compose.yml**
+http://docketu.iutnc.univ-lorraine.fr:11503/api/user/:login  =>GET=>Renvoie l’utilisateur correspondant a :login. 
 
-En particulier il faut choisir les ports de la machine hôte associés au port utilisé par le conteneur : 
-```
-ports:
-  - "19100:3000"
-```
+http://docketu.iutnc.univ-lorraine.fr:11503/api/userAdmin/:login  =>GET=>Renvoie  l’utilisateur admin correspondant a :login. 
 
-**Renommer et adapter le fichier `./api/.env.exemple`** :
+http://docketu.iutnc.univ-lorraine.fr:11503/api/event (?public=...&owner=...) (?token=...) 
+=>GET=>Renvoie la liste des événement il peut prendre en paramètre si il est public et un autre paramètre si on veut supprimer de la liste public ces propre événement, il peut prendre un autre paramètre le token cela permet de prendre seulement événement correspond au token.
 
-```
-- ./api/.env
-```
-Les variables `http_proxy` et `https_proxy` sont nécessaires pour les conteneurs s'exécutant sur une machine hôte installée derrière un proxy.
-Elles permettent aux applications dans le conteneur d'utiliser ce proxy.
-C'est le cas de la machine docketu.iutnc.univ-lorraine.fr.
-<br>
-<br>
+http://docketu.iutnc.univ-lorraine.fr:11503/api/event/:id =>GET=> Renvoie l’événement correspond a :id.
 
-## Créer et démarrer les conteneurs, installer les dépendances npm
+http://docketu.iutnc.univ-lorraine.fr:11503/api/event/owner/:owner  =>GET=> Renvoie la liste des événement correspond a :owner (le créateur de l’événement)
 
-### Installation des dépendances
-Les dépendances du projet (npm, package.json) doivent être installées
-à l'intérieur des conteneurs. Pour cela, 3 possibilités complémentaires : 
+http://docketu.iutnc.univ-lorraine.fr:11503/api/invitation =>GET=>Renvoie la liste complète des invitations. Il peut prendre en paramètre un event et un user ensemble ce qui permet de recevoir la liste des invitations faite par un utilisateur sur un événement.
 
-1. installation au démarrage du conteneur grâce à la directive ```command:``` du fichier docker-compose.yml :
-   
-`command: bash -c 'npm i && npm start'`
-   
-2. en exécutant la commande d'installation depuis l'extérieur du conteneur lorsqu'il est actif :
-   
-`docker-compose run api npm install`
-3. en exécutant un bash depuis l'extérieur du conteneur lorsqu'il est actif, puis, depuis le conteneur, exécuter la commande d'installation : 
+http://docketu.iutnc.univ-lorraine.fr:11503/api/invitation/:event  =>GET=>Renvoie le liste des invitations correspondant a cette :event.
 
-`docker-compose run api bash`
+http://docketu.iutnc.univ-lorraine.fr:11503/api/invitation/user/:user =>GET=>Renvoie la liste des invitations envoyés par cet utilisateur(:user).
 
-puis
+http://docketu.iutnc.univ-lorraine.fr:11503/api/comment =>GET=>Renvoie la liste des commentaires.
 
-`npm install`
+http://docketu.iutnc.univ-lorraine.fr:11503/api/comment/:id =>GET=>Renvoie le commentaire correspondant a l’id (:id).
 
-### Créer et démarrer les conteneurs
+http://docketu.iutnc.univ-lorraine.fr:11503/api/comment/owner/:owner =>GET=>Renvoie la liste des commentaire correspondant a l’utilisateur(:owner).
 
-#### Créer  les services Docker sans les lancer
+http://docketu.iutnc.univ-lorraine.fr:11503/api/comment/event/:event =>GET=>Renvoie la liste des commentaire correspondant a cette événement (:event).
 
-```
-docker-compose up --no-start
-```
+http://docketu.iutnc.univ-lorraine.fr:11503/api/inscription=>POST=>Permet d’insérer un compte dans la base de données.
 
-<br>
+http://docketu.iutnc.univ-lorraine.fr:11503/api/inscriptionAdmin=>POST=>Permet d’insérer un compte administrateur dans la base de données. 
 
-#### Lancer les services Docker
+http://docketu.iutnc.univ-lorraine.fr:11503/api/updateUser=>POST=>Permet de mettre à jour les informations d’un utilisateur.
 
-```
-docker-compose start
-```
-#### Créer et lancer les services Docker
+http://docketu.iutnc.univ-lorraine.fr:11503/api/updateUserAdmin=>POST=>Permet de mettre à jour les informations d’un utilisateur administrateur.
 
-```
-docker-compose up
-```
+http://docketu.iutnc.univ-lorraine.fr:11503/api/addEvent=>POST=>Permet d’insérer un événement dans la base de données. 
 
-<br>
+http://docketu.iutnc.univ-lorraine.fr:11503/api/addInvitation=>POST=>Permet d’insérer une invitation dans la base de données. 
 
-#### Créer et lancer les services Docker en background
+http://docketu.iutnc.univ-lorraine.fr:11503/api/addComment=>POST=>Permet d’insérer un commentaire dans la base de données. 
 
-```
-docker-compose up -d
-```
+http://docketu.iutnc.univ-lorraine.fr:11503/api/UpdateStatus=>POST=>Permet de modifier le status d’une invitation
 
-<br>
+http://docketu.iutnc.univ-lorraine.fr:11503/api/delete/user/:login =>POST=>Permet de supprimer un utilisateur. :login est un login d’utilisateur
 
-#### Arrêter les services Docker
+http://docketu.iutnc.univ-lorraine.fr:11503/api/delete/event/:id =>POST=>Permet de supprimer un événement. :event est un id d'événement
 
-```
-docker-compose stop
-```
-
-
-## Test de l'API
-
-### Requête HTTP GET
-
-Après avoir démarré les services Docker sur la machine hôte, la commande suivante, exécutée depuis une machine distante:
-
-`curl docketu.iutnc.univ-lorraine.fr:19100`
-
-doit fournir la réponse suivante :
-
-`{"message":"Welcome !"}`
-
-
-<br>
-
-### Requête HTTP POST
-
-`curl docketu.iutnc.univ-lorraine.fr:19100 -H "Content-Type: application/json" -X POST -d '{"message":"Hello World!"}'`
-
-doit fournir la réponse suivante :
-
-`{"message":"Hello World!"}`
-
-<br>
-<br>
-
-## Commandes utiles
-
-### Node.js
-
-#### Environnement de Dévelopement
-
-Dans le fichier ./api/.env, indiquer la valeur :
-
-`NODE_ENV=development`
-
-#### Environnement de Production
-
-Dans le fichier ./api/.env, indiquer la valeur :
-
-`NODE_ENV=production`
-
-<br>
-<br>
-
-### Docker
-
-#### Installer les dépendances d'un service Node.js
-
-```
-docker-compose run <nom-service> npm install
-```
-
-<br>
-
-
-### Docker + Node.js
-
-#### Installer les dépendances NPM dans le dossier node_modules du container
-
-**Les modules NPM doivent être installés directement dans le container de destination** (et pas simplement synchroniser avec le volume source).
-
-Plusieurs solutions possibles :
-
-<br>
-
-1 - Via une commande docker-compose :
-
-`docker-compose run api npm install`
-
-<br>
-<br>
-
-2 - Via bash, au sein du container :
-
-`docker-compose run api bash`
-
-puis
-
-`npm install`
-
-<br>
-<br>
-
-3 - Via l'attribut "command" du service dans le fichier docker-compose.yml :
-
-`command: bash -c 'npm i && npm start'`
-
-_Répeter l'une des 3 méthodes d'installation à chaque fois qu'une nouvelle dépendance NPM est ajoutée au fichier ./api/package.json_
-
-<br>
-<br>
-
-#### Hot Reloading
-
-- Ajouter nodemon aux dépendances du fichier `./api/package.json`
-
-- Installer **Nodemon** dans le container du service concerné (via l'une des 3 méthodes détaillées ci-avant)
-
-- Activer la commande suivante dans `docker-compose.yml` pour le service concerné :
-
-`command: bash -c 'npm run dev'`
-
-<br>
-<br>
-
----
-
-**Alexandre Leroux**
-
-- _Mail_ : alex@sherpa.one
-- _Github_ : sherpa1
-- _Twitter_ : @_sherpa_
-- _Discord_ : sherpa#3890
-
-_Enseignant vacataire à l'Université de Lorraine_
-
-- IUT Nancy-Charlemagne (LP Ciasie)
-
-- Institut des Sciences du Digital (Masters Sciences Cognitives)
+http://docketu.iutnc.univ-lorraine.fr:11503/api/delete/invitation/:event?user= =>POST=>Permet de supprimer une invitation. :event est un id d'événement et prends en paramètre un login
