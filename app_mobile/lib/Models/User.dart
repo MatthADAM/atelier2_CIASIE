@@ -49,13 +49,14 @@ class User extends ActionRecord {
           User.connectedUser.login,
           (newPassword.isEmpty)
               ? User.connectedUser.password
-              : User.hashPassword(newPassword));
+              : User.hashPassword(User.hashPassword(newPassword)));
       dynamic content = await ActionRecord.sendRequest("/api/updateUser",
           method: "POST", object: newUser);
       if (content != null && content is List && content.isNotEmpty) {
-        User.connectedUser = User(
-            content[0]["login"], content[0]["displayName"],
-            password: content[0]["pwd"]);
+        User.connectedUser = User(newLogin, name,
+            password: (newPassword.isEmpty)
+                ? password
+                : User.hashPassword(User.hashPassword(newPassword)));
       } else
         return false;
     } else

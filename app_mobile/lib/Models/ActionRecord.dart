@@ -2,12 +2,14 @@ import 'dart:convert';
 import 'dart:io';
 
 abstract class ActionRecord {
-  static const String API_URL = "http://docketu.iutnc.univ-lorraine.fr:11501";
+  static const String API_URL = "https://docketu.iutnc.univ-lorraine.fr:11501";
 
   static Future<dynamic> sendRequest(String uri,
       {String method = "GET", ActionRecord object}) async {
     dynamic res;
     HttpClient client = new HttpClient();
+    client.badCertificateCallback =
+        ((X509Certificate cert, String host, int port) => true);
     try {
       HttpClientRequest request;
       switch (method) {

@@ -8,7 +8,7 @@ class ProfilUpdateMaster extends StatefulWidget {
 
 class _ProfilUpdateMasterState extends State<ProfilUpdateMaster> {
   final _formKey = GlobalKey<FormState>();
-  String login, password, newPassword, displayName;
+  String login, password = "", newPassword = "", displayName;
 
   @override
   void initState() {
@@ -28,7 +28,9 @@ class _ProfilUpdateMasterState extends State<ProfilUpdateMaster> {
             onPressed: () {
               User.updateUser(this.login, this.password, this.displayName,
                       this.newPassword)
-                  .then((value) {});
+                  .then((value) {
+                Navigator.pop(context);
+              });
             },
           ),
         ),
@@ -111,8 +113,7 @@ class _ProfilUpdateMasterState extends State<ProfilUpdateMaster> {
                 hintStyle: TextStyle(
                   color: Colors.grey,
                 ),
-                labelText:
-                    "New password (keep empty if you don't want to change it):",
+                labelText: "New password:",
                 labelStyle: TextStyle(
                   fontSize: 25,
                 ),

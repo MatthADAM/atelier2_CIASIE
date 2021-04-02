@@ -22,7 +22,6 @@ class _FloatingMyEventMenuState extends State<FloatingMyEventMenu> {
     if (this.mounted) super.setState(fn);
   }
 
-/*
   void showMessage(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -34,18 +33,16 @@ class _FloatingMyEventMenuState extends State<FloatingMyEventMenu> {
       ),
     );
   }
-*/
+
   void validateForm() {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
       Invitation.send(this.invitationLogin, this.widget.event).then((value) {
+        Navigator.pop(context);
         if (value != null) {
-          //showMessage("Invitation sent!");
-          setState(() {
-            this.invitationLogin = "";
-          });
+          showMessage("Invitation sent!");
         } else {
-          //showMessage("Invitation could not be sent!");
+          showMessage("Invitation could not be sent!");
         }
       });
     }

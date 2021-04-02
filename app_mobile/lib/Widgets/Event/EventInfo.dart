@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:reunionou/Models/Event.dart';
 import 'package:reunionou/Models/Invitation.dart';
@@ -27,10 +29,8 @@ class _EventInfoState extends State<EventInfo> {
     Invitation.getUserEventInvitation(
             User.connectedUser.login, this.widget.event.id)
         .then((value) {
-      //print("value received!");
-      //print(value);
       setState(() {
-        this.invitation = value; //(value == null) ? Event.mock() : value;
+        this.invitation = value;
       });
     }).catchError((error) {
       print(error);
@@ -58,12 +58,24 @@ class _EventInfoState extends State<EventInfo> {
                   ]),
               margin: EdgeInsets.all(10),
               child: Column(children: [
-                Text("Date: " + this.widget.event.formatDateTime()),
-                Text("Organisator: " + this.widget.event.owner),
-                Text("Adress: " +
-                    this.widget.event.adress +
-                    " " +
-                    this.widget.event.postCode.toString()),
+                Row(children: [
+                  Text("Date:",
+                      style: TextStyle(decoration: TextDecoration.underline)),
+                  Text("\t" + this.widget.event.formatDateTime()),
+                ]),
+                Row(children: [
+                  Text("Organisator:",
+                      style: TextStyle(decoration: TextDecoration.underline)),
+                  Text("\t" + this.widget.event.owner),
+                ]),
+                Row(children: [
+                  Text("Adress:",
+                      style: TextStyle(decoration: TextDecoration.underline)),
+                  Text("\t" +
+                      this.widget.event.adress +
+                      ", " +
+                      this.widget.event.postCode.toString()),
+                ]),
               ]),
             ),
           ),

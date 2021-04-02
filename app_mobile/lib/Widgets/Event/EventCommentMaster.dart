@@ -35,15 +35,21 @@ class _EventCommentMasterState extends State<EventCommentMaster> {
     return Column(
       children: [
         Expanded(
-          child: Container(
-            child: ListView.builder(
-              itemCount: this.comments.length,
-              itemBuilder: (context, index) {
-                return EventCommentPreview(comments[index]);
-              },
-            ),
+            child: RefreshIndicator(
+          onRefresh: () {
+            return Comment.getByEvent(this.widget.event.id).then((value) {
+              setState(() {
+                this.comments = value;
+              });
+            });
+          },
+          child: ListView.builder(
+            itemCount: this.comments.length,
+            itemBuilder: (context, index) {
+              return EventCommentPreview(comments[index]);
+            },
           ),
-        )
+        ))
       ],
     );
   }

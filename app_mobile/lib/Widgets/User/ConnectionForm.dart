@@ -94,7 +94,7 @@ class _ConnectionFormState extends State<ConnectionForm> {
             Padding(
               child: ElevatedButton(
                 onPressed: validateForm,
-                child: Text("connect"),
+                child: Text("Sign in"),
               ),
               padding: EdgeInsets.symmetric(horizontal: 40, vertical: 60),
             ),

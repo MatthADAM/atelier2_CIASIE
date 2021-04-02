@@ -41,19 +41,34 @@ class _ParticipantListState extends State<ParticipantList> {
   @override
   Widget build(BuildContext context) {
     if (!this.loading && this.participants != null) {
-      if (this.participants.isNotEmpty) {
-        return Flexible(
-          child: Container(
-            child: ListView.builder(
-                itemCount: this.participants.length,
-                itemBuilder: (context, index) {
-                  return InvitationPreview(this.participants[index]);
-                }),
-          ),
-        );
-      } else {
-        return Center(child: Text("No invitations logs."));
-      }
+      return Flexible(
+        child: RefreshIndicator(
+          onRefresh: () {
+            setState(() {
+              this.loading = true;
+              this.error = false;
+            });
+            return Invitation.getByEvent(0, 10, this.widget.event.id)
+                .then((value) {
+              setState(() {
+                this.participants = value;
+                this.loading = false;
+              });
+            }).catchError((error) {
+              print(error);
+              setState(() {
+                this.loading = false;
+                this.error = true;
+              });
+            });
+          },
+          child: ListView.builder(
+              itemCount: this.participants.length,
+              itemBuilder: (context, index) {
+                return InvitationPreview(this.participants[index]);
+              }),
+        ),
+      );
     } else if (this.loading) {
       return Column(children: [
         CircularProgressIndicator(
