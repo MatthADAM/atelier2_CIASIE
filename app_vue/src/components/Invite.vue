@@ -22,7 +22,7 @@ import $ from 'jquery'
         created () {
             var event;
             $.ajax({
-                url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/event?token=" + this.tokenInvite,
+                url: "https://docketu.iutnc.univ-lorraine.fr:11501/api/event?token=" + this.tokenInvite,
                 success: function (result) {
                     event = result[0];
                     let annee = event.date.substr(0,4);
@@ -39,12 +39,12 @@ import $ from 'jquery'
             var part = [];
             var nnPart = [];
             $.ajax({
-                url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/invitation/" + event.id,
+                url: "https://docketu.iutnc.univ-lorraine.fr:11501/api/invitation/" + event.id,
                 success: function (result) {
                     result.forEach(element => {
                         if (element.status == 1) {   
                             $.ajax({
-                                url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/user/" + element.user,
+                                url: "https://docketu.iutnc.univ-lorraine.fr:11501/api/user/" + element.user,
                                 success: function (result) {
                                     result.forEach(usr => {
                                         part.push(usr.Name);
@@ -54,7 +54,7 @@ import $ from 'jquery'
                             });
                         } else if (element.status == 2) {
                             $.ajax({
-                                url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/user/" + element.user,
+                                url: "https://docketu.iutnc.univ-lorraine.fr:11501/api/user/" + element.user,
                                 success: function (result) {
                                     result.forEach(usr => {
                                         nnPart.push(usr.Name);

@@ -12,9 +12,26 @@ const api_routes = require("./routes/api_routes");
 const DBClient = require('./utils/DBClient');
 const cors = require('cors');
 
+const https = require('https');
+const fs = require('fs');
+
+var key = fs.readFileSync(__dirname + '/certs/server.key');
+var cert = fs.readFileSync(__dirname + '/certs/server.cert');
+var options = {
+  key: key,
+  cert: cert
+};
+
+app.get('/', (req, res) => {
+   res.send('Now using https..');
+});
+
+
+
 app.use(cors());
 app.use("/", index_routes);
 app.use("/api", api_routes);
+
 
 app.use(async(req,res,next)=>{
   return res.status(400).json({
@@ -40,6 +57,7 @@ app.use(async(err, req,res,next)=>{
   });
 })
 
-app.listen(local_port, () => {
-  console.log(`LBS Command API listening at http://localhost:${local_port} (Dist port : ${dist_port})`)
+var server = https.createServer(options, app);
+server.listen(local_port, () => {
+  console.log("server starting on local_port : " + local_port)
 });

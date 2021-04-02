@@ -51,7 +51,7 @@ import sha256 from 'sha256'
                     } else {
                         pwd = pwdApi;
                     }
-                    axios.post("http://docketu.iutnc.univ-lorraine.fr:11501/api/updateUser", {
+                    axios.post("https://docketu.iutnc.univ-lorraine.fr:11501/api/updateUser", {
                         loginAnc:ancLogin,
                         login:log,
                         displayName:name ,
@@ -95,7 +95,7 @@ import sha256 from 'sha256'
             var nm;
             var pw;
             $.ajax({
-                url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/user/" + this.$session.get("log"),
+                url: "https://docketu.iutnc.univ-lorraine.fr:11501/api/user/" + this.$session.get("log"),
                 success: function (result) {
                     log = result[0].login;
                     nm = result[0].Name;

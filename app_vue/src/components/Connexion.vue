@@ -45,7 +45,7 @@ export default {
                 alert("Rentrez un email valide");
             } else {
                 $.ajax({
-                    url: "http://docketu.iutnc.univ-lorraine.fr:11501/api/user/" + this.email,
+                    url: "https://docketu.iutnc.univ-lorraine.fr:11501/api/user/" + this.email,
                     success: function (result) {
                         res = result[0].password;
                         name = result[0].Name;

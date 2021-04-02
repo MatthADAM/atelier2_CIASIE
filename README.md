@@ -19,3 +19,9 @@ Ce projet à été réalisé lors de la deuxième session d'ateliers de la licen
 - Des commentaires peuvent etre ajoutés à tout moment même apres l'événement
 - On peut supprimer les comptes et les événements dans le gestionnaire backoffice
 - (Fonctionnalité complémentaire) A la création d'un événement il est possible de préciser si celui-ci est publique ou privé -> Cette fonctionnalité à été faite sans avoir connaissance qu'elle était complémentaire il nous avait paru logique dde pouvoir préciser la propriété publique ou privé à la création
+
+## Répartition
+- API : Hervé Grosjean, Romain Bernard
+- Application Flutter : Valentin Gardel
+- Application VueJs (Client) : Matthieu Adam, Hervé Grosjean
+- Application VueJs (Back) : Romain Bernard
